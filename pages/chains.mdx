@@ -1,0 +1,27 @@
+import { SwitchChainDemo } from "../components/demos/SwitchChainDemo";
+
+# Chains
+
+How wallets expose network switching and custom RPC endpoints.
+
+## wallet_switchEthereumChain (EIP-3326)
+
+Asks the wallet to change the active chain.
+
+**RPC:** `wallet_switchEthereumChain({ chainId })`
+
+:::note
+Error **4902** means the chain is not in the wallet yet — the recommended follow-up is `wallet_addEthereumChain` so the user can approve the network once, then switch cleanly.
+:::
+
+## wallet_addEthereumChain (EIP-3085)
+
+Adds a network to the wallet before switching.
+
+**RPC:** `wallet_addEthereumChain({ chainId, chainName, rpcUrls, nativeCurrency, ... })`
+
+## eth_chainId
+
+Read-only check of the active chain after connecting.
+
+<SwitchChainDemo />

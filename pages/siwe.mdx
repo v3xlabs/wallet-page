@@ -1,0 +1,9 @@
+import { SiweDemo } from "../components/demos/SiweDemo";
+
+# Sign-In with Ethereum (SIWE)
+
+[EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) standardizes a message format so dapps can authenticate users without a password. Wallets typically sign the UTF-8 message with `personal_sign`.
+
+**RPC:** `personal_sign(message, address)`
+
+<SiweDemo />

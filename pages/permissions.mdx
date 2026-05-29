@@ -1,0 +1,27 @@
+import { PermissionsDemo } from "../components/demos/PermissionsDemo";
+
+# Wallet permissions
+
+[EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) defines a way for dapps to **request** and **inspect** coarse-grained access instead of prompting on every RPC call. Wallets expose:
+
+| Method | Purpose |
+| --- | --- |
+| [`wallet_getPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_getpermissions) | What this origin is allowed to do right now |
+| [`wallet_requestPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_requestpermissions) | Ask the user to grant a capability (often shown on “Connect”) |
+| [`wallet_revokePermissions`](https://eips.ethereum.org/EIPS/eip-1193) | Remove a capability for this site (recommended where supported) |
+
+:::note
+**For wallet developers:** implementing [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) is recommended — it lets dapps request capabilities up front and inspect what the user already granted, with room for caveats that protect users. Some wallets still connect via [`eth_requestAccounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_requestaccounts) only; if you see `method not found` here, that usually means the wallet is on the legacy path rather than EIP-2255. Adopting `wallet_getPermissions` / `wallet_requestPermissions` is a great way to improve connect UX and give users clearer, revocable grants.
+:::
+
+## How to read a permission object
+
+Each grant usually includes:
+
+- **`parentCapability`** — the restricted capability (for example `eth_accounts` for address access).
+- **`invoker`** — which origin received the grant (your site’s URL).
+- **`caveats`** — extra limits (for example only certain addresses, or required RPC methods).
+
+Caveat **`type`** values are wallet-defined; [MetaMask’s rpc-cap](https://github.com/MetaMask/rpc-cap/blob/master/src/caveats.ts) documents common ones such as `filterResponse` and `requiredMethods`.
+
+<PermissionsDemo />

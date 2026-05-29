@@ -1,0 +1,13 @@
+import { Erc20PermitDemo } from "../components/demos/Erc20PermitDemo";
+
+# ERC-20 Permit (EIP-2612)
+
+[EIP-2612](https://eips.ethereum.org/EIPS/eip-2612) lets token holders approve a spender with an off-chain signature instead of an on-chain `approve` transaction.
+
+Wallets implement this via [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed data:
+
+**RPC:** `eth_signTypedData_v4(address, typedDataJson)`
+
+The demo below uses a fictional token domain — only the signing UI is exercised; no token contract is contacted.
+
+<Erc20PermitDemo />

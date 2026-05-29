@@ -1,0 +1,37 @@
+# wallet.page
+
+Test whether your browser wallet supports common [EIPs](https://eips.ethereum.org/) and JSON-RPC methods — similar in spirit to the [MetaMask test dapp](https://metamask.github.io/test-dapp/), but organized as documentation with an interactive panel on each page.
+
+## How it works
+
+1. Start with [Connect](/connect) if you have multiple extensions or want to review discovery UX.
+2. On any demo page, choose a wallet from the picker — the session is shared site-wide.
+3. Run the action and read the result — success, user approval, or a signal about what to implement next.
+
+All requests stay in your browser.
+
+## Demos
+
+| Topic | Methods / standards |
+| --- | --- |
+| [Connect](/connect) | Wallet connection, EIP-6963 discovery |
+| [Permissions](/permissions) | EIP-2255 |
+| [Chains](/chains) | `wallet_switchEthereumChain`, `wallet_addEthereumChain` |
+| [Personal signatures](/personal-signatures) | `personal_sign`, `eth_sign` |
+| [Sign-In with Ethereum](/siwe) | EIP-4361 |
+| [ERC-20 permit](/erc20-permit) | EIP-2612 |
+| [ERC-20](/erc-20) | `balanceOf`, `transfer` |
+| [ERC-721](/erc-721) | NFT transfers (docs stub) |
+| [ERC-1155](/erc-1155) | Multi-token (docs stub) |
+| [Watch asset](/eip-747) | EIP-747 `wallet_watchAsset` |
+| [Send transaction](/send-transaction) | `eth_sendTransaction` |
+| [Batch calls](/eth-send-calls) | EIP-5792 |
+| [EIP-7702](/eip-7702) | Authorizations, type-4 transactions |
+
+See the [roadmap](/roadmap) for planned pages.
+
+```bash
+pnpm install
+pnpm dev
+pnpm build
+```

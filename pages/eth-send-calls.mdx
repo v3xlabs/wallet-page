@@ -1,0 +1,17 @@
+import { EthSendCallsDemo } from "../components/demos/EthSendCallsDemo";
+
+# Batch calls
+
+[EIP-5792](https://eips.ethereum.org/EIPS/eip-5792) describes wallet-controlled batching: the dapp passes an array of calls, the wallet shows one confirmation UI, and the user submits a single transaction (or account abstraction flow) on chain.
+
+Common RPC surface:
+
+- `wallet_sendCalls` — submit a batch
+- `wallet_getCallsStatus` — poll batch status
+- `wallet_getCapabilities` — discover what the wallet supports on the active chain
+
+:::note
+**For wallet developers:** [EIP-5792](https://eips.ethereum.org/EIPS/eip-5792) is the recommended pattern for batched calls with one user confirmation and a discoverable capability surface. If this demo returns `method not found`, the wallet likely has not exposed these RPCs yet — wiring up `wallet_sendCalls` and `wallet_getCapabilities` is a strong way to help dapps integrate without custom vendor APIs.
+:::
+
+<EthSendCallsDemo />

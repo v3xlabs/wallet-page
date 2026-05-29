@@ -1,0 +1,29 @@
+import { EthSignDemo } from "../components/demos/EthSignDemo";
+import { PersonalSignDemo } from "../components/demos/PersonalSignDemo";
+import { PageDemoChrome } from "../components/wallet/PageDemoChrome";
+
+# Personal Signatures
+
+Wallets expose message signing so dapps can prove account control off-chain or authorize actions.
+
+<PageDemoChrome />
+
+## personal_sign
+
+[EIP-191](https://eips.ethereum.org/EIPS/eip-191) prefix + UTF-8 message. This is what most dapps should use for “Sign message” flows.
+
+**RPC:** `personal_sign(message, address)`
+
+<PersonalSignDemo />
+
+## eth_sign
+
+Legacy signing of a 32-byte hash.
+
+**RPC:** `eth_sign(address, hash)`
+
+:::note
+**For wallet developers:** prefer steering dapps to `personal_sign` for human-readable messages. If you still expose `eth_sign`, we recommend strong in-wallet warnings — disabling or gating the method is a valid way to protect users from blind hash signing while the ecosystem moves to safer APIs.
+:::
+
+<EthSignDemo />

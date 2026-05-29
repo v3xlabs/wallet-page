@@ -1,0 +1,42 @@
+import { ConnectDemo } from "../components/demos/ConnectDemo";
+
+# Connect
+
+Connecting a wallet is the first step on almost every dapp. Users expect a clear **Connect** entry point, a recognizable wallet name and icon, and a single permission prompt — not a wall of technical jargon.
+
+## What users should see
+
+- **Obvious CTA** — A primary "Connect wallet" (or "Log in") control before any chain-specific actions.
+- **Wallet identity** — Name, icon, and (when possible) which extension or app they are using.
+- **Account choice** — If the wallet supports multiple accounts, let the user pick one before signing or sending.
+- **Persistent session** — After connecting, other pages should not ask again until the user disconnects or clears site data.
+- **Disconnect** — A visible way to end the session; revoking access in the wallet UI should be reflected on the next visit.
+
+## What dapps should avoid
+
+- **Assuming `window.ethereum`** — Only one injected provider wins; users with several extensions may never see the wallet they want.
+- **Connecting on every page** — Hold one provider + account pair for the whole origin (this site does that via shared session state).
+- **Hiding errors** — "User rejected" vs "no wallet installed" need different copy and next steps.
+- **Blocking the UI** — Show connection state inline; don't trap users in modals with no dismiss path.
+
+## How this site connects
+
+Every demo shares the same session: pick a wallet once, then run tests on other pages. The compact badge in the corner shows the active wallet; **Connect** on other pages reopens the same picker.
+
+Besides extensions discovered via EIP-6963, **openlv** ([openlv.sh](https://openlv.sh)) is always listed — peer-to-peer wallet connectivity without going through `window.ethereum`.
+
+<ConnectDemo />
+
+## EIP-6963 — Multi-injected provider discovery
+
+:::note
+**For wallet developers:** [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963) is the recommended way to announce your provider so dapps can list every installed wallet — not only whichever extension won `window.ethereum`.
+:::
+
+When several browser extensions inject `window.ethereum`, only one wins the global slot. EIP-6963 adds a discovery flow so dapps can list wallets explicitly:
+
+1. The page dispatches `eip6963:requestProvider`.
+2. Each wallet responds with `eip6963:announceProvider` and `detail: { info, provider }`.
+3. The dapp calls `eth_requestAccounts` on the **chosen** `provider`, not necessarily `window.ethereum`.
+
+`info` includes `name`, `icon`, `rdns`, and a stable `uuid` for UI lists. The demo above logs raw announcements for debugging; production UIs should render `info` and keep the selected `provider` in app state.
