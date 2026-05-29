@@ -1,16 +1,16 @@
-import { ConnectDemo } from "../components/demos/ConnectDemo";
+import { ConnectWalletDemo } from "../components/demos/connect/ConnectWalletDemo";
 
 # Connect
 
-Connecting a wallet is the first step on almost every dapp. Users expect a clear **Connect** entry point, a recognizable wallet name and icon, and a single permission prompt — not a wall of technical jargon.
+A dapp needs an EIP-1193 `provider` and an account. Discovery comes first; `eth_requestAccounts` comes after the user picks a wallet. wallet.page keeps one provider + account for the other specification pages.
 
-## What users should see
+## Connect a wallet
 
-- **Obvious CTA** — A primary "Connect wallet" (or "Log in") control before any chain-specific actions.
-- **Wallet identity** — Name, icon, and (when possible) which extension or app they are using.
-- **Account choice** — If the wallet supports multiple accounts, let the user pick one before signing or sending.
-- **Persistent session** — After connecting, other pages should not ask again until the user disconnects or clears site data.
-- **Disconnect** — A visible way to end the session; revoking access in the wallet UI should be reflected on the next visit.
+<ConnectWalletDemo />
+
+:::note
+The provider and account above are shared site-wide. Disconnect in the demo badge to switch wallets.
+:::
 
 ## What dapps should avoid
 
@@ -19,24 +19,21 @@ Connecting a wallet is the first step on almost every dapp. Users expect a clear
 - **Hiding errors** — "User rejected" vs "no wallet installed" need different copy and next steps.
 - **Blocking the UI** — Show connection state inline; don't trap users in modals with no dismiss path.
 
-## How this site connects
+## Connection transports
 
-Every demo shares the same session: pick a wallet once, then run tests on other pages. The compact badge in the corner shows the active wallet; **Connect** on other pages reopens the same picker.
+**WalletConnect** and similar relay products route sessions through hosted infrastructure. We generally do not recommend them as the default desktop path when a local extension or an open protocol is available.
 
-Besides extensions discovered via EIP-6963, **openlv** ([openlv.sh](https://openlv.sh)) is always listed — peer-to-peer wallet connectivity without going through `window.ethereum`.
+**[openlv](https://openlv.sh)** is open source and appears in the provider list above as a peer-to-peer EIP-1193 provider (not `window.ethereum`, not a vendor cloud relay).
 
-<ConnectDemo />
+## Wallet discovery
 
-## EIP-6963 — Multi-injected provider discovery
+**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** avoids fighting over `window.ethereum`. Wallets announce themselves with two window events:
+
+1. The dapp registers `window.addEventListener("eip6963:announceProvider", …)` and stores `event.detail` (`{ info, provider }`).
+2. The dapp calls `window.dispatchEvent(new Event("eip6963:requestProvider"))` so wallets that loaded earlier announce again.
+
+That is the full discovery loop. The connect panel above runs it on load; use **Request providers** to dispatch the request event again and expand **Announce payloads** to inspect each `info` object (`name`, `icon`, `rdns`, `uuid`).
 
 :::note
-**For wallet developers:** [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963) is the recommended way to announce your provider so dapps can list every installed wallet — not only whichever extension won `window.ethereum`.
+**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event — as in the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation).
 :::
-
-When several browser extensions inject `window.ethereum`, only one wins the global slot. EIP-6963 adds a discovery flow so dapps can list wallets explicitly:
-
-1. The page dispatches `eip6963:requestProvider`.
-2. Each wallet responds with `eip6963:announceProvider` and `detail: { info, provider }`.
-3. The dapp calls `eth_requestAccounts` on the **chosen** `provider`, not necessarily `window.ethereum`.
-
-`info` includes `name`, `icon`, `rdns`, and a stable `uuid` for UI lists. The demo above logs raw announcements for debugging; production UIs should render `info` and keep the selected `provider` in app state.

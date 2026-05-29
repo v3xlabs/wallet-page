@@ -1,27 +1,38 @@
-import { SwitchChainDemo } from "../components/demos/SwitchChainDemo";
+import { AddChainMiniDemo } from "../components/demos/chains/AddChainMiniDemo";
+import { ChainQuickGrid } from "../components/demos/chains/ChainQuickGrid";
+import { EthChainIdDemo } from "../components/demos/chains/EthChainIdDemo";
+import { SwitchChainMiniDemo } from "../components/demos/chains/SwitchChainMiniDemo";
 
 # Chains
 
-How wallets expose network switching and custom RPC endpoints.
+Networks are identified by `chainId` (hex). Wallets expose read and write RPCs so dapps can read the active chain or ask the user to add or switch networks.
+
+<ChainQuickGrid />
+
+## eth_chainId
+
+Returns the wallet’s current chain. No prompt when already connected.
+
+**RPC:** `eth_chainId` → hex string (e.g. `0x1`)
+
+<EthChainIdDemo />
 
 ## wallet_switchEthereumChain (EIP-3326)
 
-Asks the wallet to change the active chain.
+Changes the active chain when the network is already known to the wallet.
 
 **RPC:** `wallet_switchEthereumChain({ chainId })`
 
 :::note
-Error **4902** means the chain is not in the wallet yet — the recommended follow-up is `wallet_addEthereumChain` so the user can approve the network once, then switch cleanly.
+Error **4902** means the chain is not in the wallet yet — use `wallet_addEthereumChain`, then switch again.
 :::
+
+<SwitchChainMiniDemo />
 
 ## wallet_addEthereumChain (EIP-3085)
 
-Adds a network to the wallet before switching.
+Registers chain metadata (RPC URL, currency, name) so the user can switch later.
 
 **RPC:** `wallet_addEthereumChain({ chainId, chainName, rpcUrls, nativeCurrency, ... })`
 
-## eth_chainId
-
-Read-only check of the active chain after connecting.
-
-<SwitchChainDemo />
+<AddChainMiniDemo />

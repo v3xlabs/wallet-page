@@ -8,7 +8,6 @@ export default defineConfig({
   rootDir: ".",
   srcDir: ".",
   renderStrategy: "full-static",
-  showAskAi: false,
   mcp: { enabled: false },
   accentColor: "#6c5ce7",
   basePath: "/",

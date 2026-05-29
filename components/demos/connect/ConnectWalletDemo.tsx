@@ -1,13 +1,13 @@
 "use client";
 
-import { ProviderList } from "../wallet/ProviderList";
-import { WalletBadge } from "../wallet/WalletBadge";
-import { useWallet } from "../wallet/WalletProvider";
+import { ProviderList } from "../../wallet/ProviderList";
+import { WalletBadge } from "../../wallet/WalletBadge";
+import { useWallet } from "../../wallet/WalletProvider";
 
-export function ConnectDemo() {
+/** Connect + EIP-6963 discovery on one panel — wallet list is always visible. */
+export function ConnectWalletDemo() {
   const {
     providers,
-    discoveryLog,
     connecting,
     connectError,
     connectDetail,
@@ -15,27 +15,24 @@ export function ConnectDemo() {
     session,
   } = useWallet();
 
+  const infoPayload = providers.map((p) => p.info);
+
   return (
     <div className="wallet-demo">
       <div className="wallet-demo-panel wallet-demo-panel-discovery">
         {session && <WalletBadge />}
 
         <section className="wallet-demo-section">
-          <h3>Connect a wallet</h3>
-          <p className="wallet-demo-muted">
-            Choose a wallet below — the same session is reused on every demo page.
-            If nothing appears, install an extension and refresh, or click Request
-            providers under EIP-6963 discovery.
-          </p>
+          <h3>Connect</h3>
           {session ? (
             <p className="wallet-demo-muted">
-              Connected as <strong>{session.label}</strong> — use Disconnect in the
-              badge above to end the session.
+              Connected as <strong>{session.label}</strong>. Disconnect in the badge
+              to pick another provider.
             </p>
           ) : (
             <p className="wallet-demo-muted">
-              Found <strong>{providers.length}</strong> wallet
-              {providers.length === 1 ? "" : "s"} on this origin.
+              Choose a provider, then the site calls{" "}
+              <code>eth_requestAccounts</code> on that object.
             </p>
           )}
           {connectError && (
@@ -47,16 +44,15 @@ export function ConnectDemo() {
             providers={providers}
             connecting={connecting}
             onSelect={(detail) => void connectDetail(detail)}
-            emptyMessage="No wallets announced yet — install an extension or use Request providers below."
+            emptyMessage="No providers yet — install a wallet extension and use Request providers below."
           />
         </section>
 
         <section className="wallet-demo-section">
-          <h3>EIP-6963 discovery</h3>
+          <h3>EIP-6963</h3>
           <p className="wallet-demo-muted">
-            Listening for <code>eip6963:announceProvider</code> on load. Dispatch{" "}
-            <code>eip6963:requestProvider</code> again if a wallet was installed
-            after the page opened.
+            Listen for <code>eip6963:announceProvider</code>, then dispatch{" "}
+            <code>eip6963:requestProvider</code> so wallets re-announce.
           </p>
           <div className="wallet-demo-actions">
             <button
@@ -67,12 +63,14 @@ export function ConnectDemo() {
               Request providers
             </button>
           </div>
-          <details className="wallet-demo-details" open>
-            <summary>Discovery log ({discoveryLog.length})</summary>
+          <details className="wallet-demo-details">
+            <summary>
+              Announce payloads ({infoPayload.length})
+            </summary>
             <pre className="wallet-demo-log">
-              {discoveryLog.length === 0
-                ? "Events will appear here…"
-                : JSON.stringify(discoveryLog, null, 2)}
+              {infoPayload.length === 0
+                ? "[]"
+                : JSON.stringify(infoPayload, null, 2)}
             </pre>
           </details>
         </section>

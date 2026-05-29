@@ -1,4 +1,4 @@
-export { ConnectDemo } from "./ConnectDemo";
+export { ConnectWalletDemo } from "./connect/ConnectWalletDemo";
 export { Eip747Demo } from "./Eip747Demo";
 export { Erc1155Demo } from "./Erc1155Demo";
 export { Erc20Demo } from "./Erc20Demo";
@@ -10,4 +10,4 @@ export { EthSignDemo } from "./EthSignDemo";
 export { PersonalSignDemo } from "./PersonalSignDemo";
 export { SendTransactionDemo } from "./SendTransactionDemo";
 export { SiweDemo } from "./SiweDemo";
-export { SwitchChainDemo } from "./SwitchChainDemo";
+export { ChainQuickGrid } from "./chains/ChainQuickGrid";
