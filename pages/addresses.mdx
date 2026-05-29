@@ -1,0 +1,36 @@
+import { EthAccountsDemo } from "../components/demos/accounts/EthAccountsDemo";
+import { EthRequestAccountsDemo } from "../components/demos/accounts/EthRequestAccountsDemo";
+import { PageDemoChrome } from "../components/wallet/PageDemoChrome";
+
+# Addresses
+
+Wallets expose account access as an **array of addresses**, not a single string. The same JSON-RPC methods power “Connect wallet” and quiet reads — what differs is whether the wallet may prompt the user.
+
+| Method | Prompt? | Typical use |
+| --- | --- | --- |
+| [`eth_accounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_accounts) | No | Read addresses already shared with this origin |
+| [`eth_requestAccounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_requestaccounts) | Yes, if needed | Connect / ask the user to share at least one account |
+
+Both return `string[]` (checksummed `0x` addresses). Order is defined by the wallet.
+
+:::note
+**The `accounts[0]` shortcut:** Many dapps and wallets still treat the first entry as *the* connected address — `const [address] = await provider.request({ method: "eth_requestAccounts" })` — and never surface `accounts[1]`, `accounts[2]`, … even when the wallet returns more. If your wallet supports multiple accounts per origin, showing the full list (and letting the user pick) is a meaningful UX upgrade for power users and multisig-style setups.
+:::
+
+<PageDemoChrome />
+
+## eth_accounts
+
+Read-only for this site. Returns `[]` until the user has connected and granted access for your origin.
+
+**RPC:** `eth_accounts` → `string[]`
+
+<EthAccountsDemo />
+
+## eth_requestAccounts
+
+Triggers the connect / permission flow when the origin is not yet allowed. Returns the same array shape once approved.
+
+**RPC:** `eth_requestAccounts` → `string[]`
+
+<EthRequestAccountsDemo />

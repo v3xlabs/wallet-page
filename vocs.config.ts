@@ -21,6 +21,7 @@ export default defineConfig({
         {
           text: "Account",
           items: [
+            { text: "Addresses", link: "/addresses" },
             { text: "Permissions", link: "/permissions" },
             { text: "Chains", link: "/chains" },
           ],
