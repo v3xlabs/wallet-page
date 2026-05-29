@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   encodeFunctionData,
   formatUnits,
@@ -11,6 +11,8 @@ import {
 } from "viem";
 
 import { rpc } from "../../lib/ethereum";
+import { TransactionPreview } from "../wallet/preview/TransactionPreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
 import { ResultBlock } from "./ResultBlock";
 import { useWallet } from "../wallet/WalletProvider";
@@ -24,6 +26,8 @@ const erc20Abi = parseAbi([
 const DEFAULT_TOKEN =
   "0x779877A7B0D9E8603169DdbD7836e478b462Ed970" as Address;
 
+const TRANSFER_AMOUNT = "0.0001";
+
 export function Erc20Demo() {
   const { session } = useWallet();
   const [token, setToken] = useState(DEFAULT_TOKEN);
@@ -36,8 +40,34 @@ export function Erc20Demo() {
     ? (token.trim() as Address)
     : undefined;
 
+  const balanceCall = useMemo(() => {
+    if (!session || !tokenAddress) return null;
+    return {
+      to: tokenAddress,
+      data: encodeFunctionData({
+        abi: erc20Abi,
+        functionName: "balanceOf",
+        args: [session.accounts[0]],
+      }),
+    };
+  }, [session, tokenAddress]);
+
+  const transferTx = useMemo(() => {
+    if (!session || !tokenAddress) return null;
+    return {
+      from: session.accounts[0],
+      to: tokenAddress,
+      data: encodeFunctionData({
+        abi: erc20Abi,
+        functionName: "transfer",
+        args: [session.accounts[0], parseUnits(TRANSFER_AMOUNT, 18)],
+      }),
+      value: "0x0" as const,
+    };
+  }, [session, tokenAddress]);
+
   const readBalance = async () => {
-    if (!session || !tokenAddress) {
+    if (!session || !balanceCall) {
       setError("Enter a valid ERC-20 contract address.");
       return;
     }
@@ -45,13 +75,8 @@ export function Erc20Demo() {
     setError(undefined);
     setBalance(undefined);
     try {
-      const data = encodeFunctionData({
-        abi: erc20Abi,
-        functionName: "balanceOf",
-        args: [session.accounts[0]],
-      });
       const raw = await rpc(session.provider, "eth_call", [
-        { to: tokenAddress, data },
+        balanceCall,
         "latest",
       ]);
       const decimalsRaw = await rpc(session.provider, "eth_call", [
@@ -76,19 +101,12 @@ export function Erc20Demo() {
   };
 
   const sendTransfer = async () => {
-    if (!session || !tokenAddress) return;
+    if (!session || !transferTx) return;
     setPending(true);
     setError(undefined);
     setTxHash(undefined);
     try {
-      const data = encodeFunctionData({
-        abi: erc20Abi,
-        functionName: "transfer",
-        args: [session.accounts[0], parseUnits("0.0001", 18)],
-      });
-      const hash = await rpc(session.provider, "eth_sendTransaction", [
-        { from: session.accounts[0], to: tokenAddress, data, value: "0x0" },
-      ]);
+      const hash = await rpc(session.provider, "eth_sendTransaction", [transferTx]);
       setTxHash(String(hash));
     }
     catch (err) {
@@ -101,42 +119,66 @@ export function Erc20Demo() {
 
   return (
     <DemoShell>
-      <section className="wallet-demo-section">
-        <h3>ERC-20</h3>
-        <p className="wallet-demo-muted">
-          <code>eth_call</code> for <code>balanceOf</code> and{" "}
-          <code>transfer</code> to self (use a token you hold on this chain).
-        </p>
-        <label className="wallet-demo-field">
-          <span className="wallet-demo-muted">Token contract</span>
-          <input
-            type="text"
-            className="wallet-demo-input"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-          />
-        </label>
-        <div className="wallet-demo-actions">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            disabled={pending}
-            onClick={() => void readBalance()}
-          >
-            balanceOf
-          </button>
-          <button
-            type="button"
-            className="wallet-demo-btn"
-            disabled={pending}
-            onClick={() => void sendTransfer()}
-          >
-            transfer to self
-          </button>
-        </div>
-        <ResultBlock label="Balance" value={balance} error={error} pending={pending} />
+      <label className="wallet-demo-field">
+        <span className="wallet-demo-muted">Token contract</span>
+        <input
+          type="text"
+          className="wallet-demo-input"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+        />
+      </label>
+
+      <WalletActionPanel
+        inspector={
+          balanceCall
+            ? {
+                user: <p>Read <code>balanceOf</code> for your connected account.</p>,
+                rpc: { method: "eth_call", params: [balanceCall, "latest"] },
+              }
+            : undefined
+        }
+        actions={[
+          {
+            label: "Read balance",
+            onClick: readBalance,
+            primary: true,
+            disabled: !session || !tokenAddress,
+          },
+        ]}
+        pending={pending}
+      >
+        <ResultBlock label="Balance" value={balance} error={error} />
+      </WalletActionPanel>
+
+      <WalletActionPanel
+        inspector={
+          transferTx
+            ? {
+                user: (
+                  <TransactionPreview
+                    from={transferTx.from}
+                    to={transferTx.to}
+                    valueLabel={`${TRANSFER_AMOUNT} tokens`}
+                    data={transferTx.data}
+                  />
+                ),
+                rpc: { method: "eth_sendTransaction", params: [transferTx] },
+              }
+            : undefined
+        }
+        pending={pending}
+        actions={[
+          {
+            label: "Transfer to self",
+            onClick: sendTransfer,
+            primary: true,
+            disabled: !session || !tokenAddress,
+          },
+        ]}
+      >
         <ResultBlock label="Transaction" value={txHash} />
-      </section>
+      </WalletActionPanel>
     </DemoShell>
   );
 }

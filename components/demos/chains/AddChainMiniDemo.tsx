@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Hex } from "viem";
 
 import { getDemoChain } from "../../../lib/chains";
@@ -15,21 +15,35 @@ export function AddChainMiniDemo() {
   const [result, setResult] = useState<string>();
   const [error, setError] = useState<string>();
 
+  const meta = getDemoChain(chainId);
+
+  const addParams = useMemo(() => {
+    if (!meta) return null;
+    return {
+      chainId: meta.chainId,
+      chainName: meta.name,
+      nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+      rpcUrls: [meta.rpcUrl],
+    };
+  }, [meta]);
+
   return (
     <MiniDemo
       title="wallet_addEthereumChain"
-      description={
-        <>
-          EIP-3085 — register RPC metadata, then switch. Demo uses preset{" "}
-          <code>chainName</code> / <code>rpcUrls</code> for the selected network.
-          <ChainSelect value={chainId} onChange={setChainId} />
-        </>
-      }
+      description={<ChainSelect value={chainId} onChange={setChainId} />}
       actionLabel="Add chain"
-      idleHint={
-        session
-          ? "Adds the network to the wallet; does not switch by itself."
-          : "Connect on /connect first."
+      idleHint={session ? undefined : "Connect on /connect first."}
+      inspector={
+        meta && addParams
+          ? {
+              user: (
+                <p>
+                  Register <strong>{meta.name}</strong> in the wallet (RPC + currency).
+                </p>
+              ),
+              rpc: { method: "wallet_addEthereumChain", params: [addParams] },
+            }
+          : undefined
       }
       result={result}
       error={error}
@@ -38,23 +52,15 @@ export function AddChainMiniDemo() {
           setError("Connect a wallet on /connect first.");
           return;
         }
-        const meta = getDemoChain(chainId);
-        if (!meta) {
+        if (!addParams) {
           setError("Unknown demo chain.");
           return;
         }
         setError(undefined);
         try {
-          await rpc(session.provider, "wallet_addEthereumChain", [
-            {
-              chainId: meta.chainId,
-              chainName: meta.name,
-              nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-              rpcUrls: [meta.rpcUrl],
-            },
-          ]);
+          await rpc(session.provider, "wallet_addEthereumChain", [addParams]);
           await refreshSession();
-          setResult(`Added ${meta.name} (${meta.chainId}).`);
+          setResult(`Added ${meta!.name} (${meta!.chainId}).`);
         }
         catch (err) {
           setResult(undefined);

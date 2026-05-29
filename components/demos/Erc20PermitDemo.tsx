@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { hashTypedData, type Hex } from "viem";
 
 import { rpc, stringifyTypedData } from "../../lib/ethereum";
+import { PermitPreview } from "../wallet/preview/PermitPreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
 import { ResultBlock } from "./ResultBlock";
 import { useWallet } from "../wallet/WalletProvider";
+
+const DEMO_DECIMALS = 6;
+const DEMO_SYMBOL = "WPAGE";
 
 const permitTypedData = (owner: Hex, chainId: number) =>
   ({
@@ -41,13 +46,22 @@ export function Erc20PermitDemo() {
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
+  const typed = useMemo(() => {
+    if (!session) return null;
+    const chainId = Number.parseInt(session.chainId, 16);
+    return permitTypedData(session.accounts[0], chainId);
+  }, [session]);
+
+  const digest = useMemo(
+    () => (typed ? hashTypedData(typed) : null),
+    [typed],
+  );
+
   const signPermit = async () => {
-    if (!session) return;
+    if (!session || !typed) return;
     setPending(true);
     setSignature(undefined);
     setError(undefined);
-    const chainId = Number.parseInt(session.chainId, 16);
-    const typed = permitTypedData(session.accounts[0], chainId);
     try {
       const sig = await rpc(session.provider, "eth_signTypedData_v4", [
         session.accounts[0],
@@ -64,43 +78,44 @@ export function Erc20PermitDemo() {
   };
 
   const showDigest = () => {
-    if (!session) return;
-    const chainId = Number.parseInt(session.chainId, 16);
-    const typed = permitTypedData(session.accounts[0], chainId);
-    setSignature(`EIP-712 digest (local): ${hashTypedData(typed)}`);
+    if (!digest) return;
+    setSignature(digest);
+    setError(undefined);
   };
 
   return (
     <DemoShell>
-      <section className="wallet-demo-section">
-        <h3>EIP-2612 permit (off-chain demo)</h3>
-        <p className="wallet-demo-muted">
-          Exercises <code>eth_signTypedData_v4</code> with a Permit struct.
-        </p>
-        <div className="wallet-demo-actions">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            disabled={pending}
-            onClick={() => void signPermit()}
-          >
-            Sign permit (typed data)
-          </button>
-          <button
-            type="button"
-            className="wallet-demo-btn"
-            onClick={() => showDigest()}
-          >
-            Show EIP-712 digest locally
-          </button>
-        </div>
-        <ResultBlock
-          label="Signature / output"
-          value={signature}
-          error={error}
-          pending={pending}
-        />
-      </section>
+      <WalletActionPanel
+        inspector={
+          typed
+            ? {
+                user: (
+                  <PermitPreview
+                    tokenName={typed.domain.name}
+                    tokenSymbol={DEMO_SYMBOL}
+                    decimals={DEMO_DECIMALS}
+                    value={typed.message.value}
+                    spender={typed.message.spender}
+                    deadline={typed.message.deadline}
+                  />
+                ),
+                rpc: {
+                  method: "eth_signTypedData_v4",
+                  params: [session!.accounts[0], stringifyTypedData(typed)],
+                },
+                hash: digest,
+                hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",
+              }
+            : undefined
+        }
+        pending={pending}
+        actions={[
+          { label: "Sign permit", onClick: signPermit, primary: true, disabled: !session },
+          { label: "Copy digest", onClick: showDigest, disabled: !session },
+        ]}
+      >
+        <ResultBlock label="Signature" value={signature} error={error} />
+      </WalletActionPanel>
     </DemoShell>
   );
 }

@@ -2,9 +2,12 @@
 
 import { useState, type ReactNode } from "react";
 
+import { DemoInspector, type DemoInspectorProps } from "./DemoInspector";
+
 type MiniDemoProps = {
   title: string;
   description?: ReactNode;
+  inspector?: DemoInspectorProps;
   actionLabel: string;
   onAction: () => void | Promise<void>;
   result?: string;
@@ -13,10 +16,11 @@ type MiniDemoProps = {
   idleHint?: string;
 };
 
-/** Compact inline action + result for specification pages. */
+/** Compact inline demo with tabbed inspector. */
 export function MiniDemo({
   title,
   description,
+  inspector,
   actionLabel,
   onAction,
   result,
@@ -40,13 +44,12 @@ export function MiniDemo({
 
   return (
     <div className="wallet-mini-demo">
-      <div className="wallet-mini-demo-head">
-        <div>
-          <h4 className="wallet-mini-demo-title">{title}</h4>
-          {description && (
-            <div className="wallet-demo-muted wallet-mini-demo-desc">{description}</div>
-          )}
-        </div>
+      <h4 className="wallet-mini-demo-title">{title}</h4>
+      {description && (
+        <div className="wallet-demo-muted wallet-mini-demo-desc">{description}</div>
+      )}
+      {inspector && <DemoInspector {...inspector} />}
+      <div className="wallet-action-footer">
         <button
           type="button"
           className="wallet-demo-btn wallet-demo-btn-primary"
@@ -56,7 +59,6 @@ export function MiniDemo({
           {actionLabel}
         </button>
       </div>
-      {busy && <p className="wallet-demo-muted">Running…</p>}
       {error && (
         <pre className="wallet-mini-demo-output wallet-mini-demo-error">{error}</pre>
       )}

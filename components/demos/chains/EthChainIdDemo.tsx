@@ -14,13 +14,16 @@ export function EthChainIdDemo() {
   return (
     <MiniDemo
       title="eth_chainId"
-      description="Read-only — returns the wallet’s active chain as hex."
       actionLabel="Call eth_chainId"
       idleHint={
         session
-          ? "Returns the chain the wallet reports right now."
+          ? undefined
           : "Connect on /connect first."
       }
+      inspector={{
+        user: <p>Read the wallet&apos;s active chain (hex).</p>,
+        rpc: { method: "eth_chainId", params: [] },
+      }}
       result={result}
       error={error}
       onAction={async () => {

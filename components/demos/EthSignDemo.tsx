@@ -3,6 +3,8 @@
 import { useState } from "react";
 
 import { rpc } from "../../lib/ethereum";
+import { SignHashPreview } from "../wallet/preview/SignHashPreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { ResultBlock } from "./ResultBlock";
 import { useWallet } from "../wallet/WalletProvider";
@@ -37,25 +39,21 @@ export function EthSignDemo() {
 
   return (
     <DemoBlock>
-      <section className="wallet-demo-section">
-        <button
-          type="button"
-          className="wallet-demo-btn wallet-demo-btn-primary"
-          disabled={pending}
-          onClick={() => void sign()}
-        >
-          Sign hash with eth_sign
-        </button>
-        <ResultBlock
-          label="Signature"
-          pending={pending}
-          value={signature}
-          error={error}
-        />
-        <p className="wallet-demo-muted text-sm">
-          Hash: <code>{ZERO_HASH}</code>
-        </p>
-      </section>
+      <WalletActionPanel
+        inspector={{
+          user: <SignHashPreview hash={ZERO_HASH} />,
+          rpc: {
+            method: "eth_sign",
+            params: [session?.accounts[0] ?? "0x…", ZERO_HASH],
+          },
+          hash: ZERO_HASH,
+          hashNote: "eth_sign — wallet signs this 32-byte value (no EIP-191 prefix).",
+        }}
+        pending={pending}
+        actions={[{ label: "Sign hash", onClick: sign, primary: true }]}
+      >
+        <ResultBlock label="Signature" value={signature} error={error} />
+      </WalletActionPanel>
     </DemoBlock>
   );
 }

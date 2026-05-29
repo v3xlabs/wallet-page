@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 
+import { eip191MessageHash } from "../../lib/messageHash";
 import { rpc } from "../../lib/ethereum";
+import { SignMessagePreview } from "../wallet/preview/SignMessagePreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { ResultBlock } from "./ResultBlock";
 import { useWallet } from "../wallet/WalletProvider";
 
 const MESSAGE = "wallet.page — personal_sign test";
+const MESSAGE_HASH = eip191MessageHash(MESSAGE);
 
 export function PersonalSignDemo() {
   const { session } = useWallet();
@@ -37,25 +41,21 @@ export function PersonalSignDemo() {
 
   return (
     <DemoBlock>
-      <section className="wallet-demo-section">
-        <button
-          type="button"
-          className="wallet-demo-btn wallet-demo-btn-primary"
-          disabled={pending}
-          onClick={() => void sign()}
-        >
-          Sign message
-        </button>
-        <ResultBlock
-          label="Signature"
-          pending={pending}
-          value={signature}
-          error={error}
-        />
-        <p className="wallet-demo-muted text-sm">
-          Message: <code>{MESSAGE}</code>
-        </p>
-      </section>
+      <WalletActionPanel
+        inspector={{
+          user: <SignMessagePreview message={MESSAGE} />,
+          rpc: {
+            method: "personal_sign",
+            params: [MESSAGE, session?.accounts[0] ?? "0x…"],
+          },
+          hash: MESSAGE_HASH,
+          hashNote: "EIP-191 — wallets hash the prefixed message before secp256k1.",
+        }}
+        pending={pending}
+        actions={[{ label: "Sign message", onClick: sign, primary: true }]}
+      >
+        <ResultBlock label="Signature" value={signature} error={error} />
+      </WalletActionPanel>
     </DemoBlock>
   );
 }

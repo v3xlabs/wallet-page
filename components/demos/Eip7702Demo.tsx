@@ -237,7 +237,6 @@ export function Eip7702Demo() {
         <ResultBlock
           label="RPC probe log"
           value={probes}
-          pending={pending && !probes && !error}
         />
         <ResultBlock label="Capabilities" value={capabilities} />
         <ResultBlock label="Type-4 send" value={type4Result} error={error} />

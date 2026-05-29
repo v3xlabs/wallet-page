@@ -64,7 +64,6 @@ export function Eip747Demo() {
           label="Result"
           value={result}
           error={error}
-          pending={pending}
         />
       </section>
     </DemoShell>

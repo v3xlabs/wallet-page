@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Hex } from "viem";
 
 import { rpc } from "../../lib/ethereum";
+import { CallsBatchPreview } from "../wallet/preview/CallsBatchPreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
 import { ResultBlock } from "./ResultBlock";
 import { useWallet } from "../wallet/WalletProvider";
+
+const DEMO_CALL = {
+  to: "0x0000000000000000000000000000000000000000" as Hex,
+  value: "0x0" as const,
+};
 
 export function EthSendCallsDemo() {
   const { session } = useWallet();
@@ -15,26 +22,24 @@ export function EthSendCallsDemo() {
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
+  const batchRequest = useMemo(() => {
+    if (!session) return null;
+    return {
+      version: "1.0",
+      chainId: session.chainId,
+      from: session.accounts[0],
+      calls: [DEMO_CALL],
+    };
+  }, [session]);
+
   const sendDemoBatch = async () => {
-    if (!session) return;
+    if (!session || !batchRequest) return;
     setPending(true);
     setBatchId(undefined);
     setStatus(undefined);
     setError(undefined);
     try {
-      const id = await rpc(session.provider, "wallet_sendCalls", [
-        {
-          version: "1.0",
-          chainId: session.chainId,
-          from: session.accounts[0],
-          calls: [
-            {
-              to: "0x0000000000000000000000000000000000000000",
-              value: "0x0",
-            },
-          ],
-        },
-      ]);
+      const id = await rpc(session.provider, "wallet_sendCalls", [batchRequest]);
       setBatchId(String(id));
       try {
         const callStatus = await rpc(
@@ -86,32 +91,29 @@ export function EthSendCallsDemo() {
 
   return (
     <DemoShell>
-      <section className="wallet-demo-section">
-        <h3>wallet_sendCalls (EIP-5792)</h3>
-        <p className="wallet-demo-muted">
-          Batch calls through the wallet with a single confirmation when supported.
-        </p>
-        <div className="wallet-demo-actions">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            disabled={pending}
-            onClick={() => void sendDemoBatch()}
-          >
-            Send demo batch
-          </button>
-          <button
-            type="button"
-            className="wallet-demo-btn"
-            disabled={pending}
-            onClick={() => void probeCapabilities()}
-          >
-            wallet_getCapabilities
-          </button>
-        </div>
-        <ResultBlock label="Batch id" value={batchId} pending={pending && !batchId && !error} />
+      <WalletActionPanel
+        inspector={
+          batchRequest
+            ? {
+                user: (
+                  <CallsBatchPreview
+                    chainId={batchRequest.chainId}
+                    calls={batchRequest.calls}
+                  />
+                ),
+                rpc: { method: "wallet_sendCalls", params: [batchRequest] },
+              }
+            : undefined
+        }
+        pending={pending}
+        actions={[
+          { label: "Send demo batch", onClick: sendDemoBatch, primary: true, disabled: !session },
+          { label: "wallet_getCapabilities", onClick: probeCapabilities, disabled: !session },
+        ]}
+      >
+        <ResultBlock label="Batch id" value={batchId} />
         <ResultBlock label="Status / capabilities" value={status} error={error} />
-      </section>
+      </WalletActionPanel>
     </DemoShell>
   );
 }

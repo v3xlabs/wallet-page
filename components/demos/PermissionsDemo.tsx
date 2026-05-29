@@ -220,7 +220,6 @@ export function PermissionsDemo() {
           label="Raw JSON"
           value={raw}
           error={error}
-          pending={pending && !raw && !error && decoded.length === 0}
         />
       </section>
 
