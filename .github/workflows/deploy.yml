@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          build-packages: false
+      - name: Build Docs
+        run: pnpm build
+      - name: Edgeserver Upload
+        uses: v3xlabs/edgeserver-upload@v0.2.1-pre.4
+        with:
+            site_id: s_305c36a033
+            server: https://edgeserver.dev/api
+            token: ${{ secrets.EDGE_TOKEN }}
+            directory: dist/public
+            context: true
