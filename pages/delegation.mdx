@@ -6,9 +6,9 @@ import { Eip7702Demo } from "../components/demos/Eip7702Demo";
 
 ## What wallet teams are building toward
 
-- **User-safe delegation** — Wallets are encouraged to whitelist trusted implementation contracts (for example a wallet’s own smart-account delegator) rather than accepting arbitrary delegators from any website.
+- **User-safe delegation** — Wallets are encouraged to whitelist trusted implementation contracts (for example a wallet's own smart-account delegator) rather than accepting arbitrary delegators from any website.
 - **Standard RPC surface** — Teams are converging on names such as `wallet_signAuthorization` and `eth_sign7702Authorization`; until a single method is canonical, this page probes what each wallet exposes.
-- **Higher-level UX via ERC-5792** — Batching and smart-account flows are often offered through [`wallet_sendCalls`](/eth-send-calls), which is the recommended dapp integration path alongside EIP-7702.
+- **Higher-level UX via ERC-5792** — Batching and smart-account flows are often offered through [`wallet_sendCalls`](/delegation), which is the recommended dapp integration path alongside EIP-7702.
 
 :::note
 **For wallet developers:** exposing EIP-7702 through reviewed RPCs and capabilities helps dapps adopt Pectra features without asking users to sign opaque delegations. A `-32601` / `method not found` response on the probes below is expected while a wallet is still rolling out support — use it as a checklist for what to implement next.
