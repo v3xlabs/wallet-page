@@ -14,10 +14,6 @@ export function PageDemoChrome() {
     return (
       <div className="wallet-demo wallet-demo-page-chrome">
         <div className="wallet-demo-panel wallet-demo-panel-gate">
-          <p className="wallet-demo-lead">
-            Pick a wallet to run the tests below. Connection is shared across
-            this site.
-          </p>
           <button
             type="button"
             className="wallet-demo-btn wallet-demo-btn-primary"

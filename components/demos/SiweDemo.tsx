@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { eip191MessageHash } from "../../lib/messageHash";
 import { rpc } from "../../lib/ethereum";
-import { buildSiweMessage } from "../../lib/siwe";
+import { buildSiweMessage, generateSiweNonce } from "../../lib/siwe";
 import { SiwePreview } from "../wallet/preview/SiwePreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
@@ -13,9 +13,7 @@ import { useWallet } from "../wallet/WalletProvider";
 
 export function SiweDemo() {
   const { session } = useWallet();
-  const [nonce, setNonce] = useState(() =>
-    crypto.randomUUID().replace(/-/g, "").slice(0, 16),
-  );
+  const [nonce, setNonce] = useState(() => generateSiweNonce());
   const [signature, setSignature] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
@@ -36,7 +34,7 @@ export function SiweDemo() {
     setPending(true);
     setError(undefined);
     setSignature(undefined);
-    const freshNonce = crypto.randomUUID().replace(/-/g, "").slice(0, 16);
+    const freshNonce = generateSiweNonce();
     setNonce(freshNonce);
     const chainId = Number.parseInt(session.chainId, 16);
     const siweMessage = buildSiweMessage(
@@ -52,7 +50,7 @@ export function SiweDemo() {
       setSignature(String(sig));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(err instanceof Error ? err.message : JSON.stringify(err, null, 2));
     }
     finally {
       setPending(false);
@@ -71,7 +69,6 @@ export function SiweDemo() {
                   params: [previewMessage, session.accounts[0]],
                 },
                 hash: messageHash,
-                hashNote: "Same EIP-191 digest as personal_sign on the SIWE UTF-8 message.",
               }
             : undefined
         }

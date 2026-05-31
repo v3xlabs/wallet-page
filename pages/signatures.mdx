@@ -1,0 +1,29 @@
+import { EthSignDemo } from "../components/demos/EthSignDemo";
+import { PersonalSignDemo } from "../components/demos/PersonalSignDemo";
+import { PageDemoChrome } from "../components/wallet/PageDemoChrome";
+
+# Personal Signatures
+
+Message signing lets a dapp verify account ownership or authorize an action without sending a transaction. Two methods exist — one modern and safe, one legacy and dangerous — and they behave very differently under the hood.
+
+<PageDemoChrome />
+
+## personal_sign
+
+The right choice for almost every "Sign message" flow. [EIP-191](https://eips.ethereum.org/EIPS/eip-191) prepends a standard prefix before hashing, which prevents a signed message from being replayed as a valid transaction. The wallet receives the raw UTF-8 string and should display it clearly — this is the method to use when you want users to actually read what they're signing.
+
+**RPC:** `personal_sign(message, address)`
+
+<PersonalSignDemo />
+
+## eth_sign
+
+Signs a raw 32-byte hash with no prefix, no context, and no protection against replay. The user sees a hex blob with no indication of what they're authorizing.
+
+**RPC:** `eth_sign(address, hash)`
+
+:::note
+**For wallet developers:** `eth_sign` is a footgun the ecosystem is actively trying to retire. Steering dapps toward `personal_sign` for human-readable messages is the right call. If you still expose `eth_sign` for compatibility, a prominent in-wallet warning is the minimum bar; disabling or gating it behind an advanced setting is a legitimate and user-protective choice. The sooner wallets stop offering it without friction, the faster the ecosystem moves on.
+:::
+
+<EthSignDemo />

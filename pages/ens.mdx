@@ -1,0 +1,18 @@
+import { EnsDemo } from "../components/demos/EnsDemo";
+
+# Name Resolution
+
+ENS (Ethereum Name Service) brings human-readable names to Ethereum addresses. A forward lookup resolves a name like `vitalik.eth` to its current address; a reverse lookup goes the other direction, mapping an address to the primary name its owner has set.
+
+Resolution is fully on-chain — the ENS registry and resolvers are contracts on Ethereum mainnet. `viem` has this built in; there's no custom wallet RPC involved. Any dapp can resolve names and addresses against mainnet without any special wallet support.
+
+| Direction | Input | Output |
+| --- | --- | --- |
+| Forward | `name.eth` | `0x…` address (or null) |
+| Reverse | `0x…` address | `name.eth` (or null, if no primary set) |
+
+:::note
+A reverse record is opt-in — the address holder must explicitly set their primary name in ENS. Many addresses have no reverse record, which is a legitimate state, not an error.
+:::
+
+<EnsDemo />

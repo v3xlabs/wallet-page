@@ -1,0 +1,19 @@
+import { WethDemo } from "../components/demos/WethDemo";
+
+# Wrapped ETH
+
+ETH doesn't implement ERC-20 — it predates the standard. Wrapped ETH (WETH) solves this by giving ETH a token interface: `deposit()` locks ETH and mints an equal amount of WETH; `withdraw()` burns WETH and releases the ETH back. The exchange is always 1:1 and fully on-chain.
+
+Beyond the mechanics, WETH is a useful wallet capability test. A wallet that decodes `deposit()` as **"Wrap ETH"** and `withdraw(amount)` as **"Unwrap WETH"** in its confirmation UI is giving users meaningful context. A wallet that shows a raw function selector is not.
+
+| Method | What it does |
+| --- | --- |
+| `deposit()` | Send ETH as `value`; receive equal WETH |
+| `withdraw(uint256 wad)` | Burn `wad` WETH; receive equal ETH |
+| `balanceOf(address)` | Read your WETH balance |
+
+:::note
+WETH is deployed at a different address on each chain. The demo detects your connected chain and resolves the correct contract automatically. Supported: Mainnet, Sepolia, Holesky, Base, Optimism, Arbitrum One.
+:::
+
+<WethDemo />

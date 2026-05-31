@@ -6,6 +6,7 @@ import type { Hex } from "viem";
 import { DEMO_CHAINS } from "../../../lib/chains";
 import { formatError, rpc } from "../../../lib/ethereum";
 import { WalletBadge } from "../../wallet/WalletBadge";
+import { WalletPickerModal } from "../../wallet/WalletPickerModal";
 import { useWallet } from "../../wallet/WalletProvider";
 
 /** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
@@ -13,15 +14,23 @@ export function ChainQuickGrid() {
   const { session, refreshSession } = useWallet();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   if (!session) {
     return (
       <div className="wallet-demo wallet-demo-chain-shell">
         <div className="wallet-demo-panel wallet-demo-panel-gate">
-          <p className="wallet-demo-muted">
-            Connect a wallet on the <a href="/connect">Connect</a> page to use the
-            network grid.
-          </p>
+          <button
+            type="button"
+            className="wallet-demo-btn wallet-demo-btn-primary"
+            onClick={() => setPickerOpen(true)}
+          >
+            Choose wallet
+          </button>
+          <WalletPickerModal
+            open={pickerOpen}
+            onClose={() => setPickerOpen(false)}
+          />
         </div>
       </div>
     );

@@ -1,37 +1,34 @@
 # wallet.page
 
-Test whether your browser wallet supports common [EIPs](https://eips.ethereum.org/) and JSON-RPC methods — similar in spirit to the [MetaMask test dapp](https://metamask.github.io/test-dapp/), but organized as documentation with an interactive panel on each page.
+This document is a living guide to support and explore the development of ethereum wallets and their related standards.
+Wether you're building a wallet or app, testing or comparing wallets, or just interested in how it all works, this is the place to be.
 
-## How it works
+## How to use
 
-1. Start with [Connect](/connect) if you have multiple extensions or want to review discovery UX.
-2. On any demo page, choose a wallet from the picker — the session is shared site-wide.
-3. Run the action and read the result — success, user approval, or a signal about what to implement next.
+1. Find a topic of interest, or just start [here](/connect).
+2. You will encounter small playgrounds to test wallet behavior, simply connect and give it a try.
+3. You stay connected across pages, so feel free to browse, and try out different calls.
 
 All requests stay in your browser.
+We recommend using a testnet or local chain when executing transactions.
+Tho that is up to you at the end of the day.
 
-## Demos
+## Wallet specifications
 
-| Topic | Methods / standards |
-| --- | --- |
-| [Connect](/connect) | Wallet connection, EIP-6963 discovery |
-| [Permissions](/permissions) | EIP-2255 |
-| [Chains](/chains) | `wallet_switchEthereumChain`, `wallet_addEthereumChain` |
-| [Personal signatures](/personal-signatures) | `personal_sign`, `eth_sign` |
-| [Sign-In with Ethereum](/siwe) | EIP-4361 |
-| [ERC-20 permit](/erc20-permit) | EIP-2612 |
-| [ERC-20](/erc-20) | `balanceOf`, `transfer` |
-| [ERC-721](/erc-721) | NFT transfers (docs stub) |
+Here is a brief overview of what this site covers.
+
+| Topic | EIP/ERC | Methods |
+| --- | --- | --- |
+| [Connection](/connect) | [6963](https://eips.ethereum.org/EIPS/eip-6963) | Wallet connection, EIP-6963 discovery |
+| [Permissions](/permissions) | [2255](https://eips.ethereum.org/EIPS/eip-2255) | `wallet_getPermissions` <br/> `wallet_requestPermissions` <br/> `wallet_revokePermissions` |
+| [Chains](/chains) | [3085](https://eips.ethereum.org/EIPS/eip-3085), [3326](https://eips.ethereum.org/EIPS/eip-3326) | `wallet_switchEthereumChain` <br/> `wallet_addEthereumChain` |
+| [Personal signatures](/signatures) | [191](https://eips.ethereum.org/EIPS/eip-191), [4361](https://eips.ethereum.org/EIPS/eip-4361) | `personal_sign`, `eth_sign` |
+| [Sign-In with Ethereum](/siwe) | [4361](https://eips.ethereum.org/EIPS/eip-4361) | SIWE |
+| [Token approvals](/approvals) | [2612](https://eips.ethereum.org/EIPS/eip-2612) | ERC20 Permit |
+| [Watch & discover assets](/assets) | [7811](https://eips.ethereum.org/EIPS/eip-7811), [747](https://eips.ethereum.org/EIPS/eip-747) | `wallet_getAssets` <br/> `wallet_watchAsset` |
+| [Send transaction](/transactions) | [2718](https://eips.ethereum.org/EIPS/eip-2718) | `eth_sendTransaction` <br/> `eth_sendRawTransaction` |
+| [Batch calls](/batching) | [5792](https://eips.ethereum.org/EIPS/eip-5792) | `wallet_sendCalls` <br/> `wallet_getCallsStatus` <br/> `wallet_getCapabilities` |
+| [Delegation](/delegation) | [7702](https://eips.ethereum.org/EIPS/eip-7702) | Authorizations, type-4 transactions |
+| [ERC-20](/erc-20) | `balanceOf`, `transfer`, allowances |
+| [ERC-721](/erc-721) | Transfers, `approve`, `setApprovalForAll` |
 | [ERC-1155](/erc-1155) | Multi-token (docs stub) |
-| [Watch asset](/eip-747) | EIP-747 `wallet_watchAsset` |
-| [Send transaction](/send-transaction) | `eth_sendTransaction` |
-| [Batch calls](/eth-send-calls) | EIP-5792 |
-| [EIP-7702](/eip-7702) | Authorizations, type-4 transactions |
-
-See the [roadmap](/roadmap) for planned pages.
-
-```bash
-pnpm install
-pnpm dev
-pnpm build
-```

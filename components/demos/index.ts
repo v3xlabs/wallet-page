@@ -1,5 +1,6 @@
 export { ConnectWalletDemo } from "./connect/ConnectWalletDemo";
 export { Eip747Demo } from "./Eip747Demo";
+export { Eip7811Demo } from "./Eip7811Demo";
 export { Erc1155Demo } from "./Erc1155Demo";
 export { Erc20Demo } from "./Erc20Demo";
 export { Erc20PermitDemo } from "./Erc20PermitDemo";

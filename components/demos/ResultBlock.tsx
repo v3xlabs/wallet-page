@@ -7,7 +7,7 @@ export function ResultBlock({
 }: {
   label: string;
   value?: string;
-  error?: string;
+  error?: string | object;
 }) {
   if (!value && !error) return null;
 
@@ -16,7 +16,7 @@ export function ResultBlock({
       className={`wallet-demo-result${error ? " wallet-demo-result-error" : ""}${value && !error ? " wallet-demo-result-ok" : ""}`}
     >
       <div className="wallet-demo-result-label">{label}</div>
-      {error && <pre>{error}</pre>}
+      {error && <pre>{typeof error === "string" ? error : JSON.stringify(error, null, 2)}</pre>}
       {value && <pre>{value}</pre>}
     </div>
   );

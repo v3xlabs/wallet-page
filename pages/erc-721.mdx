@@ -5,3 +5,18 @@ import { Erc721Demo } from "../components/demos/Erc721Demo";
 Non-fungible tokens (NFTs). Wallets show collection + token id in confirmation UIs when you call the contract via `eth_sendTransaction`.
 
 <Erc721Demo />
+
+## Approvals
+
+NFTs use two patterns. **Single token:** `approve(to, tokenId)` lets `to` transfer that id. **Whole collection:** `setApprovalForAll(operator, true)` lets the operator move any token you own in that contract — treat it like an unlimited ERC-20 approval in the UI.
+
+| Method | What it does |
+| --- | --- |
+| `getApproved(tokenId)` | Address allowed to transfer that token, or zero |
+| `isApprovedForAll(owner, operator)` | Whether the operator may move any of `owner`'s tokens in this contract |
+| `approve(address(0), tokenId)` | Clear per-token approval |
+| `setApprovalForAll(operator, false)` | Revoke collection-wide access |
+
+:::note
+**For wallet developers:** show collection name + token id for `approve`; for `setApprovalForAll`, name the operator and warn that it covers **all** NFTs in the contract, not just one listing.
+:::

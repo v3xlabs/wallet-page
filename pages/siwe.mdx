@@ -2,8 +2,76 @@ import { SiweDemo } from "../components/demos/SiweDemo";
 
 # Sign-In with Ethereum (SIWE)
 
-[EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) standardizes a message format so dapps can authenticate users without a password. Wallets typically sign the UTF-8 message with `personal_sign`.
-
-**RPC:** `personal_sign(message, address)`
+When apps need a confirmed sign-in (and not just a connect), they use Sign-In with Ethereum, or SIWE for short ([EIP-4361](https://eips.ethereum.org/EIPS/eip-4361)).
+SIWE is a simple iteration on top of [Personal Signatures](/signatures) with a standardized format allowing for easy parsing and verification.
 
 <SiweDemo />
+
+The message encodes a chain identifier, uri, nonce, and issued at timestamp.
+It may also contain a statement provided by the app.
+All fields however are encoded in a human readable format and can easily be read by the user.
+
+A complete message looks like this:
+
+```text
+wallet.page wants you to sign in with your Ethereum account:
+0xAb5801a7D9995314f5b2eA6574aB3F4D2eA09332
+
+Sign in to wallet.page demos.
+
+URI: https://wallet.page
+Version: 1
+Chain ID: 1
+Nonce: a1b2c3d4e5f67890
+Issued At: 2026-05-30T12:00:00.000Z
+```
+
+:::note
+**For wallet developers:** render the domain and statement prominently; keep the footer fields readable but secondary. Reject requests when the chain does not match what the user selected, when the nonce is missing, or when an expiration time has passed. Never bury SIWE behind a generic "Sign message" hex view.
+:::
+
+## Implement it
+
+Build the string with a helper so you do not get the newlines wrong.
+
+:::code-group
+
+```ts [viem]
+import { createSiweMessage, generateSiweNonce } from "viem/siwe";
+
+const message = createSiweMessage({
+  domain: window.location.host,
+  address,
+  statement: "Sign in to My Dapp.",
+  uri: window.location.origin,
+  version: "1",
+  chainId: 1,
+  nonce: generateSiweNonce(),
+});
+
+await provider.request({
+  method: "personal_sign",
+  params: [message, address],
+});
+```
+
+```ts [ethers + siwe]
+import { SiweMessage } from "siwe";
+
+const siwe = new SiweMessage({
+  domain: window.location.host,
+  address,
+  statement: "Sign in to My Dapp.",
+  uri: window.location.origin,
+  version: "1",
+  chainId: 1,
+  nonce: "a1b2c3d4e5f67890",
+});
+
+const message = siwe.prepareMessage();
+await signer.signMessage(message);
+```
+
+:::
+
+On the server, verify with `verifySiweMessage` (viem) or `SiweMessage.verify` (`siwe`). In the wallet UI, parse with `parseSiweMessage` from `viem/siwe` before you render.

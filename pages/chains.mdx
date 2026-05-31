@@ -5,13 +5,13 @@ import { SwitchChainMiniDemo } from "../components/demos/chains/SwitchChainMiniD
 
 # Chains
 
-Networks are identified by `chainId` (hex). Wallets expose read and write RPCs so dapps can read the active chain or ask the user to add or switch networks.
+Every EVM network has a `chainId` — a hex-encoded integer that wallets and dapps use to agree on which chain they're talking about. Three RPCs cover the basics: read the active chain, switch to one the wallet already knows, or register a new one entirely.
 
 <ChainQuickGrid />
 
 ## eth_chainId
 
-Returns the wallet’s current chain. No prompt when already connected.
+Returns the `chainId` the wallet is currently active on. No user prompt, no approval flow — just a read. A well-implemented wallet should always respond to this, even before any accounts are connected.
 
 **RPC:** `eth_chainId` → hex string (e.g. `0x1`)
 
@@ -19,19 +19,19 @@ Returns the wallet’s current chain. No prompt when already connected.
 
 ## wallet_switchEthereumChain (EIP-3326)
 
-Changes the active chain when the network is already known to the wallet.
+Asks the wallet to switch to a chain it already has configured. The user may see a confirmation prompt depending on the wallet; some switch silently if the chain is already in their list.
 
 **RPC:** `wallet_switchEthereumChain({ chainId })`
 
 :::note
-Error **4902** means the chain is not in the wallet yet — use `wallet_addEthereumChain`, then switch again.
+**Error 4902** means the wallet doesn't have that chain yet. Use `wallet_addEthereumChain` to register it first, then call `wallet_switchEthereumChain` again. A well-behaved dapp handles 4902 automatically rather than surfacing a raw error to the user.
 :::
 
 <SwitchChainMiniDemo />
 
 ## wallet_addEthereumChain (EIP-3085)
 
-Registers chain metadata (RPC URL, currency, name) so the user can switch later.
+Prompts the user to add a new chain to their wallet, providing the minimum required metadata: RPC endpoint, native currency details, chain name, and chainId. Once added, the chain is available for future switches without repeating this call.
 
 **RPC:** `wallet_addEthereumChain({ chainId, chainName, rpcUrls, nativeCurrency, ... })`
 

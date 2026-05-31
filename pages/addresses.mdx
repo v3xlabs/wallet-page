@@ -1,27 +1,32 @@
 import { EthAccountsDemo } from "../components/demos/accounts/EthAccountsDemo";
 import { EthRequestAccountsDemo } from "../components/demos/accounts/EthRequestAccountsDemo";
+import { AccountsDiagram } from "../components/demos/accounts/AccountsDiagram";
 import { PageDemoChrome } from "../components/wallet/PageDemoChrome";
 
 # Addresses
 
-Wallets expose account access as an **array of addresses**, not a single string. The same JSON-RPC methods power “Connect wallet” and quiet reads — what differs is whether the wallet may prompt the user.
+When a user connects their wallet to your dapp, they're granting you access to one or more of their Ethereum accounts. What you receive is an **array of addresses** — and that array is the foundation of almost everything else you'll build. Every balance check, transaction, signature request, and permission grant flows from knowing *who* is on the other end of the connection.
+
+<AccountsDiagram />
+
+The wallet exposes this through two JSON-RPC methods that return the same shape but behave differently: one silently reads what's already been approved, the other can prompt the user for access.
 
 | Method | Prompt? | Typical use |
 | --- | --- | --- |
 | [`eth_accounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_accounts) | No | Read addresses already shared with this origin |
-| [`eth_requestAccounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_requestaccounts) | Yes, if needed | Connect / ask the user to share at least one account |
+| [`eth_requestAccounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_requestaccounts) | Yes, if needed | Connect — prompt the user to share at least one account |
 
-Both return `string[]` (checksummed `0x` addresses). Order is defined by the wallet.
+Order within the array is defined by the wallet.
 
 :::note
-**The `accounts[0]` shortcut:** Many dapps and wallets still treat the first entry as *the* connected address — `const [address] = await provider.request({ method: "eth_requestAccounts" })` — and never surface `accounts[1]`, `accounts[2]`, … even when the wallet returns more. If your wallet supports multiple accounts per origin, showing the full list (and letting the user pick) is a meaningful UX upgrade for power users and multisig-style setups.
+**Beyond `accounts[0]`:** The array can hold more than one address, and wallets are free to expose as many connected accounts as the user has approved. In practice, most dapps destructure `const [address] = accounts` and stop there — `accounts[1]`, `accounts[2]`, and the rest go unseen. That's a missed opportunity. Wallets that surface multi-account selection, and dapps that render the full list, give users real agency: switching between identities without a reconnect, managing separate addresses in a single session, keeping things organized. If you're building a wallet, multi-account support is well worth implementing. If you're building a dapp, it's worth surfacing.
 :::
 
 <PageDemoChrome />
 
 ## eth_accounts
 
-Read-only for this site. Returns `[]` until the user has connected and granted access for your origin.
+Reads addresses already shared with this origin — no prompt, no permission flow. Returns an empty array until the user has connected; returns the full list of granted addresses once they have.
 
 **RPC:** `eth_accounts` → `string[]`
 
@@ -29,7 +34,7 @@ Read-only for this site. Returns `[]` until the user has connected and granted a
 
 ## eth_requestAccounts
 
-Triggers the connect / permission flow when the origin is not yet allowed. Returns the same array shape once approved.
+The standard connection trigger. Prompts the user if this origin hasn't been granted access yet, or returns immediately if it already has. Either way, the response is the same array of addresses the user approved.
 
 **RPC:** `eth_requestAccounts` → `string[]`
 

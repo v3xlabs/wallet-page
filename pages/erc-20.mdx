@@ -1,3 +1,4 @@
+import { ApprovalsDemo } from "../components/demos/ApprovalsDemo";
 import { Erc20Demo } from "../components/demos/Erc20Demo";
 
 # ERC-20
@@ -7,3 +8,18 @@ Fungible token standard. Wallets surface transfers and approvals through transac
 **Common methods:** `balanceOf`, `transfer`, `approve`, `allowance`
 
 <Erc20Demo />
+
+## Allowances
+
+`approve` grants a **spender** permission to pull up to an amount from your balance. Allowances do not expire on their own; old unlimited approvals to deprecated contracts are a common risk.
+
+| Method | What it does |
+| --- | --- |
+| `allowance(owner, spender)` | How much the spender may still transfer for `owner` |
+| `approve(spender, 0)` | Revoke by setting allowance to zero |
+
+:::note
+**For wallet developers:** label `approve(spender, 0)` as **Revoke approval**, not a generic approval. Flag `approve(spender, type(uint256).max)` as unlimited.
+:::
+
+<ApprovalsDemo />

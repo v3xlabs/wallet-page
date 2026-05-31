@@ -1,0 +1,29 @@
+import { Eip747Demo } from "../components/demos/Eip747Demo";
+import { Eip7811Demo } from "../components/demos/Eip7811Demo";
+
+# Watch & discover assets
+
+Two complementary RPCs: the dapp can **push** token metadata into the wallet, or **pull** what the wallet already knows the user holds.
+
+## ERC-7811 — asset discovery
+
+[ERC-7811](https://eips.ethereum.org/EIPS/eip-7811) (`wallet_getAssets`) goes the other way: the wallet returns assets for an account — native, ERC-20, NFTs, and holdings the wallet tracks off-chain or across chains. Dapps can filter by chain and type instead of relying only on indexers.
+
+**RPC:** `wallet_getAssets({ account, chainFilter?, assetTypeFilter?, assetFilter? })`
+
+Wallets that support [EIP-5792](https://eips.ethereum.org/EIPS/eip-5792) should advertise this via `wallet_getCapabilities` under `assetDiscovery.supported`.
+
+<Eip7811Demo />
+
+:::note
+**For wallet developers:** keep filters narrow when you implement `wallet_getAssets` — callers should pass `chainFilter` and `assetTypeFilter` when they can. For EIP-747, treat `wallet_watchAsset` as a user-facing import prompt, not a silent add.
+:::
+
+
+## EIP-747 — watch asset
+
+[EIP-747](https://eips.ethereum.org/EIPS/eip-747) (`wallet_watchAsset`) lets a dapp ask the wallet to display a token the user may not have imported yet.
+
+**RPC:** `wallet_watchAsset({ type: 'ERC20', options: { address, symbol, decimals, image } })`
+
+<Eip747Demo />

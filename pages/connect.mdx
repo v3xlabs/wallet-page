@@ -2,38 +2,38 @@ import { ConnectWalletDemo } from "../components/demos/connect/ConnectWalletDemo
 
 # Connect
 
-A dapp needs an EIP-1193 `provider` and an account. Discovery comes first; `eth_requestAccounts` comes after the user picks a wallet. wallet.page keeps one provider + account for the other specification pages.
+Every dapp interaction starts here. Before any RPC call can go out, you need an [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193) provider and at least one connected address. This page covers both: how to discover which wallets are present, and how to request access once the user picks one. The connection established here is shared across the entire site.
 
 ## Connect a wallet
 
 <ConnectWalletDemo />
 
 :::note
-The provider and account above are shared site-wide. Disconnect in the demo badge to switch wallets.
+The provider and connected account are shared across all pages on this site. Use the disconnect action in the badge above to swap wallets at any time.
 :::
 
 ## What dapps should avoid
 
-- **Assuming `window.ethereum`** — Only one injected provider wins; users with several extensions may never see the wallet they want.
-- **Connecting on every page** — Hold one provider + account pair for the whole origin (this site does that via shared session state).
-- **Hiding errors** — "User rejected" vs "no wallet installed" need different copy and next steps.
-- **Blocking the UI** — Show connection state inline; don't trap users in modals with no dismiss path.
+- **Assuming `window.ethereum`** — Only one injected provider wins the global slot; users with multiple extensions installed may never see the wallet they actually want to use. Use EIP-6963 instead.
+- **Reconnecting on every page** — Hold one provider and account pair for the whole origin. This site does exactly that via shared session state.
+- **Treating all errors the same** — "User rejected the request" and "no wallet detected" call for different copy, different next steps, and different retry logic.
+- **Blocking the UI** — Show connection state inline; don't trap users in a modal with no escape path.
 
 ## Connection transports
 
-**WalletConnect** and similar relay products route sessions through hosted infrastructure. We generally do not recommend them as the default desktop path when a local extension or an open protocol is available.
+**WalletConnect** and similar relay products route sessions through hosted infrastructure. They're useful for mobile or cross-device flows, but we don't recommend them as the default desktop path when a local extension or a direct peer-to-peer protocol is available.
 
-**[openlv](https://openlv.sh)** is open source and appears in the provider list above as a peer-to-peer EIP-1193 provider (not `window.ethereum`, not a vendor cloud relay).
+**[openlv](https://openlv.sh)** is open source and shows up in the provider list above as a local, peer-to-peer EIP-1193 provider — no `window.ethereum` overwrite, no vendor relay in the middle.
 
 ## Wallet discovery
 
-**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** avoids fighting over `window.ethereum`. Wallets announce themselves with two window events:
+**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** replaces the race for `window.ethereum`. Each installed wallet announces itself via a pair of window events rather than clobbering a shared global:
 
-1. The dapp registers `window.addEventListener("eip6963:announceProvider", …)` and stores `event.detail` (`{ info, provider }`).
-2. The dapp calls `window.dispatchEvent(new Event("eip6963:requestProvider"))` so wallets that loaded earlier announce again.
+1. The dapp listens with `window.addEventListener("eip6963:announceProvider", …)` and stores each `event.detail` (`{ info, provider }`) as wallets arrive.
+2. The dapp dispatches `new Event("eip6963:requestProvider")` to prompt wallets that loaded before the listener was registered to re-announce.
 
-That is the full discovery loop. The connect panel above runs it on load; use **Request providers** to dispatch the request event again and expand **Announce payloads** to inspect each `info` object (`name`, `icon`, `rdns`, `uuid`).
+That's the full handshake. The connect panel above runs it automatically on load. Use **Request providers** to fire the request event again, and expand **Announce payloads** to inspect each wallet's `info` object (`name`, `icon`, `rdns`, `uuid`).
 
 :::note
-**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event — as in the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation).
+**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event when you receive it — exactly as the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation) shows. Both sides of the handshake matter; an extension that only announces on load will be invisible to dapps that register their listener after page init.
 :::

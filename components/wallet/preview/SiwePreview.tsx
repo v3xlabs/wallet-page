@@ -6,9 +6,9 @@ type SiwePreviewProps = {
 };
 
 export function SiwePreview({ message }: SiwePreviewProps) {
-  const parsed = parseSiweMessage(message);
+  const parsed = message ? parseSiweMessage(message) : null;
 
-  if (!parsed) {
+  if (!parsed?.address || !parsed.domain) {
     return <pre className="wallet-preview-raw">{message}</pre>;
   }
 

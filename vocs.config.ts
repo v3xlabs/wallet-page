@@ -29,30 +29,44 @@ export default defineConfig({
         {
           text: "Signing",
           items: [
-            { text: "Personal signatures", link: "/personal-signatures" },
+            { text: "Personal signatures", link: "/signatures" },
             { text: "Sign-In with Ethereum", link: "/siwe" },
-            { text: "ERC-20 permit", link: "/erc20-permit" },
+            { text: "Typed data", link: "/typed-signatures" },
           ],
         },
         {
-          text: "Tokens & assets",
+          text: "Token",
           items: [
-            { text: "ERC-20", link: "/erc-20" },
-            { text: "ERC-721", link: "/erc-721" },
-            { text: "ERC-1155", link: "/erc-1155" },
-            { text: "Watch asset", link: "/eip-747" },
+            { text: "Approvals", link: "/approvals" },
+            { text: "Discovery", link: "/assets" },
           ],
         },
         {
           text: "Transactions",
           items: [
-            { text: "Send transaction", link: "/send-transaction" },
-            { text: "Batch calls", link: "/eth-send-calls" },
-            { text: "EIP-7702", link: "/eip-7702" },
+            { text: "Send transaction", link: "/transactions" },
+            { text: "Batch calls", link: "/batching" },
+            { text: "EIP-7702", link: "/delegation" },
           ],
         },
       ],
     },
+    {
+      text: "Contracts",
+      items: [
+        { text: "ERC-20", link: "/erc-20" },
+        { text: "ERC-721", link: "/erc-721" },
+        { text: "ERC-1155", link: "/erc-1155" },
+        { text: "Multicall", link: "/multicall" },
+      ]
+    },
+    {
+      text: "Ecosystem",
+      items: [
+        { text: "Wrapped ETH", link: "/weth" },
+        { text: "Name Resolution", link: "/ens" },
+      ],
+    }
   ],
   topNav: [
     { text: "walletbeat", link: "https://walletbeat.eth.link" },

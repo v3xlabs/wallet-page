@@ -14,16 +14,12 @@ export function DemoShell({ children }: { children: ReactNode }) {
     return (
       <div className="wallet-demo">
         <div className="wallet-demo-panel wallet-demo-panel-gate">
-          <p className="wallet-demo-lead">
-            Pick a wallet to run this test. Connection is shared across all demo
-            pages.
-          </p>
           <button
             type="button"
             className="wallet-demo-btn wallet-demo-btn-primary"
             onClick={() => setPickerOpen(true)}
           >
-            Choose wallet
+            Connect Wallet
           </button>
           <WalletPickerModal
             open={pickerOpen}

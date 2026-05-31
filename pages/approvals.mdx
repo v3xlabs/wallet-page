@@ -1,0 +1,15 @@
+import { Erc20PermitDemo } from "../components/demos/Erc20PermitDemo";
+
+# Token Approvals
+
+Cross-standard approval flows that are not tied to a single asset page — signature-based ERC-20 permits and ERC-1155 operator grants. On-chain ERC-20 allowances live on [ERC-20](/erc-20); ERC-721 `approve` / `setApprovalForAll` on [ERC-721](/erc-721).
+
+## ERC-20 permit
+
+[EIP-2612](https://eips.ethereum.org/EIPS/eip-2612) approves a spender with an off-chain signature instead of an on-chain `approve` transaction. Wallets show it as [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed data.
+
+**RPC:** `eth_signTypedData_v4(address, typedDataJson)`
+
+The demo uses a fictional token domain — only the signing UI is exercised.
+
+<Erc20PermitDemo />

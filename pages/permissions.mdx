@@ -2,26 +2,26 @@ import { PermissionsDemo } from "../components/demos/PermissionsDemo";
 
 # Wallet permissions
 
-[EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) defines a way for dapps to **request** and **inspect** coarse-grained access instead of prompting on every RPC call. Wallets expose:
+When a wallet first connects to a dapp the user is prompted to grant certain permissions.
+This flow is defined in [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) and gives dapps a way to request permissions, and users to manage them.
 
 | Method | Purpose |
 | --- | --- |
-| [`wallet_getPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_getpermissions) | What this origin is allowed to do right now |
-| [`wallet_requestPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_requestpermissions) | Ask the user to grant a capability (often shown on “Connect”) |
-| [`wallet_revokePermissions`](https://eips.ethereum.org/EIPS/eip-1193) | Remove a capability for this site (recommended where supported) |
+| [`wallet_getPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_getpermissions) | Read what this origin is currently allowed to do |
+| [`wallet_requestPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_requestpermissions) | Ask the user to grant a capability — often the backing call for "Connect" |
+| [`wallet_revokePermissions`](https://eips.ethereum.org/EIPS/eip-1193) | Remove a previously granted capability for this site |
 
-:::note
-**For wallet developers:** implementing [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) is recommended — it lets dapps request capabilities up front and inspect what the user already granted, with room for caveats that protect users. Some wallets still connect via [`eth_requestAccounts`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_requestaccounts) only; if you see `method not found` here, that usually means the wallet is on the legacy path rather than EIP-2255. Adopting `wallet_getPermissions` / `wallet_requestPermissions` is a great way to improve connect UX and give users clearer, revocable grants.
-:::
+## Reading capabilities
 
-## How to read a permission object
+The `wallet_getPermissions` method allows for reading what extended capabilities a wallet might have available for use within the app.
+For example if a wallet supports `wallet_sendCalls` (see [Batch calls](/eth-send-calls)) a app could enable the batching experience in the UI.
 
-Each grant usually includes:
+Each entry in the returned array represents a single grant. The fields that matter:
 
-- **`parentCapability`** — the restricted capability (for example `eth_accounts` for address access).
-- **`invoker`** — which origin received the grant (your site’s URL).
-- **`caveats`** — extra limits (for example only certain addresses, or required RPC methods).
+- **`parentCapability`** — the capability being granted, e.g. `eth_accounts` for address access.
+- **`invoker`** — the origin that holds the grant (your site's URL).
+- **`caveats`** — an optional array of scoping constraints, such as limiting which addresses are returned or which RPC methods are permitted.
 
-Caveat **`type`** values are wallet-defined; [MetaMask’s rpc-cap](https://github.com/MetaMask/rpc-cap/blob/master/src/caveats.ts) documents common ones such as `filterResponse` and `requiredMethods`.
+Caveat `type` values are wallet-defined. [MetaMask's rpc-cap](https://github.com/MetaMask/rpc-cap/blob/master/src/caveats.ts) documents common ones like `filterResponse` and `requiredMethods`; other wallets may define their own.
 
 <PermissionsDemo />

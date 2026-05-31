@@ -1,3 +1,15 @@
+[data-v-ask-ai-container] {
+  opacity: 0.8;
+  user-select: none;
+  pointer-events: none;
+  bottom: 0 !important;
+  transform: translateY(100%);
+}
+
+.wallet-mini-demo .wallet-action-footer {
+  margin-top: 0.5rem;
+}
+
 .wallet-demo-footnote {
   padding: 0 1.25rem 1rem;
 }
@@ -480,6 +492,7 @@ openlv-modal[style*="display: block"] {
 .wallet-mini-demo-desc {
   margin: 0;
   font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
 
 .wallet-mini-demo-desc code {

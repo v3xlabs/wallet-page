@@ -6,23 +6,27 @@ import type { PathsForPages } from 'waku/router'
 // prettier-ignore
 type Page =
   | { path: '/addresses'; render: 'static' }
+  | { path: '/approvals'; render: 'static' }
+  | { path: '/assets'; render: 'static' }
+  | { path: '/batching'; render: 'static' }
   | { path: '/chains'; render: 'static' }
   | { path: '/connect'; render: 'static' }
+  | { path: '/delegation'; render: 'static' }
   | { path: '/eip-6963'; render: 'static' }
-  | { path: '/eip-747'; render: 'static' }
-  | { path: '/eip-7702'; render: 'static' }
+  | { path: '/ens'; render: 'static' }
   | { path: '/erc-1155'; render: 'static' }
   | { path: '/erc-20'; render: 'static' }
   | { path: '/erc-721'; render: 'static' }
-  | { path: '/erc20-permit'; render: 'static' }
-  | { path: '/eth-send-calls'; render: 'static' }
   | { path: '/'; render: 'static' }
+  | { path: '/multicall'; render: 'static' }
   | { path: '/permissions'; render: 'static' }
-  | { path: '/personal-signatures'; render: 'static' }
   | { path: '/roadmap'; render: 'static' }
-  | { path: '/send-transaction'; render: 'static' }
+  | { path: '/signatures'; render: 'static' }
   | { path: '/siwe'; render: 'static' }
   | { path: '/switch-chain'; render: 'static' }
+  | { path: '/transactions'; render: 'static' }
+  | { path: '/typed-signatures'; render: 'static' }
+  | { path: '/weth'; render: 'static' }
 
 // prettier-ignore
 declare module 'waku/router' {
