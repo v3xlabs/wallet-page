@@ -19,7 +19,7 @@ export function PageDemoChrome() {
             className="wallet-demo-btn wallet-demo-btn-primary"
             onClick={() => setPickerOpen(true)}
           >
-            Choose wallet
+            Connect wallet
           </button>
           <WalletPickerModal
             open={pickerOpen}

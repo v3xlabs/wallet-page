@@ -49,11 +49,6 @@ export function ConnectWalletDemo() {
         </section>
 
         <section className="wallet-demo-section">
-          <h3>EIP-6963</h3>
-          <p className="wallet-demo-muted">
-            Listen for <code>eip6963:announceProvider</code>, then dispatch{" "}
-            <code>eip6963:requestProvider</code> so wallets re-announce.
-          </p>
           <div className="wallet-demo-actions">
             <button
               type="button"

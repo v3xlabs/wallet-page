@@ -1,4 +1,5 @@
 import { ConnectWalletDemo } from "../components/demos/connect/ConnectWalletDemo";
+import { Badge, Callout, Card, Cards, FeedbackWidget, HomePage, Link, Sandbox, Tab, Tabs } from 'vocs'
 
 # Connect
 
@@ -10,6 +11,43 @@ Every dapp interaction starts here. Before any RPC call can go out, you need an 
 
 :::note
 The provider and connected account are shared across all pages on this site. Use the disconnect action in the badge above to swap wallets at any time.
+:::
+
+
+## Wallet discovery
+
+**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** replaces the race for `window.ethereum`. Each installed wallet announces itself via a pair of window events rather than clobbering a shared global:
+
+1. The dapp listens with `window.addEventListener("eip6963:announceProvider", …)` and stores each `event.detail` (`{ info, provider }`) as wallets arrive.
+2. The dapp dispatches `new Event("eip6963:requestProvider")` to prompt wallets that loaded before the listener was registered to re-announce.
+
+That's the full handshake. The connect panel above runs it automatically on load. Use **Request providers** to fire the request event again, and expand **Announce payloads** to inspect each wallet's `info` object (`name`, `icon`, `rdns`, `uuid`).
+
+:::note
+**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event when you receive it — exactly as the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation) shows. Both sides of the handshake matter; an extension that only announces on load will be invisible to dapps that register their listener after page init.
+:::
+
+:::code-group
+<div data-title="Preview">
+  <Tabs stateKey="component-tabs-preview">
+    <Tab title="React">Install the React adapter.</Tab>
+    <Tab title="Vue">Install the Vue adapter.</Tab>
+  </Tabs>
+</div>
+Do a thing.
+```js [Code] hello world
+ep
+window.addEventListener("eip6963:announceProvider", (event) => {
+  console.log(event.detail);
+});
+```
+```js [mipd] hll
+import { createStore } from 'mipd';
+
+const store = createStore();
+
+const providers = store.getProviders();
+```
 :::
 
 ## What dapps should avoid
@@ -24,16 +62,3 @@ The provider and connected account are shared across all pages on this site. Use
 **WalletConnect** and similar relay products route sessions through hosted infrastructure. They're useful for mobile or cross-device flows, but we don't recommend them as the default desktop path when a local extension or a direct peer-to-peer protocol is available.
 
 **[openlv](https://openlv.sh)** is open source and shows up in the provider list above as a local, peer-to-peer EIP-1193 provider — no `window.ethereum` overwrite, no vendor relay in the middle.
-
-## Wallet discovery
-
-**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** replaces the race for `window.ethereum`. Each installed wallet announces itself via a pair of window events rather than clobbering a shared global:
-
-1. The dapp listens with `window.addEventListener("eip6963:announceProvider", …)` and stores each `event.detail` (`{ info, provider }`) as wallets arrive.
-2. The dapp dispatches `new Event("eip6963:requestProvider")` to prompt wallets that loaded before the listener was registered to re-announce.
-
-That's the full handshake. The connect panel above runs it automatically on load. Use **Request providers** to fire the request event again, and expand **Announce payloads** to inspect each wallet's `info` object (`name`, `icon`, `rdns`, `uuid`).
-
-:::note
-**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event when you receive it — exactly as the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation) shows. Both sides of the handshake matter; an extension that only announces on load will be invisible to dapps that register their listener after page init.
-:::
