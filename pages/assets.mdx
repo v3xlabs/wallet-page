@@ -3,15 +3,19 @@ import { Eip7811Demo } from "../components/demos/Eip7811Demo";
 
 # Watch & discover assets
 
-Two complementary RPCs: the dapp can **push** token metadata into the wallet, or **pull** what the wallet already knows the user holds.
+While interacting with apps, dapps, protocols and your wallet alike, you will often be interacting with the same assets.
+Wallets tend to list the different tokens a user holds, and apps allow you to do something with them.
 
-## ERC-7811 — asset discovery
+## Asset Discovery
 
-[ERC-7811](https://eips.ethereum.org/EIPS/eip-7811) (`wallet_getAssets`) goes the other way: the wallet returns assets for an account — native, ERC-20, NFTs, and holdings the wallet tracks off-chain or across chains. Dapps can filter by chain and type instead of relying only on indexers.
+An optionally implemented but highly recommended feature is the `wallet_getAssets` method as defined in [ERC-7811](https://eips.ethereum.org/EIPS/eip-7811).
+This method lets an app query the wallet for the assets a user already watches.
+
+This means an app can request the assets you already have, and prioritize them in selection UIs, in addition to using them to provide a balance overview.
 
 **RPC:** `wallet_getAssets({ account, chainFilter?, assetTypeFilter?, assetFilter? })`
 
-Wallets that support [EIP-5792](https://eips.ethereum.org/EIPS/eip-5792) should advertise this via `wallet_getCapabilities` under `assetDiscovery.supported`.
+Wallets that support `wallet_getAssets` will include this in the `wallet_getPermissions` response.
 
 <Eip7811Demo />
 

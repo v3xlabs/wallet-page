@@ -24,17 +24,9 @@ export function ConnectWalletDemo() {
 
         <section className="wallet-demo-section">
           <h3>Connect</h3>
-          {session ? (
             <p className="wallet-demo-muted">
-              Connected as <strong>{session.label}</strong>. Disconnect in the badge
-              to pick another provider.
+              Choose a provider from the list below.
             </p>
-          ) : (
-            <p className="wallet-demo-muted">
-              Choose a provider, then the site calls{" "}
-              <code>eth_requestAccounts</code> on that object.
-            </p>
-          )}
           {connectError && (
             <p className="wallet-demo-error" role="alert">
               {connectError}

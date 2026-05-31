@@ -12,7 +12,6 @@ type Page =
   | { path: '/chains'; render: 'static' }
   | { path: '/connect'; render: 'static' }
   | { path: '/delegation'; render: 'static' }
-  | { path: '/eip-6963'; render: 'static' }
   | { path: '/ens'; render: 'static' }
   | { path: '/erc-1155'; render: 'static' }
   | { path: '/erc-20'; render: 'static' }

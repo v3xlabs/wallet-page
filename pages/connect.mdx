@@ -9,46 +9,71 @@ Every dapp interaction starts here. Before any RPC call can go out, you need an 
 
 <ConnectWalletDemo />
 
-:::note
-The provider and connected account are shared across all pages on this site. Use the disconnect action in the badge above to swap wallets at any time.
-:::
-
+Wallets expose a so called `Provider` as defined in [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193).
+This is the object that is then used to send json RPC requests to the wallet.
 
 ## Wallet discovery
 
-**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** replaces the race for `window.ethereum`. Each installed wallet announces itself via a pair of window events rather than clobbering a shared global:
+To discover installed wallets a dapp can listen for a provider announce events.
+
+**[EIP-6963: Multi Injected Provider Discovery](https://eips.ethereum.org/EIPS/eip-6963)** standardizes this process; each installed wallet announces itself by responding to a global `window` event:
 
 1. The dapp listens with `window.addEventListener("eip6963:announceProvider", …)` and stores each `event.detail` (`{ info, provider }`) as wallets arrive.
 2. The dapp dispatches `new Event("eip6963:requestProvider")` to prompt wallets that loaded before the listener was registered to re-announce.
 
-That's the full handshake. The connect panel above runs it automatically on load. Use **Request providers** to fire the request event again, and expand **Announce payloads** to inspect each wallet's `info` object (`name`, `icon`, `rdns`, `uuid`).
+And thats it. The connect panel above requests providers automatically on load. You can use the button to re-request providers, and view the announced information.
 
-:::note
-**For wallet developers:** announce on load, listen for `eip6963:requestProvider`, and re-dispatch your `eip6963:announceProvider` event when you receive it — exactly as the [reference implementation](https://eips.ethereum.org/EIPS/eip-6963#reference-implementation) shows. Both sides of the handshake matter; an extension that only announces on load will be invisible to dapps that register their listener after page init.
-:::
+### Find Wallets
 
 :::code-group
-<div data-title="Preview">
-  <Tabs stateKey="component-tabs-preview">
-    <Tab title="React">Install the React adapter.</Tab>
-    <Tab title="Vue">Install the Vue adapter.</Tab>
-  </Tabs>
-</div>
-Do a thing.
-```js [Code] hello world
-ep
+```js [js]
 window.addEventListener("eip6963:announceProvider", (event) => {
-  console.log(event.detail);
+  const { info, provider } = event.detail;
+  console.log(info, provider);
 });
+
+const requestProviders = () => {
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
+};
 ```
-```js [mipd] hll
-import { createStore } from 'mipd';
+```tsx [wagmi]
+import { useConnectors } from 'wagmi';
 
-const store = createStore();
+const myApp = () => {
+  const { connectors, connect } = useConnectors();
 
-const providers = store.getProviders();
+  return (
+    <div>
+      {connectors.map((connector) => (
+        <button key={connector.id} onClick={() => connect({ connector })}>
+          {connector.name}
+        </button>
+      ))}
+    </div>
+  );
+};
 ```
 :::
+
+### Be found
+
+:::code-group
+```js [js]
+let info: EIP6963ProviderInfo;
+let provider: EIP1193Provider;
+
+const announceEvent: EIP6963AnnounceProviderEvent = new CustomEvent(
+  "eip6963:announceProvider",
+  { detail: Object.freeze({ info, provider }) }
+);
+
+const announce = () => window.dispatchEvent(announceEvent);
+
+announce();
+window.addEventListener("eip6963:requestProvider", () => announce());
+```
+:::
+
 
 ## What dapps should avoid
 
