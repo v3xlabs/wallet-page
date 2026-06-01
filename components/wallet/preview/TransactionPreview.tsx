@@ -30,7 +30,12 @@ export function TransactionPreview({
       {valueLabel && <p className="wallet-preview-tx-value">{valueLabel}</p>}
       {hasCalldata && (
         <p className="wallet-preview-tx-call">
-          Contract call · <code>{data.slice(0, 10)}…</code>
+          Contract call ·
+          {" "}
+          <code>
+            {data.slice(0, 10)}
+            …
+          </code>
         </p>
       )}
     </>

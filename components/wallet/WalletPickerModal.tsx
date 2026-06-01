@@ -29,13 +29,17 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
+
     if (!dialog) return;
+
     if (open && !dialog.open) dialog.showModal();
+
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
+
     cancelPendingConnect();
   }, [open, cancelPendingConnect]);
 
@@ -75,6 +79,7 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
           onSelect={(detail) => {
             onClose();
             const connect = () => void connectDetail(detail);
+
             if (detail.info.rdns === "company.v3x.openlv") {
               requestAnimationFrame(connect);
             }
@@ -97,5 +102,6 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
   );
 
   if (!portalTarget) return null;
+
   return createPortal(pickerDialog, portalTarget);
 }

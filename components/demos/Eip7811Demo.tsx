@@ -4,10 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { formatError, rpc, stringifyRpcData } from "../../lib/ethereum";
 import { parseWalletGetAssetsResponse } from "../../lib/walletAssets";
-import { WalletAssetSearch } from "../wallet/WalletAssetSearch";
-import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
 import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
+import { WalletAssetSearch } from "../wallet/WalletAssetSearch";
 import { useWallet } from "../wallet/WalletProvider";
 
 export function Eip7811Demo() {
@@ -22,6 +22,7 @@ export function Eip7811Demo() {
 
   const request = useMemo(() => {
     if (!session) return null;
+
     return {
       account: session.accounts[0],
       chainFilter: [session.chainId],
@@ -31,17 +32,21 @@ export function Eip7811Demo() {
 
   const getAssets = useCallback(async () => {
     if (!requireSession() || !request) return;
+
     setPending(true);
     setError(undefined);
+
     try {
       const response = await rpc(session.provider, "wallet_getAssets", [request]);
+
       setRaw(stringifyRpcData(response));
       setAssets(parseWalletGetAssetsResponse(response));
     }
-    catch (err) {
+    catch (error_) {
       setAssets([]);
       setRaw(undefined);
-      const message = formatError(err);
+      const message = formatError(error_);
+
       setError(
         message.includes("not found")
         || message.includes("Unsupported")
@@ -57,17 +62,20 @@ export function Eip7811Demo() {
 
   const probeCapabilities = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setError(undefined);
+
     try {
       const caps = await rpc(session.provider, "wallet_getCapabilities", [
         session.accounts[0],
       ]);
+
       setRaw(stringifyRpcData(caps));
     }
-    catch (err) {
+    catch (error_) {
       setRaw(undefined);
-      setError(formatError(err));
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

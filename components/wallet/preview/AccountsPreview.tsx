@@ -15,7 +15,12 @@ export function AccountsPreview({
   return (
     <div className="wallet-preview-accounts">
       <p className="wallet-preview-accounts-count">
-        {accounts.length} account{accounts.length === 1 ? "" : "s"} returned
+        {accounts.length}
+        {" "}
+        account
+        {accounts.length === 1 ? "" : "s"}
+        {" "}
+        returned
       </p>
       <ol className="wallet-preview-account-list">
         {accounts.map((address, index) => (
@@ -29,21 +34,27 @@ export function AccountsPreview({
           >
             <span className="wallet-preview-account-index">{index}</span>
             <code>{address}</code>
-            {index === 0 ? (
-              <span className="wallet-preview-account-tag wallet-preview-account-tag-primary">
-                accounts[0]
-              </span>
-            ) : (
-              <span className="wallet-preview-account-tag">
-                accounts[{index}]
-              </span>
-            )}
+            {index === 0
+              ? (
+                  <span className="wallet-preview-account-tag wallet-preview-account-tag-primary">
+                    accounts[0]
+                  </span>
+                )
+              : (
+                  <span className="wallet-preview-account-tag">
+                    accounts[
+                    {index}
+                    ]
+                  </span>
+                )}
           </li>
         ))}
       </ol>
       {accounts.length > 1 && (
         <p className="wallet-demo-muted wallet-preview-accounts-note">
-          {firstAccountHint} — the rest are easy to miss in UI even though the
+          {firstAccountHint}
+          {" "}
+          — the rest are easy to miss in UI even though the
           RPC returns them.
         </p>
       )}

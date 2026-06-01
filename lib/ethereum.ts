@@ -1,16 +1,17 @@
 import type { Address, EIP1193Provider, Hex } from "viem";
 
 /** Valid address for SSR preview / request tabs when disconnected. */
-export const DEMO_PLACEHOLDER_ACCOUNT =
-  "0x0000000000000000000000000000000000000001" as Address;
+export const DEMO_PLACEHOLDER_ACCOUNT
+  = "0x0000000000000000000000000000000000000001" as Address;
 
 export type EthereumWindow = Window & {
   ethereum?: EIP1193Provider;
 };
 
 export function getInjectedProvider(): EIP1193Provider | undefined {
-  if (typeof window === "undefined") return undefined;
-  return (window as EthereumWindow).ethereum;
+  if (globalThis.window === undefined) return undefined;
+
+  return (globalThis as EthereumWindow).ethereum;
 }
 
 export async function requestAccounts(
@@ -51,7 +52,7 @@ export async function rpc(
 /** JSON.stringify for RPC payloads — bigint fields must not be bigint literals. */
 export function stringifyRpcData(data: unknown): string {
   return JSON.stringify(data, (_key, value) =>
-    typeof value === "bigint" ? value.toString() : value,
+    (typeof value === "bigint" ? value.toString() : value),
   );
 }
 
@@ -60,29 +61,36 @@ export const stringifyTypedData = stringifyRpcData;
 
 function demoJsonReplacer(_key: string, value: unknown) {
   if (typeof value === "bigint") return value.toString();
+
   return value;
 }
 
 /** Pretty-print any RPC result or error for demo Response tabs. */
 export function formatDemoOutput(value: unknown): string {
   if (value === undefined) return "";
+
   if (value === null) return "null";
+
   if (typeof value === "string") return value;
+
   if (typeof value === "number" || typeof value === "boolean") {
     return String(value);
   }
+
   if (typeof value === "bigint") return value.toString();
 
   if (value instanceof Error) {
-    const extra = value as Error & { code?: unknown; data?: unknown };
+    const extra = value as Error & { code?: unknown; data?: unknown; };
+
     if (extra.code !== undefined || extra.data !== undefined) {
       return formatDemoOutput({
         name: value.name,
         message: value.message,
-        ...(extra.code !== undefined ? { code: extra.code } : {}),
-        ...(extra.data !== undefined ? { data: extra.data } : {}),
+        ...(extra.code === undefined ? {} : { code: extra.code }),
+        ...(extra.data === undefined ? {} : { data: extra.data }),
       });
     }
+
     return value.message || value.name || "Error";
   }
 
@@ -114,19 +122,20 @@ export type Eip6963ProviderDetail = {
 };
 
 export function requestEip6963Providers() {
-  window.dispatchEvent(new Event("eip6963:requestProvider"));
+  globalThis.dispatchEvent(new Event("eip6963:requestProvider"));
 }
 
 export function listenEip6963Providers(
   onProvider: (detail: Eip6963ProviderDetail) => void,
-  options?: { requestOnMount?: boolean },
+  options?: { requestOnMount?: boolean; },
 ): () => void {
   const handler = (event: Event) => {
     const detail = (event as CustomEvent<Eip6963ProviderDetail>).detail;
+
     if (detail?.info && detail?.provider) onProvider(detail);
   };
 
-  window.addEventListener(
+  globalThis.addEventListener(
     "eip6963:announceProvider",
     handler as EventListener,
   );
@@ -136,7 +145,7 @@ export function listenEip6963Providers(
   }
 
   return () => {
-    window.removeEventListener(
+    globalThis.removeEventListener(
       "eip6963:announceProvider",
       handler as EventListener,
     );

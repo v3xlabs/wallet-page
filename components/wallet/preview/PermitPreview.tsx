@@ -29,7 +29,13 @@ export function PermitPreview({
         <div>
           <p className="wallet-preview-permit-amount">{amount}</p>
           <p className="wallet-preview-permit-token">
-            to <code>{shortAddress(spender)}</code> · until {formatDeadline(deadline)}
+            to
+            {" "}
+            <code>{shortAddress(spender)}</code>
+            {" "}
+            · until
+            {" "}
+            {formatDeadline(deadline)}
           </p>
         </div>
       </div>

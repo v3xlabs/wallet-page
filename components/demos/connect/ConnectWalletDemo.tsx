@@ -15,7 +15,7 @@ export function ConnectWalletDemo() {
     session,
   } = useWallet();
 
-  const infoPayload = providers.map((p) => p.info);
+  const infoPayload = providers.map(p => p.info);
 
   return (
     <div className="wallet-demo">
@@ -24,9 +24,9 @@ export function ConnectWalletDemo() {
 
         <section className="wallet-demo-section">
           <h3>Connect</h3>
-            <p className="wallet-demo-muted">
-              Choose a provider from the list below.
-            </p>
+          <p className="wallet-demo-muted">
+            Choose a provider from the list below.
+          </p>
           {connectError && (
             <p className="wallet-demo-error" role="alert">
               {connectError}
@@ -35,7 +35,7 @@ export function ConnectWalletDemo() {
           <ProviderList
             providers={providers}
             connecting={connecting}
-            onSelect={(detail) => void connectDetail(detail)}
+            onSelect={detail => void connectDetail(detail)}
             emptyMessage="No providers yet — install a wallet extension and use Request providers below."
           />
         </section>
@@ -52,7 +52,9 @@ export function ConnectWalletDemo() {
           </div>
           <details className="wallet-demo-details">
             <summary>
-              Announce payloads ({infoPayload.length})
+              Announce payloads (
+              {infoPayload.length}
+              )
             </summary>
             <pre className="wallet-demo-log">
               {infoPayload.length === 0

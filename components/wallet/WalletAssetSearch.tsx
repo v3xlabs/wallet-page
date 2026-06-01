@@ -42,7 +42,7 @@ export function WalletAssetSearch({
           aria-autocomplete="list"
           placeholder={placeholder}
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={event => setQuery(event.target.value)}
           disabled={loading || assets.length === 0}
         />
       </div>
@@ -66,36 +66,36 @@ export function WalletAssetSearch({
             No assets match your search.
           </p>
         )}
-        {!loading &&
-          filtered.map((asset) => (
-            <div
-              key={asset.id}
-              role="option"
-              className="wallet-asset-search-item"
-              aria-selected={false}
-            >
-              <div className="wallet-asset-search-item-main">
-                {asset.iconUrl && (
-                  <img
-                    className="wallet-asset-search-icon"
-                    src={asset.iconUrl}
-                    alt=""
-                    width={20}
-                    height={20}
-                  />
-                )}
-                <span className="wallet-asset-search-symbol">{asset.symbol}</span>
-                {asset.name !== asset.symbol && (
-                  <span className="wallet-asset-search-name">{asset.name}</span>
-                )}
-              </div>
-              <div className="wallet-asset-search-item-meta">
-                <span className="wallet-asset-search-balance">{asset.balanceLabel}</span>
-                <span className="wallet-asset-search-type">{asset.type}</span>
-                <code className="wallet-asset-search-chain">{asset.chainId}</code>
-              </div>
+        {!loading
+        && filtered.map(asset => (
+          <div
+            key={asset.id}
+            role="option"
+            className="wallet-asset-search-item"
+            aria-selected={false}
+          >
+            <div className="wallet-asset-search-item-main">
+              {asset.iconUrl && (
+                <img
+                  className="wallet-asset-search-icon"
+                  src={asset.iconUrl}
+                  alt=""
+                  width={20}
+                  height={20}
+                />
+              )}
+              <span className="wallet-asset-search-symbol">{asset.symbol}</span>
+              {asset.name !== asset.symbol && (
+                <span className="wallet-asset-search-name">{asset.name}</span>
+              )}
             </div>
-          ))}
+            <div className="wallet-asset-search-item-meta">
+              <span className="wallet-asset-search-balance">{asset.balanceLabel}</span>
+              <span className="wallet-asset-search-type">{asset.type}</span>
+              <code className="wallet-asset-search-chain">{asset.chainId}</code>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ export default defineConfig({
         { text: "ERC-721", link: "/erc-721" },
         { text: "ERC-1155", link: "/erc-1155" },
         { text: "Multicall", link: "/multicall" },
-      ]
+      ],
     },
     {
       text: "Ecosystem",
@@ -66,7 +66,7 @@ export default defineConfig({
         { text: "Wrapped ETH", link: "/weth" },
         { text: "Name Resolution", link: "/ens" },
       ],
-    }
+    },
   ],
   topNav: [
     { text: "walletbeat", link: "https://walletbeat.eth.link" },

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 import { mergeInspector } from "../../lib/demoInspector";
-import { DemoInspector, type DemoInspectorProps } from "./DemoInspector";
 import { DemoFrame } from "./DemoFrame";
+import { DemoInspector, type DemoInspectorProps } from "./DemoInspector";
 import { useWallet } from "./WalletProvider";
 
 type MiniDemoProps = {
@@ -33,7 +33,9 @@ function MiniDemoContent({
 
   const run = async () => {
     if (!requireSession()) return;
+
     setLocalPending(true);
+
     try {
       await onAction();
     }

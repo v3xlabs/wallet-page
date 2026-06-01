@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 import { formatError, rpc } from "../../lib/ethereum";
-import { SignHashPreview } from "../wallet/preview/SignHashPreview";
-import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { useDemoFrame } from "../wallet/DemoFrame";
+import { SignHashPreview } from "../wallet/preview/SignHashPreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
 const ZERO_HASH = `0x${"00".repeat(32)}`;
@@ -20,18 +20,21 @@ export function EthSignDemo() {
 
   const sign = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setSignature(undefined);
     setError(undefined);
+
     try {
       const sig = await rpc(session.provider, "eth_sign", [
         session.accounts[0],
         ZERO_HASH,
       ]);
+
       setSignature(String(sig));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

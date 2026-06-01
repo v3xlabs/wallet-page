@@ -9,7 +9,8 @@ function short(addr: string) {
 }
 
 function avatarBg(addr: string) {
-  const hue = (parseInt(addr.slice(2, 8), 16) % 360).toString();
+  const hue = (Number.parseInt(addr.slice(2, 8), 16) % 360).toString();
+
   return `hsl(${hue}, 48%, 50%)`;
 }
 

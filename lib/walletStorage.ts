@@ -12,10 +12,13 @@ export type StoredWalletSession = {
 };
 
 export function loadStoredSession(): StoredWalletSession | undefined {
-  if (typeof window === "undefined") return undefined;
+  if (globalThis.window === undefined) return undefined;
+
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
+
     if (!raw) return undefined;
+
     return JSON.parse(raw) as StoredWalletSession;
   }
   catch {

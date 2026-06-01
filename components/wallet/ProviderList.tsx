@@ -21,7 +21,7 @@ export function ProviderList({
 
   return (
     <ul className="wallet-demo-provider-list">
-      {providers.map((detail) => (
+      {providers.map(detail => (
         <li key={detail.info.uuid}>
           <button
             type="button"

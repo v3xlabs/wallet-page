@@ -2,20 +2,20 @@
 
 import { useMemo, useState } from "react";
 import {
+  type Address,
   decodeFunctionResult,
   encodeFunctionData,
   formatEther,
+  type Hex,
   parseAbi,
   parseEther,
-  type Address,
-  type Hex,
 } from "viem";
 
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const WETH_ABI = parseAbi([
@@ -25,12 +25,12 @@ const WETH_ABI = parseAbi([
 ]);
 
 const WETH_BY_CHAIN: Record<string, Address> = {
-  "0x1":       "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  "0xaa36a7":  "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
-  "0x4268":    "0x94373a4919B3240D86eA41593D5eBa789FEF3848",
-  "0x2105":    "0x4200000000000000000000000000000000000006",
-  "0xa":       "0x4200000000000000000000000000000000000006",
-  "0xa4b1":    "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+  "0x1": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+  "0xaa36a7": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+  "0x4268": "0x94373a4919B3240D86eA41593D5eBa789FEF3848",
+  "0x2105": "0x4200000000000000000000000000000000000006",
+  "0xa": "0x4200000000000000000000000000000000000006",
+  "0xa4b1": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
 };
 
 const DEFAULT_AMOUNT = "0.001";
@@ -51,11 +51,12 @@ export function WethDemo() {
 
   const parsedWei = useMemo(() => {
     try { return parseEther(amount || "0"); }
-    catch { return undefined; }
+    catch { return; }
   }, [amount]);
 
   const balanceCall = useMemo(() => {
     if (!wethAddress) return null;
+
     return {
       to: wethAddress,
       data: encodeFunctionData({
@@ -68,6 +69,7 @@ export function WethDemo() {
 
   const wrapTx = useMemo(() => {
     if (!wethAddress || !parsedWei) return null;
+
     return {
       from: session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT,
       to: wethAddress,
@@ -78,6 +80,7 @@ export function WethDemo() {
 
   const unwrapTx = useMemo(() => {
     if (!wethAddress || !parsedWei) return null;
+
     return {
       from: session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT,
       to: wethAddress,
@@ -92,16 +95,19 @@ export function WethDemo() {
 
   const readBalance = async () => {
     if (!requireSession() || !wethAddress || !balanceCall) return;
+
     setPending(true);
     setBalanceError(undefined);
     setBalance(undefined);
+
     try {
       const raw = await rpc(session.provider, "eth_call", [balanceCall, "latest"]) as Hex;
       const [bal] = decodeFunctionResult({ abi: WETH_ABI, functionName: "balanceOf", data: raw }) as [bigint];
+
       setBalance(`${formatEther(bal)} WETH`);
     }
-    catch (err) {
-      setBalanceError(formatError(err));
+    catch (error) {
+      setBalanceError(formatError(error));
     }
     finally {
       setPending(false);
@@ -110,15 +116,18 @@ export function WethDemo() {
 
   const wrap = async () => {
     if (!requireSession() || !wrapTx) return;
+
     setPending(true);
     setTxError(undefined);
     setTxHash(undefined);
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [wrapTx]);
+
       setTxHash(String(hash));
     }
-    catch (err) {
-      setTxError(formatError(err));
+    catch (error) {
+      setTxError(formatError(error));
     }
     finally {
       setPending(false);
@@ -127,15 +136,18 @@ export function WethDemo() {
 
   const unwrap = async () => {
     if (!requireSession() || !unwrapTx) return;
+
     setPending(true);
     setTxError(undefined);
     setTxHash(undefined);
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [unwrapTx]);
+
       setTxHash(String(hash));
     }
-    catch (err) {
-      setTxError(formatError(err));
+    catch (error) {
+      setTxError(formatError(error));
     }
     finally {
       setPending(false);
@@ -144,25 +156,35 @@ export function WethDemo() {
 
   return (
     <DemoShell>
-      {wethAddress ? (
-        <p className="wallet-demo-muted">
-          WETH on this chain: <code>{wethAddress}</code>
-        </p>
-      ) : (
-        <p className="wallet-demo-muted">
-          {session ? (
-            <>
-              No known WETH address for chain <code>{session.chainId}</code> — switch to
-              mainnet, Sepolia, Base, Optimism, or Arbitrum.
-            </>
-          ) : (
-            <>
-              WETH address depends on the active chain (mainnet, Sepolia, Holesky, Base,
-              Optimism, Arbitrum One).
-            </>
+      {wethAddress
+        ? (
+            <p className="wallet-demo-muted">
+              WETH on this chain:
+              {" "}
+              <code>{wethAddress}</code>
+            </p>
+          )
+        : (
+            <p className="wallet-demo-muted">
+              {session
+                ? (
+                    <>
+                      No known WETH address for chain
+                      {" "}
+                      <code>{session.chainId}</code>
+                      {" "}
+                      — switch to
+                      mainnet, Sepolia, Base, Optimism, or Arbitrum.
+                    </>
+                  )
+                : (
+                    <>
+                      WETH address depends on the active chain (mainnet, Sepolia, Holesky, Base,
+                      Optimism, Arbitrum One).
+                    </>
+                  )}
+            </p>
           )}
-        </p>
-      )}
 
       <WalletActionPanel
         inspector={
@@ -187,22 +209,24 @@ export function WethDemo() {
           type="text"
           className="wallet-demo-input"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={e => setAmount(e.target.value)}
         />
       </label>
 
       <WalletActionPanel
-        inspector={wrapTx ? {
-          user: (
-            <TransactionPreview
-              from={wrapTx.from}
-              to={wrapTx.to}
-              valueLabel={`${amount} ETH`}
-              data={wrapTx.data}
-            />
-          ),
-          request: { method: "eth_sendTransaction", params: [wrapTx] },
-        } : undefined}
+        inspector={wrapTx
+          ? {
+              user: (
+                <TransactionPreview
+                  from={wrapTx.from}
+                  to={wrapTx.to}
+                  valueLabel={`${amount} ETH`}
+                  data={wrapTx.data}
+                />
+              ),
+              request: { method: "eth_sendTransaction", params: [wrapTx] },
+            }
+          : undefined}
         response={txHash}
         error={txError}
         pending={pending}
@@ -215,17 +239,19 @@ export function WethDemo() {
       />
 
       <WalletActionPanel
-        inspector={unwrapTx ? {
-          user: (
-            <TransactionPreview
-              from={unwrapTx.from}
-              to={unwrapTx.to}
-              valueLabel={`${amount} WETH`}
-              data={unwrapTx.data}
-            />
-          ),
-          request: { method: "eth_sendTransaction", params: [unwrapTx] },
-        } : undefined}
+        inspector={unwrapTx
+          ? {
+              user: (
+                <TransactionPreview
+                  from={unwrapTx.from}
+                  to={unwrapTx.to}
+                  valueLabel={`${amount} WETH`}
+                  data={unwrapTx.data}
+                />
+              ),
+              request: { method: "eth_sendTransaction", params: [unwrapTx] },
+            }
+          : undefined}
         response={txHash}
         error={txError}
         pending={pending}

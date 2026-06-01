@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 import { formatError, requestAccounts } from "../../../lib/ethereum";
-import { AccountsPreview } from "../../wallet/preview/AccountsPreview";
-import { WalletActionPanel } from "../../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../../wallet/DemoBlock";
 import { useDemoFrame } from "../../wallet/DemoFrame";
+import { AccountsPreview } from "../../wallet/preview/AccountsPreview";
+import { WalletActionPanel } from "../../wallet/preview/WalletActionPanel";
 import { useWallet } from "../../wallet/WalletProvider";
 
 export function EthRequestAccountsDemo() {
@@ -18,15 +18,18 @@ export function EthRequestAccountsDemo() {
 
   const request = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setError(undefined);
+
     try {
       const list = await requestAccounts(session.provider);
+
       setAccounts(list.map(String));
     }
-    catch (err) {
+    catch (error_) {
       setAccounts(undefined);
-      setError(formatError(err));
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

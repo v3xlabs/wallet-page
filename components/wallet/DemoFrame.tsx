@@ -12,12 +12,12 @@ type DemoFrameProps = {
 };
 
 export function DemoFrame({ children, variant = "panel" }: DemoFrameProps) {
-  const rootClass =
-    variant === "mini"
+  const rootClass
+    = variant === "mini"
       ? "wallet-mini-demo"
-      : variant === "inline"
-        ? "wallet-demo wallet-demo-inline"
-        : "wallet-demo";
+      : (variant === "inline"
+          ? "wallet-demo wallet-demo-inline"
+          : "wallet-demo");
 
   return (
     <div className={rootClass}>
@@ -38,5 +38,6 @@ export function DemoFrame({ children, variant = "panel" }: DemoFrameProps) {
 /** Prefer `useWallet().requireSession` — alias for demo action handlers. */
 export function useDemoFrame() {
   const { openConnect, requireSession } = useWallet();
+
   return { openConnect, requireSession };
 }

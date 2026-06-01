@@ -8,12 +8,12 @@ export function mergeInspector(
   error?: unknown,
 ): DemoInspectorProps | undefined {
   const request = inspector?.request ?? inspector?.rpc;
-  const responseBody =
-    error !== undefined && error !== ""
+  const responseBody
+    = error !== undefined && error !== ""
       ? formatDemoOutput(error)
-      : response !== undefined && response !== ""
-        ? formatDemoOutput(response)
-        : inspector?.response ?? inspector?.raw;
+      : (response !== undefined && response !== ""
+          ? formatDemoOutput(response)
+          : inspector?.response ?? inspector?.raw);
 
   if (!inspector?.user && !request && !responseBody && !inspector?.hash) {
     return undefined;

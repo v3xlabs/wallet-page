@@ -23,14 +23,17 @@ export function EthChainIdDemo() {
       actionLabel="Call eth_chainId"
       onAction={async () => {
         if (!session) return;
+
         setError(undefined);
+
         try {
           const chainId = await getChainId(session.provider);
+
           setResponse(String(chainId));
         }
-        catch (err) {
+        catch (error_) {
           setResponse(undefined);
-          setError(formatError(err));
+          setError(formatError(error_));
         }
       }}
     />

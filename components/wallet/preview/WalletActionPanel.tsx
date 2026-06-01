@@ -37,7 +37,7 @@ export function WalletActionPanel({
     <div className="wallet-action-panel">
       {merged && <DemoInspector {...merged} />}
       <div className="wallet-action-footer">
-        {actions.map((action) => (
+        {actions.map(action => (
           <button
             key={action.label}
             type="button"

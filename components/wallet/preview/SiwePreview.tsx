@@ -15,7 +15,10 @@ export function SiwePreview({ message }: SiwePreviewProps) {
   return (
     <>
       <p className="wallet-preview-siwe-lead">
-        <strong>{parsed.domain}</strong> · sign in as{" "}
+        <strong>{parsed.domain}</strong>
+        {" "}
+        · sign in as
+        {" "}
         <code>{shortAddress(parsed.address, 6)}</code>
       </p>
       {parsed.statement && (

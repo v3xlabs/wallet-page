@@ -14,7 +14,9 @@ export type WalletAssetRow = {
 
 function shortenAddress(address: string): string {
   if (address === "native") return "native";
+
   if (address.length < 12) return address;
+
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
@@ -22,11 +24,15 @@ export function chainIdToLabel(chainId: unknown): string {
   if (typeof chainId === "number" && Number.isFinite(chainId)) {
     return `0x${chainId.toString(16)}`;
   }
+
   if (typeof chainId === "string") {
     if (chainId.startsWith("0x")) return chainId;
+
     if (/^\d+$/.test(chainId)) return `0x${Number(chainId).toString(16)}`;
+
     return chainId;
   }
+
   return "";
 }
 
@@ -34,17 +40,21 @@ function readString(...values: unknown[]): string | undefined {
   for (const value of values) {
     if (typeof value === "string" && value.length > 0) return value;
   }
+
   return undefined;
 }
 
 function readDecimals(...sources: Record<string, unknown>[]): number | undefined {
   for (const source of sources) {
     const decimals = source.decimals;
+
     if (typeof decimals === "number") return decimals;
+
     if (typeof decimals === "string" && /^\d+$/.test(decimals)) {
       return Number(decimals);
     }
   }
+
   return undefined;
 }
 
@@ -57,6 +67,7 @@ function formatHexBalance(balance: string, decimals?: number): string {
       /* fall through */
     }
   }
+
   return balance;
 }
 
@@ -65,8 +76,11 @@ function balanceLabelFromEntry(
   decimals?: number,
 ): string {
   const display = readString(entry.displayBalance, entry.displayValue);
+
   if (display) return display;
+
   const balance = String(entry.balance ?? "0x0");
+
   return formatHexBalance(balance, decimals);
 }
 
@@ -74,17 +88,17 @@ function labelsFromEntry(
   entry: Record<string, unknown>,
   address: string,
   type: string,
-): { symbol: string; name: string; iconUrl?: string } {
-  const currencyInfo =
-    entry.currencyInfo && typeof entry.currencyInfo === "object"
+): { symbol: string; name: string; iconUrl?: string; } {
+  const currencyInfo
+    = entry.currencyInfo && typeof entry.currencyInfo === "object"
       ? (entry.currencyInfo as Record<string, unknown>)
       : undefined;
-  const metadata =
-    entry.metadata && typeof entry.metadata === "object"
+  const metadata
+    = entry.metadata && typeof entry.metadata === "object"
       ? (entry.metadata as Record<string, unknown>)
       : undefined;
-  const tokenInfo =
-    entry.tokenInfo && typeof entry.tokenInfo === "object"
+  const tokenInfo
+    = entry.tokenInfo && typeof entry.tokenInfo === "object"
       ? (entry.tokenInfo as Record<string, unknown>)
       : undefined;
 
@@ -108,10 +122,13 @@ function labelsFromEntry(
       iconUrl,
     };
   }
+
   if (address === "native" || type === "native" || type === "nativeCurrency") {
     return { symbol: "Native", name: name ?? "Native asset", iconUrl };
   }
+
   const short = shortenAddress(address);
+
   return { symbol: short, name: name ?? short, iconUrl };
 }
 
@@ -122,6 +139,7 @@ function pushRow(
 ): void {
   let id = params.id;
   let suffix = 0;
+
   while (seen.has(id)) {
     suffix += 1;
     id = `${params.id}#${suffix}`;
@@ -137,6 +155,7 @@ function pushRow(
   ]
     .join(" ")
     .toLowerCase();
+
   rows.push({ ...params, id, searchText });
 }
 
@@ -146,15 +165,17 @@ function parseErc7811ByChain(raw: Record<string, unknown>): WalletAssetRow[] {
 
   for (const [chainKey, value] of Object.entries(raw)) {
     if (!chainKey.startsWith("0x") || !Array.isArray(value)) continue;
+
     const chainId = chainIdToLabel(chainKey) || chainKey;
 
     for (const item of value) {
       if (!item || typeof item !== "object") continue;
+
       const entry = item as Record<string, unknown>;
       const address = String(entry.address ?? "native");
       const type = String(entry.type ?? "unknown").toLowerCase();
-      const metadata =
-        entry.metadata && typeof entry.metadata === "object"
+      const metadata
+        = entry.metadata && typeof entry.metadata === "object"
           ? (entry.metadata as Record<string, unknown>)
           : undefined;
       const decimals = readDecimals(metadata ?? {});
@@ -179,6 +200,7 @@ function parseErc7811ByChain(raw: Record<string, unknown>): WalletAssetRow[] {
 
 function groupedTypeName(groupKey: string): string {
   if (groupKey === "nativeCurrency") return "native";
+
   return groupKey.toLowerCase();
 }
 
@@ -188,16 +210,18 @@ function parseGroupedByAssetType(raw: Record<string, unknown>): WalletAssetRow[]
 
   for (const [groupKey, value] of Object.entries(raw)) {
     if (groupKey.startsWith("0x") || !Array.isArray(value)) continue;
+
     const type = groupedTypeName(groupKey);
 
     for (const item of value) {
       if (!item || typeof item !== "object") continue;
+
       const entry = item as Record<string, unknown>;
-      const chainId =
-        chainIdToLabel(entry.chainId ?? entry.chain_id) || "unknown";
+      const chainId
+        = chainIdToLabel(entry.chainId ?? entry.chain_id) || "unknown";
       const address = String(entry.address ?? "native");
-      const currencyInfo =
-        entry.currencyInfo && typeof entry.currencyInfo === "object"
+      const currencyInfo
+        = entry.currencyInfo && typeof entry.currencyInfo === "object"
           ? (entry.currencyInfo as Record<string, unknown>)
           : undefined;
       const decimals = readDecimals(entry, currencyInfo ?? {});
@@ -222,7 +246,7 @@ function parseGroupedByAssetType(raw: Record<string, unknown>): WalletAssetRow[]
 
 function isErc7811ByChain(raw: Record<string, unknown>): boolean {
   return Object.keys(raw).some(
-    (key) => key.startsWith("0x") && Array.isArray(raw[key]),
+    key => key.startsWith("0x") && Array.isArray(raw[key]),
   );
 }
 
@@ -247,7 +271,9 @@ export function parseWalletGetAssetsResponse(raw: unknown): WalletAssetRow[] {
 
   return rows.sort((a, b) => {
     const chain = a.chainId.localeCompare(b.chainId);
+
     if (chain !== 0) return chain;
+
     return a.symbol.localeCompare(b.symbol);
   });
 }
@@ -257,6 +283,8 @@ export function filterWalletAssets(
   query: string,
 ): WalletAssetRow[] {
   const q = query.trim().toLowerCase();
+
   if (!q) return rows;
-  return rows.filter((row) => row.searchText.includes(q));
+
+  return rows.filter(row => row.searchText.includes(q));
 }

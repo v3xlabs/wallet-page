@@ -16,7 +16,9 @@ export function CallsBatchPreview({ chainId, calls }: CallsBatchPreviewProps) {
           <span className="wallet-preview-batch-index">{i + 1}</span>
           <code>{call.to}</code>
           <span className="wallet-demo-muted">
-            chain <code>{chainId}</code>
+            chain
+            {" "}
+            <code>{chainId}</code>
           </span>
         </li>
       ))}

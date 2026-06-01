@@ -3,10 +3,10 @@
 import { useState } from "react";
 import type { Address } from "viem";
 
-import { formatError, formatDemoOutput, rpc } from "../../lib/ethereum";
-import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
+import { formatDemoOutput, formatError, rpc } from "../../lib/ethereum";
 import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
 const WATCH_PARAMS = [
@@ -31,17 +31,20 @@ export function Eip747Demo() {
 
   const watchAsset = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setError(undefined);
     setResponse(undefined);
+
     try {
       const added = await rpc(session.provider, "wallet_watchAsset", [
         ...WATCH_PARAMS,
       ]);
+
       setResponse(formatDemoOutput(added));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

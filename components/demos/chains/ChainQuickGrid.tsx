@@ -5,8 +5,8 @@ import type { Hex } from "viem";
 
 import { DEMO_CHAINS } from "../../../lib/chains";
 import { formatError, rpc } from "../../../lib/ethereum";
-import { DemoShell } from "../../wallet/DemoShell";
 import { useDemoFrame } from "../../wallet/DemoFrame";
+import { DemoShell } from "../../wallet/DemoShell";
 import { useWallet } from "../../wallet/WalletProvider";
 
 /** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
@@ -20,23 +20,26 @@ export function ChainQuickGrid() {
     try {
       await refreshSession();
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
   };
 
   const switchChain = async (targetChainId: Hex) => {
     if (!requireSession()) return;
+
     setPending(true);
     setError(undefined);
+
     try {
       await rpc(session.provider, "wallet_switchEthereumChain", [
         { chainId: targetChainId },
       ]);
       await refreshChainId();
     }
-    catch (err) {
-      const message = formatError(err);
+    catch (error_) {
+      const message = formatError(error_);
+
       setError(
         message.includes("4902") || message.includes("Unrecognized")
           ? `${message}\n\nTry Add chain on the same network, or use the wallet_addEthereumChain demo below.`
@@ -50,10 +53,14 @@ export function ChainQuickGrid() {
 
   const addChain = async (targetChainId: Hex) => {
     if (!requireSession()) return;
-    const meta = DEMO_CHAINS.find((c) => c.chainId === targetChainId);
+
+    const meta = DEMO_CHAINS.find(c => c.chainId === targetChainId);
+
     if (!meta) return;
+
     setPending(true);
     setError(undefined);
+
     try {
       await rpc(session.provider, "wallet_addEthereumChain", [
         {
@@ -65,8 +72,8 @@ export function ChainQuickGrid() {
       ]);
       await refreshChainId();
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);
@@ -79,12 +86,15 @@ export function ChainQuickGrid() {
     <DemoShell>
       {session && (
         <p className="wallet-demo-muted">
-          Active chain: <code>{session.chainId}</code>
+          Active chain:
+          {" "}
+          <code>{session.chainId}</code>
         </p>
       )}
       <div className="wallet-demo-chain-grid">
         {DEMO_CHAINS.map((chain) => {
           const isActive = active && chain.chainId.toLowerCase() === active;
+
           return (
             <div
               key={chain.chainId}

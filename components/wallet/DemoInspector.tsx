@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
+import { type ReactNode, useEffect, useId, useMemo, useState } from "react";
 
 import { formatRpcCall, type RpcCall } from "../../lib/rpcDisplay";
 
@@ -37,30 +37,35 @@ export function DemoInspector({
   const responseBody = response ?? raw;
 
   const tabs = useMemo(() => {
-    const list: { id: TabId; label: string }[] = [];
+    const list: { id: TabId; label: string; }[] = [];
+
     if (user) list.push({ id: "user", label: "Preview" });
+
     if (requestCall) list.push({ id: "request", label: "Request" });
+
     if (responseBody) list.push({ id: "response", label: "Response" });
+
     if (hash) list.push({ id: "hash", label: "Hash" });
+
     return list;
   }, [user, requestCall, responseBody, hash]);
 
   const [active, setActive] = useState<TabId>(() => tabs[0]?.id ?? "request");
 
   useEffect(() => {
-    if (!tabs.some((t) => t.id === active)) {
+    if (!tabs.some(t => t.id === active)) {
       setActive(tabs[0]?.id ?? "request");
     }
   }, [tabs, active]);
 
-  const current = tabs.some((t) => t.id === active) ? active : tabs[0]?.id;
+  const current = tabs.some(t => t.id === active) ? active : tabs[0]?.id;
 
   if (tabs.length === 0) return null;
 
   return (
     <div className="wallet-demo-tabs">
       <div className="wallet-demo-tab-list" role="tablist" aria-label="Demo views">
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <button
             key={tab.id}
             type="button"

@@ -25,8 +25,13 @@ export function SwitchChainMiniDemo() {
       inspector={{
         user: (
           <p>
-            Switch to <strong>{chain?.name ?? "network"}</strong> (
-            <code>{chainId}</code>).
+            Switch to
+            {" "}
+            <strong>{chain?.name ?? "network"}</strong>
+            {" "}
+            (
+            <code>{chainId}</code>
+            ).
           </p>
         ),
         request: {
@@ -38,18 +43,22 @@ export function SwitchChainMiniDemo() {
       error={error}
       onAction={async () => {
         if (!session) return;
+
         setError(undefined);
+
         try {
           await rpc(session.provider, "wallet_switchEthereumChain", [
             { chainId },
           ]);
           await refreshSession();
           const active = await getChainId(session.provider);
+
           setResponse(active);
         }
-        catch (err) {
+        catch (error_) {
           setResponse(undefined);
-          const message = formatError(err);
+          const message = formatError(error_);
+
           setError(
             message.includes("4902") || message.includes("Unrecognized")
               ? `${message}\n\nChain may need wallet_addEthereumChain first (demo below or grid above).`

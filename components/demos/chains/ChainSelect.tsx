@@ -16,11 +16,15 @@ export function ChainSelect({ value, onChange, id }: ChainSelectProps) {
       id={id}
       className="wallet-demo-select"
       value={value}
-      onChange={(e) => onChange(e.target.value as Hex)}
+      onChange={e => onChange(e.target.value as Hex)}
     >
-      {DEMO_CHAINS.map((chain) => (
+      {DEMO_CHAINS.map(chain => (
         <option key={chain.chainId} value={chain.chainId}>
-          {chain.name} ({chain.chainId})
+          {chain.name}
+          {" "}
+          (
+          {chain.chainId}
+          )
         </option>
       ))}
     </select>

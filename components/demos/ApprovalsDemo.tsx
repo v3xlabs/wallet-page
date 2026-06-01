@@ -2,20 +2,20 @@
 
 import { useMemo, useState } from "react";
 import {
+  type Address,
   decodeFunctionResult,
   encodeFunctionData,
   formatUnits,
+  type Hex,
   isAddress,
   parseAbi,
-  type Address,
-  type Hex,
 } from "viem";
 
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const ERC20_ABI = parseAbi([
@@ -25,7 +25,7 @@ const ERC20_ABI = parseAbi([
   "function symbol() view returns (string)",
 ]);
 
-const KNOWN_SPENDERS: { label: string; address: Address }[] = [
+const KNOWN_SPENDERS: { label: string; address: Address; }[] = [
   { label: "Uniswap v3 Router", address: "0xE592427A0AEce92De3Edee1F18E0157C05861564" },
   { label: "Uniswap Universal", address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD" },
   { label: "OpenSea Seaport 1.5", address: "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC" },
@@ -50,6 +50,7 @@ export function ApprovalsDemo() {
 
   const allowanceCall = useMemo(() => {
     if (!tokenAddr || !spenderAddr) return null;
+
     return {
       to: tokenAddr,
       data: encodeFunctionData({
@@ -62,6 +63,7 @@ export function ApprovalsDemo() {
 
   const revokeTx = useMemo(() => {
     if (!session || !tokenAddr || !spenderAddr) return null;
+
     return {
       from: session.accounts[0],
       to: tokenAddr,
@@ -76,18 +78,24 @@ export function ApprovalsDemo() {
 
   const readAllowance = async () => {
     if (!requireSession()) return;
+
     if (!tokenAddr) {
       setAllowanceError("Enter a valid token address.");
+
       return;
     }
+
     if (!spenderAddr) {
       setAllowanceError("Enter a valid spender address.");
+
       return;
     }
+
     setPending(true);
     setAllowanceError(undefined);
     setAllowance(undefined);
     setTxHash(undefined);
+
     try {
       const [decimalsRaw, symbolRaw, allowanceRaw] = await Promise.all([
         rpc(session.provider, "eth_call", [{ to: tokenAddr, data: encodeFunctionData({ abi: ERC20_ABI, functionName: "decimals" }) }, "latest"]).catch(() => null),
@@ -96,6 +104,7 @@ export function ApprovalsDemo() {
       ]);
 
       const [val] = decodeFunctionResult({ abi: ERC20_ABI, functionName: "allowance", data: allowanceRaw as Hex }) as [bigint];
+
       setRawAllowance(val);
 
       const decimals = decimalsRaw
@@ -115,8 +124,8 @@ export function ApprovalsDemo() {
         setAllowance(`${formatUnits(val, decimals)} ${symbol}`);
       }
     }
-    catch (err) {
-      setAllowanceError(formatError(err));
+    catch (error) {
+      setAllowanceError(formatError(error));
     }
     finally {
       setPending(false);
@@ -125,15 +134,18 @@ export function ApprovalsDemo() {
 
   const revoke = async () => {
     if (!requireSession() || !revokeTx) return;
+
     setPending(true);
     setTxError(undefined);
     setTxHash(undefined);
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [revokeTx]);
+
       setTxHash(String(hash));
     }
-    catch (err) {
-      setTxError(formatError(err));
+    catch (error) {
+      setTxError(formatError(error));
     }
     finally {
       setPending(false);
@@ -148,7 +160,7 @@ export function ApprovalsDemo() {
           type="text"
           className="wallet-demo-input"
           value={token}
-          onChange={(e) => setToken(e.target.value)}
+          onChange={e => setToken(e.target.value)}
           placeholder="0x…"
         />
       </label>
@@ -159,11 +171,11 @@ export function ApprovalsDemo() {
           type="text"
           className="wallet-demo-input"
           value={spender}
-          onChange={(e) => setSpender(e.target.value)}
+          onChange={e => setSpender(e.target.value)}
           placeholder="0x…"
         />
         <div className="wallet-demo-actions" style={{ marginTop: "0.35rem" }}>
-          {KNOWN_SPENDERS.map((s) => (
+          {KNOWN_SPENDERS.map(s => (
             <button
               key={s.address}
               type="button"
@@ -197,17 +209,19 @@ export function ApprovalsDemo() {
       />
 
       <WalletActionPanel
-        inspector={revokeTx ? {
-          user: (
-            <TransactionPreview
-              from={revokeTx.from}
-              to={revokeTx.to}
-              valueLabel="Revoke — set allowance to 0"
-              data={revokeTx.data}
-            />
-          ),
-          request: { method: "eth_sendTransaction", params: [revokeTx] },
-        } : undefined}
+        inspector={revokeTx
+          ? {
+              user: (
+                <TransactionPreview
+                  from={revokeTx.from}
+                  to={revokeTx.to}
+                  valueLabel="Revoke — set allowance to 0"
+                  data={revokeTx.data}
+                />
+              ),
+              request: { method: "eth_sendTransaction", params: [revokeTx] },
+            }
+          : undefined}
         response={txHash}
         error={txError}
         pending={pending}

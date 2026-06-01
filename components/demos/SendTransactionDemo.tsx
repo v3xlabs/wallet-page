@@ -4,10 +4,10 @@ import { useState } from "react";
 import type { Hex } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 export function SendTransactionDemo() {
@@ -26,9 +26,11 @@ export function SendTransactionDemo() {
 
   const sendSelfTransfer = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setTxHash(undefined);
     setError(undefined);
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [
         {
@@ -38,10 +40,11 @@ export function SendTransactionDemo() {
           data: "0x" as Hex,
         },
       ]);
+
       setTxHash(String(hash));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

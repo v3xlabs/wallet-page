@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-import { eip191MessageHash } from "../../lib/messageHash";
 import { formatError, rpc } from "../../lib/ethereum";
-import { SignMessagePreview } from "../wallet/preview/SignMessagePreview";
-import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
+import { eip191MessageHash } from "../../lib/messageHash";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { useDemoFrame } from "../wallet/DemoFrame";
+import { SignMessagePreview } from "../wallet/preview/SignMessagePreview";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
 const MESSAGE = "wallet.page — personal_sign test";
@@ -22,18 +22,21 @@ export function PersonalSignDemo() {
 
   const sign = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setSignature(undefined);
     setError(undefined);
+
     try {
       const sig = await rpc(session.provider, "personal_sign", [
         MESSAGE,
         session.accounts[0],
       ]);
+
       setSignature(String(sig));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

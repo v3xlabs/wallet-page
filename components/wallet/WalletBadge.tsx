@@ -8,6 +8,7 @@ function trimAddress(address: string) {
 
 export function WalletBadge() {
   const { session, disconnect } = useWallet();
+
   if (!session) return null;
 
   return (

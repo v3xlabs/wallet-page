@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 import type { Hex } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { CallsBatchPreview } from "../wallet/preview/CallsBatchPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const DEMO_CALL = {
@@ -34,6 +34,7 @@ export function EthSendCallsDemo() {
 
   const sendDemoBatch = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setResponse(undefined);
     setError(undefined);
@@ -43,14 +44,17 @@ export function EthSendCallsDemo() {
       from: session.accounts[0],
       calls: [DEMO_CALL],
     };
+
     try {
       const id = await rpc(session.provider, "wallet_sendCalls", [request]);
+
       try {
         const callStatus = await rpc(
           session.provider,
           "wallet_getCallsStatus",
           [id],
         );
+
         setResponse(
           JSON.stringify({ batchId: id, status: callStatus }, null, 2),
         );
@@ -68,8 +72,9 @@ export function EthSendCallsDemo() {
         );
       }
     }
-    catch (err) {
-      const message = formatError(err);
+    catch (error_) {
+      const message = formatError(error_);
+
       setError(
         message.includes("not found")
         || message.includes("Unsupported")
@@ -85,17 +90,20 @@ export function EthSendCallsDemo() {
 
   const probeCapabilities = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setError(undefined);
     setResponse(undefined);
+
     try {
       const caps = await rpc(session.provider, "wallet_getCapabilities", [
         session.accounts[0],
       ]);
+
       setResponse(JSON.stringify(caps, null, 2));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

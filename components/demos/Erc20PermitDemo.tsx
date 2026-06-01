@@ -9,10 +9,10 @@ import {
   rpc,
   stringifyTypedData,
 } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { PermitPreview } from "../wallet/preview/PermitPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const DEMO_DECIMALS = 6;
@@ -56,6 +56,7 @@ export function Erc20PermitDemo() {
     const chainId = session
       ? Number.parseInt(session.chainId, 16)
       : 1;
+
     return permitTypedData(session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT, chainId);
   }, [session]);
 
@@ -63,6 +64,7 @@ export function Erc20PermitDemo() {
 
   const signPermit = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setSignature(undefined);
     setError(undefined);
@@ -70,15 +72,17 @@ export function Erc20PermitDemo() {
       session.accounts[0],
       Number.parseInt(session.chainId, 16),
     );
+
     try {
       const sig = await rpc(session.provider, "eth_signTypedData_v4", [
         session.accounts[0],
         stringifyTypedData(liveTyped),
       ]);
+
       setSignature(String(sig));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);

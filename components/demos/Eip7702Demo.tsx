@@ -5,13 +5,13 @@ import type { Address, Hex } from "viem";
 import { hexToNumber } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
-import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
 import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-const DEFAULT_DELEGATOR =
-  "0x0000000000000000000000000000000000000001" as Address;
+const DEFAULT_DELEGATOR
+  = "0x0000000000000000000000000000000000000001" as Address;
 
 type ProbeRow = {
   method: string;
@@ -26,6 +26,7 @@ async function tryRpc(
 ): Promise<ProbeRow> {
   try {
     const result = await rpc(provider, method, params);
+
     return {
       method,
       ok: true,
@@ -35,8 +36,8 @@ async function tryRpc(
           : JSON.stringify(result, null, 2),
     };
   }
-  catch (err) {
-    return { method, ok: false, detail: formatError(err) };
+  catch (error) {
+    return { method, ok: false, detail: formatError(error) };
   }
 }
 
@@ -52,11 +53,13 @@ export function Eip7702Demo() {
 
   const chainIdNum = () => {
     if (!session) return 1;
+
     return hexToNumber(session.chainId as Hex);
   };
 
   const probeSignMethods = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setProbeResponse(undefined);
     setError(undefined);
@@ -65,7 +68,7 @@ export function Eip7702Demo() {
     const chainIdNumber = chainIdNum();
     const rows: ProbeRow[] = [];
 
-    const signCandidates: { method: string; params: unknown[] }[] = [
+    const signCandidates: { method: string; params: unknown[]; }[] = [
       {
         method: "wallet_signAuthorization",
         params: [{ address: delegator, chainId, nonce: "0x0" }],
@@ -102,17 +105,20 @@ export function Eip7702Demo() {
 
   const probeCapabilitiesOnly = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setCapabilities(undefined);
     setError(undefined);
+
     try {
       const caps = await rpc(session.provider, "wallet_getCapabilities", [
         session.accounts[0],
       ]);
+
       setCapabilities(JSON.stringify(caps, null, 2));
     }
-    catch (err) {
-      setError(formatError(err));
+    catch (error_) {
+      setError(formatError(error_));
     }
     finally {
       setPending(false);
@@ -121,6 +127,7 @@ export function Eip7702Demo() {
 
   const probeType4Transaction = async () => {
     if (!requireSession()) return;
+
     setPending(true);
     setType4Result(undefined);
     setError(undefined);
@@ -134,12 +141,15 @@ export function Eip7702Demo() {
         { address: delegator, chainId: session.chainId, nonce: "0x0" },
       ],
     };
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [tx]);
+
       setType4Result(String(hash));
     }
-    catch (err) {
-      const message = formatError(err);
+    catch (error_) {
+      const message = formatError(error_);
+
       setType4Result(
         message.includes("not found")
         || message.includes("Unsupported")
@@ -159,8 +169,11 @@ export function Eip7702Demo() {
     <DemoShell>
       <p className="wallet-demo-muted">
         Wallet teams are standardizing RPC names for authorizations and type-4
-        transactions. This page probes common method names and{" "}
-        <code>authorizationList</code> handling.
+        transactions. This page probes common method names and
+        {" "}
+        <code>authorizationList</code>
+        {" "}
+        handling.
       </p>
       <label className="wallet-demo-field">
         <span className="wallet-demo-muted">Delegator contract (probe only)</span>
@@ -168,7 +181,7 @@ export function Eip7702Demo() {
           type="text"
           className="wallet-demo-input"
           value={delegator}
-          onChange={(e) => setDelegator(e.target.value as Address)}
+          onChange={e => setDelegator(e.target.value as Address)}
           spellCheck={false}
         />
       </label>

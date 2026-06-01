@@ -1,14 +1,14 @@
+export { ChainQuickGrid } from "./chains/ChainQuickGrid";
 export { ConnectWalletDemo } from "./connect/ConnectWalletDemo";
 export { Eip747Demo } from "./Eip747Demo";
 export { Eip7811Demo } from "./Eip7811Demo";
-export { Erc1155Demo } from "./Erc1155Demo";
 export { Erc20Demo } from "./Erc20Demo";
 export { Erc20PermitDemo } from "./Erc20PermitDemo";
 export { Erc721Demo } from "./Erc721Demo";
+export { Erc1155Demo } from "./Erc1155Demo";
 export { EthSendCallsDemo } from "./EthSendCallsDemo";
-export { PermissionsDemo } from "./PermissionsDemo";
 export { EthSignDemo } from "./EthSignDemo";
+export { PermissionsDemo } from "./PermissionsDemo";
 export { PersonalSignDemo } from "./PersonalSignDemo";
 export { SendTransactionDemo } from "./SendTransactionDemo";
 export { SiweDemo } from "./SiweDemo";
-export { ChainQuickGrid } from "./chains/ChainQuickGrid";

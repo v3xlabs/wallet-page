@@ -19,6 +19,7 @@ export function AddChainMiniDemo() {
 
   const addParams = useMemo(() => {
     if (!meta) return null;
+
     return {
       chainId: meta.chainId,
       chainName: meta.name,
@@ -37,7 +38,11 @@ export function AddChainMiniDemo() {
           ? {
               user: (
                 <p>
-                  Register <strong>{meta.name}</strong> in the wallet (RPC + currency).
+                  Register
+                  {" "}
+                  <strong>{meta.name}</strong>
+                  {" "}
+                  in the wallet (RPC + currency).
                 </p>
               ),
               request: { method: "wallet_addEthereumChain", params: [addParams] },
@@ -48,19 +53,23 @@ export function AddChainMiniDemo() {
       error={error}
       onAction={async () => {
         if (!session) return;
+
         if (!addParams) {
           setError("Unknown demo chain.");
+
           return;
         }
+
         setError(undefined);
+
         try {
           await rpc(session.provider, "wallet_addEthereumChain", [addParams]);
           await refreshSession();
           setResponse(`Added ${meta!.name} (${meta!.chainId}).`);
         }
-        catch (err) {
+        catch (error_) {
           setResponse(undefined);
-          setError(formatError(err));
+          setError(formatError(error_));
         }
       }}
     />

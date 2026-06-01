@@ -2,19 +2,19 @@
 
 import { useMemo, useState } from "react";
 import {
+  type Address,
   encodeFunctionData,
   formatUnits,
   isAddress,
   parseAbi,
   parseUnits,
-  type Address,
 } from "viem";
 
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
+import { useDemoFrame } from "../wallet/DemoFrame";
+import { DemoShell } from "../wallet/DemoShell";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
-import { DemoShell } from "../wallet/DemoShell";
-import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const erc20Abi = parseAbi([
@@ -23,8 +23,8 @@ const erc20Abi = parseAbi([
   "function decimals() view returns (uint8)",
 ]);
 
-const DEFAULT_TOKEN =
-  "0x779877A7B0D9E8603169DdbD7836e478b462Ed970" as Address;
+const DEFAULT_TOKEN
+  = "0x779877A7B0D9E8603169DdbD7836e478b462Ed970" as Address;
 
 const TRANSFER_AMOUNT = "0.0001";
 
@@ -44,6 +44,7 @@ export function Erc20Demo() {
 
   const balanceCall = useMemo(() => {
     if (!tokenAddress) return null;
+
     return {
       to: tokenAddress,
       data: encodeFunctionData({
@@ -56,6 +57,7 @@ export function Erc20Demo() {
 
   const transferTx = useMemo(() => {
     if (!tokenAddress) return null;
+
     return {
       from: session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT,
       to: tokenAddress,
@@ -74,11 +76,14 @@ export function Erc20Demo() {
   const readBalance = async () => {
     if (!requireSession() || !balanceCall || !tokenAddress) {
       setBalanceError("Enter a valid ERC-20 contract address.");
+
       return;
     }
+
     setPending(true);
     setBalanceError(undefined);
     setBalance(undefined);
+
     try {
       const raw = await rpc(session.provider, "eth_call", [
         balanceCall,
@@ -95,10 +100,11 @@ export function Erc20Demo() {
         "latest",
       ]);
       const dec = Number(BigInt(String(decimalsRaw)));
+
       setBalance(formatUnits(BigInt(String(raw)), dec));
     }
-    catch (err) {
-      setBalanceError(formatError(err));
+    catch (error) {
+      setBalanceError(formatError(error));
     }
     finally {
       setPending(false);
@@ -107,9 +113,11 @@ export function Erc20Demo() {
 
   const sendTransfer = async () => {
     if (!requireSession() || !transferTx) return;
+
     setPending(true);
     setTxError(undefined);
     setTxHash(undefined);
+
     try {
       const hash = await rpc(session.provider, "eth_sendTransaction", [
         {
@@ -119,10 +127,11 @@ export function Erc20Demo() {
           value: "0x0" as const,
         },
       ]);
+
       setTxHash(String(hash));
     }
-    catch (err) {
-      setTxError(formatError(err));
+    catch (error) {
+      setTxError(formatError(error));
     }
     finally {
       setPending(false);
@@ -137,7 +146,7 @@ export function Erc20Demo() {
           type="text"
           className="wallet-demo-input"
           value={token}
-          onChange={(e) => setToken(e.target.value)}
+          onChange={e => setToken(e.target.value)}
         />
       </label>
 
@@ -145,7 +154,14 @@ export function Erc20Demo() {
         inspector={
           balanceCall
             ? {
-                user: <p>Read <code>balanceOf</code> for the active account.</p>,
+                user: (
+                  <p>
+                    Read
+                    <code>balanceOf</code>
+                    {" "}
+                    for the active account.
+                  </p>
+                ),
                 request: { method: "eth_call", params: [balanceCall, "latest"] },
               }
             : undefined

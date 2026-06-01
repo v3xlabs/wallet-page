@@ -2,23 +2,23 @@
 
 import {
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 import type { Address, EIP1193Provider, Hex } from "viem";
 
 import {
+  type Eip6963ProviderDetail,
   formatError,
   getAccounts,
   getChainId,
   listenEip6963Providers,
   requestAccounts,
   requestEip6963Providers,
-  type Eip6963ProviderDetail,
 } from "../../lib/ethereum";
 import {
   clearStoredSession,
@@ -63,10 +63,11 @@ type WalletContextValue = {
 const WalletContext = createContext<WalletContextValue | null>(null);
 
 function logId() {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  return `${Date.now()}-${Math.random().toString(36)
+    .slice(2, 8)}`;
 }
 
-export function WalletProvider({ children }: { children: ReactNode }) {
+export function WalletProvider({ children }: { children: ReactNode; }) {
   const [session, setSession] = useState<WalletSession | undefined>();
   const [providers, setProviders] = useState<Eip6963ProviderDetail[]>([]);
   const [discoveryLog, setDiscoveryLog] = useState<DiscoveryLogEntry[]>([]);
@@ -75,7 +76,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const appendLog = useCallback((entry: Omit<DiscoveryLogEntry, "id" | "at">) => {
-    setDiscoveryLog((prev) => [
+    setDiscoveryLog(prev => [
       {
         id: logId(),
         at: new Date().toISOString(),
@@ -88,7 +89,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const mergeProvider = useCallback(
     (detail: Eip6963ProviderDetail) => {
       setProviders((prev) => {
-        if (prev.some((p) => p.info.uuid === detail.info.uuid)) return prev;
+        if (prev.some(p => p.info.uuid === detail.info.uuid)) return prev;
+
         return [...prev, detail];
       });
       appendLog({ kind: "announce", detail: detail.info });
@@ -98,7 +100,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     appendLog({ kind: "listen" });
-    void import("../../lib/openlv").then((m) => m.installOpenlv(mergeProvider));
+    void import("../../lib/openlv").then(m => m.installOpenlv(mergeProvider));
+
     return listenEip6963Providers(mergeProvider, { requestOnMount: true });
   }, [appendLog, mergeProvider]);
 
@@ -106,7 +109,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const requireSession = useCallback(() => {
     if (session) return true;
+
     setPickerOpen(true);
+
     return false;
   }, [session]);
 
@@ -114,6 +119,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     async (detail: Eip6963ProviderDetail) => {
       setConnecting(true);
       setConnectError(undefined);
+
       try {
         const accounts = await requestAccounts(detail.provider);
         const chainId = await getChainId(detail.provider);
@@ -126,6 +132,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
           icon: detail.info.icon,
           rdns: detail.info.rdns,
         };
+
         setSession(next);
         saveStoredSession({
           uuid: next.uuid,
@@ -151,13 +158,20 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const tryRestoreSession = useCallback(
     async (list: Eip6963ProviderDetail[]) => {
       const stored = loadStoredSession();
+
       if (!stored || session) return;
-      const detail = list.find((p) => p.info.uuid === stored.uuid);
+
+      const detail = list.find(p => p.info.uuid === stored.uuid);
+
       if (!detail) return;
+
       try {
         const accounts = await getAccounts(detail.provider);
+
         if (accounts.length === 0) return;
+
         const chainId = await getChainId(detail.provider);
+
         setSession({
           provider: detail.provider,
           accounts,
@@ -181,14 +195,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const cancelPendingConnect = useCallback(() => {
     setConnecting(false);
-    void import("../../lib/openlv").then((m) => m.dismissOpenlvModal());
+    void import("../../lib/openlv").then(m => m.dismissOpenlvModal());
   }, []);
 
   const disconnect = useCallback(() => {
     setSession(undefined);
     setConnectError(undefined);
     clearStoredSession();
-    void import("../../lib/openlv").then((m) => m.dismissOpenlvModal());
+    void import("../../lib/openlv").then(m => m.dismissOpenlvModal());
   }, []);
 
   const requestProviders = useCallback(() => {
@@ -198,9 +212,11 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const refreshSession = useCallback(async () => {
     if (!session) return;
+
     const accounts = await getAccounts(session.provider);
     const chainId = await getChainId(session.provider);
     const next = { ...session, accounts, chainId };
+
     setSession(next);
     saveStoredSession({
       uuid: next.uuid,
@@ -256,10 +272,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
 export function useWallet() {
   const ctx = useContext(WalletContext);
+
   if (!ctx) {
     throw new Error("useWallet must be used within WalletProvider");
   }
+
   return ctx;
 }
 
-export type { Eip6963ProviderDetail };
+export { type Eip6963ProviderDetail } from "../../lib/ethereum";
