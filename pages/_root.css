@@ -110,10 +110,8 @@
 }
 
 .wallet-demo-badge-connect {
-  border: none;
   cursor: pointer;
-  font: inherit;
-  font-weight: 600;
+  padding: 0.25rem 0.5rem;
   color: var(--vocs-text-color-primary);
 }
 
