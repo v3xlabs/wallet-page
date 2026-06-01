@@ -6,7 +6,6 @@ import { formatError, rpc } from "../../lib/ethereum";
 import { eip191MessageHash } from "../../lib/messageHash";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { useDemoFrame } from "../wallet/DemoFrame";
-import { SignMessagePreview } from "../wallet/preview/SignMessagePreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
@@ -44,10 +43,10 @@ export function PersonalSignDemo() {
   };
 
   return (
-    <DemoBlock>
+    <DemoBlock source="components/demos/personal-sign-demo.tsx">
       <WalletActionPanel
         inspector={{
-          user: <SignMessagePreview message={MESSAGE} />,
+          user: <p className="wallet-preview-message">{MESSAGE}</p>,
           request: {
             method: "personal_sign",
             params: [MESSAGE, session?.accounts[0] ?? "0x…"],

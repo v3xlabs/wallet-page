@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect, useId, useMemo, useState } from "react";
+import { type ReactNode, useId, useMemo, useState } from "react";
 
 import { formatRpcCall, type RpcCall } from "../../lib/rpcDisplay";
 
@@ -8,12 +8,8 @@ export type DemoInspectorProps = {
   user?: ReactNode;
   /** JSON-RPC request (method + params). */
   request?: RpcCall;
-  /** @deprecated use `request` */
-  rpc?: RpcCall;
   /** Raw JSON-RPC response body. */
   response?: string;
-  /** @deprecated use `response` */
-  raw?: string;
   hash?: string | null;
   hashNote?: string;
   /** Style the response tab as an error (e.g. rejected RPC). */
@@ -25,39 +21,31 @@ type TabId = "user" | "request" | "response" | "hash";
 export function DemoInspector({
   user,
   request,
-  rpc,
   response,
-  raw,
   hash,
   hashNote,
   responseError,
 }: DemoInspectorProps) {
   const baseId = useId();
-  const requestCall = request ?? rpc;
-  const responseBody = response ?? raw;
 
   const tabs = useMemo(() => {
     const list: { id: TabId; label: string; }[] = [];
 
     if (user) list.push({ id: "user", label: "Preview" });
 
-    if (requestCall) list.push({ id: "request", label: "Request" });
+    if (request) list.push({ id: "request", label: "Request" });
 
-    if (responseBody) list.push({ id: "response", label: "Response" });
+    if (response) list.push({ id: "response", label: "Response" });
 
     if (hash) list.push({ id: "hash", label: "Hash" });
 
     return list;
-  }, [user, requestCall, responseBody, hash]);
+  }, [user, request, response, hash]);
 
   const [active, setActive] = useState<TabId>(() => tabs[0]?.id ?? "request");
 
-  useEffect(() => {
-    if (!tabs.some(t => t.id === active)) {
-      setActive(tabs[0]?.id ?? "request");
-    }
-  }, [tabs, active]);
-
+  // `active` is the user's explicit choice; fall back to the first available tab
+  // whenever that choice is no longer valid (tabs are derived from props).
   const current = tabs.some(t => t.id === active) ? active : tabs[0]?.id;
 
   if (tabs.length === 0) return null;
@@ -90,24 +78,24 @@ export function DemoInspector({
           {user}
         </div>
       )}
-      {current === "request" && requestCall && (
+      {current === "request" && request && (
         <div
           id={`${baseId}-panel-request`}
           role="tabpanel"
           aria-labelledby={`${baseId}-request`}
           className="wallet-demo-tab-panel wallet-demo-rpc"
         >
-          <pre>{formatRpcCall(requestCall)}</pre>
+          <pre>{formatRpcCall(request)}</pre>
         </div>
       )}
-      {current === "response" && responseBody && (
+      {current === "response" && response && (
         <div
           id={`${baseId}-panel-response`}
           role="tabpanel"
           aria-labelledby={`${baseId}-response`}
           className={`wallet-demo-tab-panel wallet-demo-raw${responseError ? " wallet-demo-raw-error" : ""}`}
         >
-          <pre className="wallet-demo-raw-pre">{responseBody}</pre>
+          <pre className="wallet-demo-raw-pre">{response}</pre>
         </div>
       )}
       {current === "hash" && hash && (

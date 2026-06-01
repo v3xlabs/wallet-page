@@ -94,7 +94,7 @@ export function PermissionsDemo() {
     finally {
       setPending(false);
     }
-  }, [session, getPermissions]);
+  }, [session, getPermissions, requireSession]);
 
   const revokePermissions = useCallback(async () => {
     if (!requireSession()) return;
@@ -120,14 +120,14 @@ export function PermissionsDemo() {
     finally {
       setPending(false);
     }
-  }, [session, getPermissions]);
+  }, [session, getPermissions, requireSession]);
 
   useEffect(() => {
     if (session) void getPermissions();
   }, [session, getPermissions]);
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/permissions-demo.tsx">
       <div className="wallet-perm-demo">
         <div className="wallet-demo-actions wallet-perm-demo-toolbar">
           <button

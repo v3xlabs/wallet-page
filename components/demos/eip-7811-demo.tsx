@@ -87,7 +87,7 @@ export function Eip7811Demo() {
   }, [session, getAssets]);
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/eip-7811-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: (

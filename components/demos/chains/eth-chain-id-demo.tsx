@@ -13,6 +13,7 @@ export function EthChainIdDemo() {
 
   return (
     <MiniDemo
+      source="components/demos/chains/eth-chain-id-demo.tsx"
       title="eth_chainId"
       inspector={{
         user: <p>Read the wallet&apos;s active chain (hex).</p>,

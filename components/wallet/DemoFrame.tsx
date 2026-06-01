@@ -9,9 +9,11 @@ type DemoFrameProps = {
   children: ReactNode;
   /** `inline` — several demos on one MDX page; `mini` — compact RPC block (chains). */
   variant?: "panel" | "inline" | "mini";
+  /** Repo-relative path to the demo's source file, e.g. `components/demos/erc-20-demo.tsx`. */
+  source?: string;
 };
 
-export function DemoFrame({ children, variant = "panel" }: DemoFrameProps) {
+export function DemoFrame({ children, variant = "panel", source }: DemoFrameProps) {
   const rootClass
     = variant === "mini"
       ? "wallet-mini-demo"
@@ -28,7 +30,7 @@ export function DemoFrame({ children, variant = "panel" }: DemoFrameProps) {
             : "wallet-demo-panel wallet-demo-panel-open"
         }
       >
-        <WalletDemoChrome />
+        <WalletDemoChrome source={source} />
         {children}
       </div>
     </div>

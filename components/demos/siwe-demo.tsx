@@ -2,14 +2,53 @@
 
 import { useMemo, useState } from "react";
 
+import { shortAddress } from "../../lib/display";
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
 import { eip191MessageHash } from "../../lib/messageHash";
-import { buildSiweMessage, generateSiweNonce } from "../../lib/siwe";
+import { buildSiweMessage, generateSiweNonce, parseSiweMessage } from "../../lib/siwe";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
-import { SiwePreview } from "../wallet/preview/SiwePreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
+
+function SiwePreview({ message }: { message: string; }) {
+  const parsed = message ? parseSiweMessage(message) : null;
+
+  if (!parsed?.address || !parsed.domain) {
+    return <pre className="wallet-preview-raw">{message}</pre>;
+  }
+
+  return (
+    <>
+      <p className="wallet-preview-siwe-lead">
+        <strong>{parsed.domain}</strong>
+        {" "}
+        · sign in as
+        {" "}
+        <code>{shortAddress(parsed.address, 6)}</code>
+      </p>
+      {parsed.statement && (
+        <p className="wallet-preview-siwe-statement">{parsed.statement}</p>
+      )}
+      <dl className="wallet-preview-meta">
+        <div>
+          <dt>URI</dt>
+          <dd>{parsed.uri}</dd>
+        </div>
+        <div>
+          <dt>Chain</dt>
+          <dd>{parsed.chainId}</dd>
+        </div>
+        <div>
+          <dt>Nonce</dt>
+          <dd>
+            <code>{parsed.nonce}</code>
+          </dd>
+        </div>
+      </dl>
+    </>
+  );
+}
 
 export function SiweDemo() {
   const { session } = useWallet();
@@ -65,7 +104,7 @@ export function SiweDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/siwe-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: <SiwePreview message={previewMessage} />,

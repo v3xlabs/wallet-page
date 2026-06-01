@@ -1,22 +1,65 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { hashTypedData, type Hex } from "viem";
+import { type Address, hashTypedData, type Hex } from "viem";
 
+import { formatDeadline, formatTokenAmount, shortAddress } from "../../lib/display";
 import {
   DEMO_PLACEHOLDER_ACCOUNT,
   formatError,
   rpc,
-  stringifyTypedData,
+  stringifyRpcData,
 } from "../../lib/ethereum";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
-import { PermitPreview } from "../wallet/preview/PermitPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
 const DEMO_DECIMALS = 6;
 const DEMO_SYMBOL = "WPAGE";
+
+type PermitPreviewProps = {
+  tokenName: string;
+  tokenSymbol: string;
+  decimals?: number;
+  value: bigint;
+  spender: Address;
+  deadline: bigint;
+};
+
+function PermitPreview({
+  tokenName,
+  tokenSymbol,
+  decimals = 6,
+  value,
+  spender,
+  deadline,
+}: PermitPreviewProps) {
+  const amount = formatTokenAmount(value, decimals, tokenSymbol);
+  const iconLetter = (tokenSymbol ?? tokenName ?? "T").slice(0, 1).toUpperCase();
+
+  return (
+    <div className="wallet-preview-permit">
+      <div className="wallet-preview-permit-hero">
+        <span className="wallet-preview-token-icon" aria-hidden>
+          {iconLetter}
+        </span>
+        <div>
+          <p className="wallet-preview-permit-amount">{amount}</p>
+          <p className="wallet-preview-permit-token">
+            to
+            {" "}
+            <code>{shortAddress(spender)}</code>
+            {" "}
+            · until
+            {" "}
+            {formatDeadline(deadline)}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const permitTypedData = (owner: Hex, chainId: number) =>
   ({
@@ -76,7 +119,7 @@ export function Erc20PermitDemo() {
     try {
       const sig = await rpc(session.provider, "eth_signTypedData_v4", [
         session.accounts[0],
-        stringifyTypedData(liveTyped),
+        stringifyRpcData(liveTyped),
       ]);
 
       setSignature(String(sig));
@@ -95,7 +138,7 @@ export function Erc20PermitDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/erc-20-permit-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: (
@@ -110,7 +153,7 @@ export function Erc20PermitDemo() {
           ),
           request: {
             method: "eth_signTypedData_v4",
-            params: [session?.accounts[0] ?? "0x…", stringifyTypedData(typed)],
+            params: [session?.accounts[0] ?? "0x…", stringifyRpcData(typed)],
           },
           hash: digest,
           hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",

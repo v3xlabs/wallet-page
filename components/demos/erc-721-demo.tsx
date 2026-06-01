@@ -4,7 +4,7 @@ import { DemoShell } from "../wallet/DemoShell";
 
 export function Erc721Demo() {
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/erc-721-demo.tsx">
       <section className="wallet-demo-section">
         <h3>ERC-721</h3>
         <p className="wallet-demo-muted">

@@ -7,7 +7,7 @@ import { getDemoChain } from "../../../lib/chains";
 import { formatError, getChainId, rpc } from "../../../lib/ethereum";
 import { MiniDemo } from "../../wallet/MiniDemo";
 import { useWallet } from "../../wallet/WalletProvider";
-import { ChainSelect } from "./ChainSelect";
+import { ChainSelect } from "./chain-select";
 
 export function SwitchChainMiniDemo() {
   const { session, refreshSession } = useWallet();
@@ -19,6 +19,7 @@ export function SwitchChainMiniDemo() {
 
   return (
     <MiniDemo
+      source="components/demos/chains/switch-chain-mini-demo.tsx"
       title="wallet_switchEthereumChain"
       description={<ChainSelect value={chainId} onChange={setChainId} />}
       actionLabel="Switch chain"

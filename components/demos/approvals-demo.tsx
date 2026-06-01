@@ -153,7 +153,7 @@ export function ApprovalsDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/approvals-demo.tsx">
       <label className="wallet-demo-field">
         <span className="wallet-demo-muted">Token contract</span>
         <input

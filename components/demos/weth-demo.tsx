@@ -50,8 +50,12 @@ export function WethDemo() {
     : undefined;
 
   const parsedWei = useMemo(() => {
-    try { return parseEther(amount || "0"); }
-    catch { return; }
+    try {
+      return parseEther(amount || "0");
+    }
+    catch {
+      return;
+    }
   }, [amount]);
 
   const balanceCall = useMemo(() => {
@@ -155,7 +159,7 @@ export function WethDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/weth-demo.tsx">
       {wethAddress
         ? (
             <p className="wallet-demo-muted">

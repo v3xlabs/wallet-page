@@ -1,8 +1,11 @@
 "use client";
 
+import { sourceUrl } from "../../../lib/repo";
 import { ProviderList } from "../../wallet/ProviderList";
 import { WalletBadge } from "../../wallet/WalletBadge";
 import { useWallet } from "../../wallet/WalletProvider";
+
+const SOURCE = "components/demos/connect/connect-wallet-demo.tsx";
 
 /** Connect + EIP-6963 discovery on one panel — wallet list is always visible. */
 export function ConnectWalletDemo() {
@@ -20,7 +23,19 @@ export function ConnectWalletDemo() {
   return (
     <div className="wallet-demo">
       <div className="wallet-demo-panel wallet-demo-panel-discovery">
-        {session && <WalletBadge />}
+        <div className="wallet-demo-chrome">
+          <a
+            className="wallet-demo-source"
+            href={sourceUrl(SOURCE)}
+            target="_blank"
+            rel="noreferrer"
+            title="View demo source on GitHub"
+            aria-label="View demo source on GitHub"
+          >
+            {"</>"}
+          </a>
+          {session && <WalletBadge />}
+        </div>
 
         <section className="wallet-demo-section">
           <h3>Connect</h3>

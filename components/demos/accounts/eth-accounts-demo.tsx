@@ -2,28 +2,26 @@
 
 import { useState } from "react";
 
-import { formatError, requestAccounts } from "../../../lib/ethereum";
+import { formatError, getAccounts } from "../../../lib/ethereum";
 import { DemoBlock } from "../../wallet/DemoBlock";
 import { useDemoFrame } from "../../wallet/DemoFrame";
-import { AccountsPreview } from "../../wallet/preview/AccountsPreview";
 import { WalletActionPanel } from "../../wallet/preview/WalletActionPanel";
 import { useWallet } from "../../wallet/WalletProvider";
+import { AccountsPreview } from "./preview";
 
-export function EthRequestAccountsDemo() {
+export function EthAccountsDemo() {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [accounts, setAccounts] = useState<string[]>();
   const [error, setError] = useState<string>();
-  const [pending, setPending] = useState(false);
 
-  const request = async () => {
+  const fetchAccounts = async () => {
     if (!requireSession()) return;
 
-    setPending(true);
     setError(undefined);
 
     try {
-      const list = await requestAccounts(session.provider);
+      const list = await getAccounts(session.provider);
 
       setAccounts(list.map(String));
     }
@@ -31,30 +29,26 @@ export function EthRequestAccountsDemo() {
       setAccounts(undefined);
       setError(formatError(error_));
     }
-    finally {
-      setPending(false);
-    }
   };
 
   return (
-    <DemoBlock>
+    <DemoBlock source="components/demos/accounts/eth-accounts-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: (
             <AccountsPreview
               accounts={accounts ?? []}
-              firstAccountHint="Many apps only bind UI to accounts[0] and never offer the others"
+              firstAccountHint="Typical dapp shortcut: const [address] = await eth_accounts"
             />
           ),
-          request: { method: "eth_requestAccounts", params: [] },
+          request: { method: "eth_accounts", params: [] },
         }}
         response={accounts ? JSON.stringify(accounts, null, 2) : undefined}
         error={error}
-        pending={pending}
         actions={[
           {
-            label: "Call eth_requestAccounts",
-            onClick: request,
+            label: "Call eth_accounts",
+            onClick: fetchAccounts,
             primary: true,
           },
         ]}

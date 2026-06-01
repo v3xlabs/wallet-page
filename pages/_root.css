@@ -61,14 +61,40 @@
   padding-top: 2.5rem;
 }
 
-.wallet-demo-badge {
+.wallet-demo-chrome {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  max-width: calc(100% - 1.5rem);
+}
+
+.wallet-demo-source {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--vocs-font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid var(--vocs-border-color-primary);
+  border-radius: 999px;
+  color: var(--vocs-text-color-secondary);
+  text-decoration: none;
+}
+
+.wallet-demo-source:hover {
+  color: var(--vocs-text-color-primary);
+  border-color: var(--vocs-text-color-secondary);
+  background: var(--vocs-background-color-surfaceMuted);
+}
+
+.wallet-demo-badge {
+  display: flex;
+  align-items: center;
   gap: 0.4rem;
-  max-width: min(100% - 1.5rem, 22rem);
+  max-width: min(100%, 22rem);
   padding: 0.25rem 0.35rem 0.25rem 0.5rem;
   border: 1px solid var(--vocs-border-color-primary);
   border-radius: 999px;

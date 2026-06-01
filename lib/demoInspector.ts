@@ -7,13 +7,13 @@ export function mergeInspector(
   response?: unknown,
   error?: unknown,
 ): DemoInspectorProps | undefined {
-  const request = inspector?.request ?? inspector?.rpc;
+  const request = inspector?.request;
   const responseBody
     = error !== undefined && error !== ""
       ? formatDemoOutput(error)
       : (response !== undefined && response !== ""
           ? formatDemoOutput(response)
-          : inspector?.response ?? inspector?.raw);
+          : inspector?.response);
 
   if (!inspector?.user && !request && !responseBody && !inspector?.hash) {
     return undefined;

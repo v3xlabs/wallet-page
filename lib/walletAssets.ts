@@ -106,14 +106,21 @@ function labelsFromEntry(
     entry.symbol,
     currencyInfo?.symbol,
     metadata?.symbol,
+    tokenInfo?.symbol,
   );
   const name = readString(
     entry.name,
     currencyInfo?.name,
     metadata?.name,
+    tokenInfo?.name,
     symbol,
   );
-  const iconUrl = readString(entry.logoURI, entry.image, metadata?.image);
+  const iconUrl = readString(
+    entry.logoURI,
+    entry.image,
+    metadata?.image,
+    tokenInfo?.image,
+  );
 
   if (symbol) {
     return {

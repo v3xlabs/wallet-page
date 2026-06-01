@@ -142,7 +142,7 @@ export function MulticallDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/multicall-demo.tsx">
       <p className="wallet-demo-muted">
         Multicall3:
         {" "}

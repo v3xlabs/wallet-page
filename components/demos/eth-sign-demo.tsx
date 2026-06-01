@@ -5,7 +5,6 @@ import { useState } from "react";
 import { formatError, rpc } from "../../lib/ethereum";
 import { DemoBlock } from "../wallet/DemoBlock";
 import { useDemoFrame } from "../wallet/DemoFrame";
-import { SignHashPreview } from "../wallet/preview/SignHashPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
@@ -42,10 +41,17 @@ export function EthSignDemo() {
   };
 
   return (
-    <DemoBlock>
+    <DemoBlock source="components/demos/eth-sign-demo.tsx">
       <WalletActionPanel
         inspector={{
-          user: <SignHashPreview hash={ZERO_HASH} />,
+          user: (
+            <>
+              <p className="wallet-preview-warning">
+                Not human-readable — wallets should warn before signing a raw hash.
+              </p>
+              <code className="wallet-preview-hash">{ZERO_HASH}</code>
+            </>
+          ),
           request: {
             method: "eth_sign",
             params: [session?.accounts[0] ?? "0x…", ZERO_HASH],

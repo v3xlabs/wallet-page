@@ -83,7 +83,7 @@ export function ChainQuickGrid() {
   const active = session?.chainId.toLowerCase();
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/chains/chain-quick-grid.tsx">
       {session && (
         <p className="wallet-demo-muted">
           Active chain:

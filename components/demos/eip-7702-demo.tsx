@@ -166,7 +166,7 @@ export function Eip7702Demo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/eip-7702-demo.tsx">
       <p className="wallet-demo-muted">
         Wallet teams are standardizing RPC names for authorizations and type-4
         transactions. This page probes common method names and

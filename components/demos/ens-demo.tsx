@@ -78,7 +78,7 @@ export function EnsDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/ens-demo.tsx">
       <p className="wallet-demo-muted" style={{ marginBottom: "1.25rem" }}>
         Resolves against Ethereum mainnet via a public RPC.
       </p>

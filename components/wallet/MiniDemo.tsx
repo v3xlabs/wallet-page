@@ -16,6 +16,8 @@ type MiniDemoProps = {
   response?: string;
   error?: string;
   pending?: boolean;
+  /** Repo-relative path to the demo's source file. */
+  source?: string;
 };
 
 function MiniDemoContent({
@@ -27,7 +29,7 @@ function MiniDemoContent({
   response,
   error,
   pending,
-}: MiniDemoProps) {
+}: Omit<MiniDemoProps, "source">) {
   const { requireSession } = useWallet();
   const [localPending, setLocalPending] = useState(false);
 
@@ -69,9 +71,9 @@ function MiniDemoContent({
 }
 
 /** Compact RPC demo: Preview / Request / Response tabs + primary action. */
-export function MiniDemo(props: MiniDemoProps) {
+export function MiniDemo({ source, ...props }: MiniDemoProps) {
   return (
-    <DemoFrame variant="mini">
+    <DemoFrame variant="mini" source={source}>
       <MiniDemoContent {...props} />
     </DemoFrame>
   );

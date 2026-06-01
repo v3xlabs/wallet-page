@@ -139,7 +139,7 @@ export function Erc20Demo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/erc-20-demo.tsx">
       <label className="wallet-demo-field">
         <span className="wallet-demo-muted">Token contract</span>
         <input

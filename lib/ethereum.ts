@@ -56,9 +56,6 @@ export function stringifyRpcData(data: unknown): string {
   );
 }
 
-/** @deprecated Use {@link stringifyRpcData} */
-export const stringifyTypedData = stringifyRpcData;
-
 function demoJsonReplacer(_key: string, value: unknown) {
   if (typeof value === "bigint") return value.toString();
 

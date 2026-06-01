@@ -52,7 +52,7 @@ export function SendTransactionDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/send-transaction-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: (

@@ -6,7 +6,6 @@ import type { Hex } from "viem";
 import { formatError, rpc } from "../../lib/ethereum";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
-import { CallsBatchPreview } from "../wallet/preview/CallsBatchPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
@@ -14,6 +13,30 @@ const DEMO_CALL = {
   to: "0x0000000000000000000000000000000000000000" as Hex,
   value: "0x0" as const,
 };
+
+function CallsBatchPreview({
+  chainId,
+  calls,
+}: {
+  chainId: string;
+  calls: { to: string; value?: string; }[];
+}) {
+  return (
+    <ul className="wallet-preview-batch-list">
+      {calls.map((call, i) => (
+        <li key={`${call.to}-${i}`}>
+          <span className="wallet-preview-batch-index">{i + 1}</span>
+          <code>{call.to}</code>
+          <span className="wallet-demo-muted">
+            chain
+            {" "}
+            <code>{chainId}</code>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function EthSendCallsDemo() {
   const { session } = useWallet();
@@ -111,7 +134,7 @@ export function EthSendCallsDemo() {
   };
 
   return (
-    <DemoShell>
+    <DemoShell source="components/demos/eth-send-calls-demo.tsx">
       <WalletActionPanel
         inspector={{
           user: (

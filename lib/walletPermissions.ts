@@ -40,6 +40,12 @@ const KNOWN_SET = new Set<string>(KNOWN_CAPABILITIES);
 
 const PREFIX_ORDER = ["eth_", "wallet_", "personal_"] as const;
 
+function prefixRank(prefix: string): number {
+  const index = PREFIX_ORDER.indexOf(prefix as (typeof PREFIX_ORDER)[number]);
+
+  return index === -1 ? PREFIX_ORDER.length : index;
+}
+
 export type CapabilityRow = {
   id: string;
   granted: boolean;
@@ -102,12 +108,6 @@ export function buildCapabilityGroups(granted: Set<string>): CapabilityGroup[] {
     items.push({ id, granted: granted.has(id) });
     byPrefix.set(prefix, items);
   }
-
-  const prefixRank = (prefix: string) => {
-    const index = PREFIX_ORDER.indexOf(prefix as (typeof PREFIX_ORDER)[number]);
-
-    return index === -1 ? PREFIX_ORDER.length : index;
-  };
 
   return [...byPrefix.entries()]
     .sort(([a], [b]) => prefixRank(a) - prefixRank(b) || a.localeCompare(b))
