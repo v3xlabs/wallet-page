@@ -1,7 +1,6 @@
 import { EthAccountsDemo } from "../components/demos/accounts/EthAccountsDemo";
 import { EthRequestAccountsDemo } from "../components/demos/accounts/EthRequestAccountsDemo";
 import { AccountsDiagram } from "../components/demos/accounts/AccountsDiagram";
-import { PageDemoChrome } from "../components/wallet/PageDemoChrome";
 
 # Addresses
 
@@ -21,8 +20,6 @@ Order within the array is defined by the wallet.
 :::note
 **Beyond `accounts[0]`:** The array can hold more than one address, and wallets are free to expose as many connected accounts as the user has approved. In practice, most dapps destructure `const [address] = accounts` and stop there — `accounts[1]`, `accounts[2]`, and the rest go unseen. That's a missed opportunity. Wallets that surface multi-account selection, and dapps that render the full list, give users real agency: switching between identities without a reconnect, managing separate addresses in a single session, keeping things organized. If you're building a wallet, multi-account support is well worth implementing. If you're building a dapp, it's worth surfacing.
 :::
-
-<PageDemoChrome />
 
 ## eth_accounts
 

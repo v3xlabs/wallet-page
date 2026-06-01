@@ -1,16 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { rpc } from "../../lib/ethereum";
+import { formatError, rpc, stringifyRpcData } from "../../lib/ethereum";
+import { parseWalletGetAssetsResponse } from "../../lib/walletAssets";
+import { WalletAssetSearch } from "../wallet/WalletAssetSearch";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 export function Eip7811Demo() {
   const { session } = useWallet();
-  const [result, setResult] = useState<string>();
+  const { requireSession } = useDemoFrame();
+  const [assets, setAssets] = useState<ReturnType<typeof parseWalletGetAssetsResponse>>(
+    [],
+  );
+  const [raw, setRaw] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
@@ -23,17 +29,19 @@ export function Eip7811Demo() {
     };
   }, [session]);
 
-  const getAssets = async () => {
-    if (!session || !request) return;
+  const getAssets = useCallback(async () => {
+    if (!requireSession() || !request) return;
     setPending(true);
     setError(undefined);
-    setResult(undefined);
     try {
-      const assets = await rpc(session.provider, "wallet_getAssets", [request]);
-      setResult(JSON.stringify(assets, null, 2));
+      const response = await rpc(session.provider, "wallet_getAssets", [request]);
+      setRaw(stringifyRpcData(response));
+      setAssets(parseWalletGetAssetsResponse(response));
     }
     catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+      setAssets([]);
+      setRaw(undefined);
+      const message = formatError(err);
       setError(
         message.includes("not found")
         || message.includes("Unsupported")
@@ -45,54 +53,62 @@ export function Eip7811Demo() {
     finally {
       setPending(false);
     }
-  };
+  }, [session, request, requireSession]);
 
   const probeCapabilities = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
-    setResult(undefined);
     try {
       const caps = await rpc(session.provider, "wallet_getCapabilities", [
         session.accounts[0],
       ]);
-      setResult(JSON.stringify(caps, null, 2));
+      setRaw(stringifyRpcData(caps));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setRaw(undefined);
+      setError(formatError(err));
     }
     finally {
       setPending(false);
     }
   };
 
+  useEffect(() => {
+    if (session) void getAssets();
+  }, [session, getAssets]);
+
   return (
     <DemoShell>
       <WalletActionPanel
-        inspector={
-          request
-            ? {
-                rpc: { method: "wallet_getAssets", params: [request] },
-              }
-            : undefined
-        }
+        inspector={{
+          user: (
+            <>
+              {error && <pre className="wallet-asset-search-error">{error}</pre>}
+              <WalletAssetSearch
+                assets={assets}
+                loading={pending && assets.length === 0}
+              />
+            </>
+          ),
+          request: request
+            ? { method: "wallet_getAssets", params: [request] }
+            : { method: "wallet_getAssets", params: [{ account: "0x…", chainFilter: ["0x…"] }] },
+          response: raw,
+        }}
         pending={pending}
         actions={[
           {
             label: "Get assets",
             onClick: getAssets,
             primary: true,
-            disabled: !session,
           },
           {
             label: "wallet_getCapabilities",
             onClick: probeCapabilities,
-            disabled: !session,
           },
         ]}
-      >
-        <ResultBlock label="Response" value={result} error={error} />
-      </WalletActionPanel>
+      />
     </DemoShell>
   );
 }

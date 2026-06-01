@@ -5,11 +5,11 @@ import type { Address, Hex } from "viem";
 import { hexToNumber } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
-/** Placeholder delegator — wallets should reject or whitelist, not sign blindly. */
 const DEFAULT_DELEGATOR =
   "0x0000000000000000000000000000000000000001" as Address;
 
@@ -42,8 +42,9 @@ async function tryRpc(
 
 export function Eip7702Demo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [delegator, setDelegator] = useState(DEFAULT_DELEGATOR);
-  const [probes, setProbes] = useState<string>();
+  const [probeResponse, setProbeResponse] = useState<string>();
   const [capabilities, setCapabilities] = useState<string>();
   const [type4Result, setType4Result] = useState<string>();
   const [error, setError] = useState<string>();
@@ -55,9 +56,9 @@ export function Eip7702Demo() {
   };
 
   const probeSignMethods = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
-    setProbes(undefined);
+    setProbeResponse(undefined);
     setError(undefined);
     const from = session.accounts[0];
     const chainId = session.chainId;
@@ -67,52 +68,23 @@ export function Eip7702Demo() {
     const signCandidates: { method: string; params: unknown[] }[] = [
       {
         method: "wallet_signAuthorization",
-        params: [
-          {
-            address: delegator,
-            chainId,
-            nonce: "0x0",
-          },
-        ],
+        params: [{ address: delegator, chainId, nonce: "0x0" }],
       },
       {
         method: "eth_signAuthorization",
-        params: [
-          {
-            address: delegator,
-            chainId,
-            nonce: "0x0",
-          },
-        ],
+        params: [{ address: delegator, chainId, nonce: "0x0" }],
       },
       {
         method: "eth_sign7702Authorization",
-        params: [
-          {
-            contract: delegator,
-            chain_id: chainIdNumber,
-            nonce: 0,
-          },
-        ],
+        params: [{ contract: delegator, chain_id: chainIdNumber, nonce: 0 }],
       },
       {
         method: "wallet_signEip7702Authorization",
-        params: [
-          {
-            contractAddress: delegator,
-            chainId: chainIdNumber,
-            nonce: 0,
-          },
-        ],
+        params: [{ contractAddress: delegator, chainId: chainIdNumber, nonce: 0 }],
       },
       {
         method: "wallet_prepareAuthorization",
-        params: [
-          {
-            address: delegator,
-            chainId,
-          },
-        ],
+        params: [{ address: delegator, chainId }],
       },
       {
         method: "wallet_getCapabilities",
@@ -124,12 +96,12 @@ export function Eip7702Demo() {
       rows.push(await tryRpc(session.provider, method, params));
     }
 
-    setProbes(JSON.stringify(rows, null, 2));
+    setProbeResponse(JSON.stringify(rows, null, 2));
     setPending(false);
   };
 
   const probeCapabilitiesOnly = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setCapabilities(undefined);
     setError(undefined);
@@ -148,28 +120,23 @@ export function Eip7702Demo() {
   };
 
   const probeType4Transaction = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setType4Result(undefined);
     setError(undefined);
+    const tx = {
+      from: session.accounts[0],
+      to: session.accounts[0],
+      value: "0x0",
+      data: "0x",
+      type: "0x4",
+      authorizationList: [
+        { address: delegator, chainId: session.chainId, nonce: "0x0" },
+      ],
+    };
     try {
-      const hash = await rpc(session.provider, "eth_sendTransaction", [
-        {
-          from: session.accounts[0],
-          to: session.accounts[0],
-          value: "0x0",
-          data: "0x",
-          type: "0x4",
-          authorizationList: [
-            {
-              address: delegator,
-              chainId: session.chainId,
-              nonce: "0x0",
-            },
-          ],
-        },
-      ]);
-      setType4Result(`Accepted — tx hash: ${String(hash)}`);
+      const hash = await rpc(session.provider, "eth_sendTransaction", [tx]);
+      setType4Result(String(hash));
     }
     catch (err) {
       const message = formatError(err);
@@ -190,57 +157,77 @@ export function Eip7702Demo() {
 
   return (
     <DemoShell>
-      <section className="wallet-demo-section">
-        <h3>EIP-7702 authorizations</h3>
-        <p className="wallet-demo-muted">
-          Wallet teams are standardizing RPC names for authorizations and type-4
-          transactions. This page probes common method names and{" "}
-          <code>authorizationList</code> handling — we recommend exposing these
-          through reviewed, wallet-controlled delegation flows.
-        </p>
-        <label className="wallet-demo-field">
-          <span>Delegator contract (probe only)</span>
-          <input
-            type="text"
-            className="wallet-demo-input"
-            value={delegator}
-            onChange={(e) => setDelegator(e.target.value as Address)}
-            spellCheck={false}
-          />
-        </label>
-        <div className="wallet-demo-actions">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            disabled={pending}
-            onClick={() => void probeSignMethods()}
-          >
-            Probe sign / prepare RPCs
-          </button>
-          <button
-            type="button"
-            className="wallet-demo-btn"
-            disabled={pending}
-            onClick={() => void probeCapabilitiesOnly()}
-          >
-            wallet_getCapabilities
-          </button>
-          <button
-            type="button"
-            className="wallet-demo-btn"
-            disabled={pending}
-            onClick={() => void probeType4Transaction()}
-          >
-            eth_sendTransaction (type 4)
-          </button>
-        </div>
-        <ResultBlock
-          label="RPC probe log"
-          value={probes}
+      <p className="wallet-demo-muted">
+        Wallet teams are standardizing RPC names for authorizations and type-4
+        transactions. This page probes common method names and{" "}
+        <code>authorizationList</code> handling.
+      </p>
+      <label className="wallet-demo-field">
+        <span className="wallet-demo-muted">Delegator contract (probe only)</span>
+        <input
+          type="text"
+          className="wallet-demo-input"
+          value={delegator}
+          onChange={(e) => setDelegator(e.target.value as Address)}
+          spellCheck={false}
         />
-        <ResultBlock label="Capabilities" value={capabilities} />
-        <ResultBlock label="Type-4 send" value={type4Result} error={error} />
-      </section>
+      </label>
+
+      <WalletActionPanel
+        inspector={{
+          request: {
+            method: "wallet_signAuthorization",
+            params: [{ address: delegator, chainId: session?.chainId ?? "0x1", nonce: "0x0" }],
+          },
+        }}
+        response={probeResponse}
+        pending={pending}
+        actions={[
+          {
+            label: "Probe sign / prepare RPCs",
+            onClick: probeSignMethods,
+            primary: true,
+          },
+        ]}
+      />
+
+      <WalletActionPanel
+        inspector={{
+          request: {
+            method: "wallet_getCapabilities",
+            params: [session?.accounts[0] ?? "0x…"],
+          },
+        }}
+        response={capabilities}
+        error={error}
+        pending={pending}
+        actions={[
+          { label: "wallet_getCapabilities", onClick: probeCapabilitiesOnly },
+        ]}
+      />
+
+      <WalletActionPanel
+        inspector={{
+          request: {
+            method: "eth_sendTransaction",
+            params: [{
+              from: session?.accounts[0] ?? "0x…",
+              to: session?.accounts[0] ?? "0x…",
+              value: "0x0",
+              data: "0x",
+              type: "0x4",
+              authorizationList: [
+                { address: delegator, chainId: session?.chainId ?? "0x1", nonce: "0x0" },
+              ],
+            }],
+          },
+        }}
+        response={type4Result}
+        pending={pending}
+        actions={[
+          { label: "eth_sendTransaction (type 4)", onClick: probeType4Transaction },
+        ]}
+      />
     </DemoShell>
   );
 }

@@ -6,28 +6,50 @@ import { formatRpcCall, type RpcCall } from "../../lib/rpcDisplay";
 
 export type DemoInspectorProps = {
   user?: ReactNode;
+  /** JSON-RPC request (method + params). */
+  request?: RpcCall;
+  /** @deprecated use `request` */
   rpc?: RpcCall;
+  /** Raw JSON-RPC response body. */
+  response?: string;
+  /** @deprecated use `response` */
+  raw?: string;
   hash?: string | null;
   hashNote?: string;
+  /** Style the response tab as an error (e.g. rejected RPC). */
+  responseError?: boolean;
 };
 
-type TabId = "user" | "rpc" | "hash";
+type TabId = "user" | "request" | "response" | "hash";
 
-export function DemoInspector({ user, rpc, hash, hashNote }: DemoInspectorProps) {
+export function DemoInspector({
+  user,
+  request,
+  rpc,
+  response,
+  raw,
+  hash,
+  hashNote,
+  responseError,
+}: DemoInspectorProps) {
   const baseId = useId();
+  const requestCall = request ?? rpc;
+  const responseBody = response ?? raw;
+
   const tabs = useMemo(() => {
     const list: { id: TabId; label: string }[] = [];
-    if (user) list.push({ id: "user", label: "User" });
-    if (rpc) list.push({ id: "rpc", label: "RPC" });
+    if (user) list.push({ id: "user", label: "Preview" });
+    if (requestCall) list.push({ id: "request", label: "Request" });
+    if (responseBody) list.push({ id: "response", label: "Response" });
     if (hash) list.push({ id: "hash", label: "Hash" });
     return list;
-  }, [user, rpc, hash]);
+  }, [user, requestCall, responseBody, hash]);
 
-  const [active, setActive] = useState<TabId>(() => tabs[0]?.id ?? "rpc");
+  const [active, setActive] = useState<TabId>(() => tabs[0]?.id ?? "request");
 
   useEffect(() => {
     if (!tabs.some((t) => t.id === active)) {
-      setActive(tabs[0]?.id ?? "rpc");
+      setActive(tabs[0]?.id ?? "request");
     }
   }, [tabs, active]);
 
@@ -63,14 +85,24 @@ export function DemoInspector({ user, rpc, hash, hashNote }: DemoInspectorProps)
           {user}
         </div>
       )}
-      {current === "rpc" && rpc && (
+      {current === "request" && requestCall && (
         <div
-          id={`${baseId}-panel-rpc`}
+          id={`${baseId}-panel-request`}
           role="tabpanel"
-          aria-labelledby={`${baseId}-rpc`}
+          aria-labelledby={`${baseId}-request`}
           className="wallet-demo-tab-panel wallet-demo-rpc"
         >
-          <pre>{formatRpcCall(rpc)}</pre>
+          <pre>{formatRpcCall(requestCall)}</pre>
+        </div>
+      )}
+      {current === "response" && responseBody && (
+        <div
+          id={`${baseId}-panel-response`}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-response`}
+          className={`wallet-demo-tab-panel wallet-demo-raw${responseError ? " wallet-demo-raw-error" : ""}`}
+        >
+          <pre className="wallet-demo-raw-pre">{responseBody}</pre>
         </div>
       )}
       {current === "hash" && hash && (

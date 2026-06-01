@@ -2,20 +2,9 @@
 
 import type { ReactNode } from "react";
 
-import { WalletBadge } from "./WalletBadge";
-import { useWallet } from "./WalletProvider";
+import { DemoFrame } from "./DemoFrame";
 
-/** Inline demo panel — use with PageDemoChrome on the same MDX page. */
+/** Inline demo panel on pages with multiple demos (e.g. addresses, signatures). */
 export function DemoBlock({ children }: { children: ReactNode }) {
-  const { session } = useWallet();
-  if (!session) return null;
-
-  return (
-    <div className="wallet-demo wallet-demo-inline">
-      <div className="wallet-demo-panel wallet-demo-panel-connected">
-        <WalletBadge />
-        {children}
-      </div>
-    </div>
-  );
+  return <DemoFrame variant="inline">{children}</DemoFrame>;
 }

@@ -25,6 +25,7 @@ import {
   loadStoredSession,
   saveStoredSession,
 } from "../../lib/walletStorage";
+import { WalletPickerModal } from "./WalletPickerModal";
 
 export type WalletSession = {
   provider: EIP1193Provider;
@@ -54,6 +55,9 @@ type WalletContextValue = {
   disconnect: () => void;
   requestProviders: () => void;
   refreshSession: () => Promise<void>;
+  openConnect: () => void;
+  /** Opens the wallet picker when disconnected; returns whether a session exists. */
+  requireSession: () => boolean;
 };
 
 const WalletContext = createContext<WalletContextValue | null>(null);
@@ -68,6 +72,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [discoveryLog, setDiscoveryLog] = useState<DiscoveryLogEntry[]>([]);
   const [connectError, setConnectError] = useState<string | undefined>();
   const [connecting, setConnecting] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const appendLog = useCallback((entry: Omit<DiscoveryLogEntry, "id" | "at">) => {
     setDiscoveryLog((prev) => [
@@ -96,6 +101,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     void import("../../lib/openlv").then((m) => m.installOpenlv(mergeProvider));
     return listenEip6963Providers(mergeProvider, { requestOnMount: true });
   }, [appendLog, mergeProvider]);
+
+  const openConnect = useCallback(() => setPickerOpen(true), []);
+
+  const requireSession = useCallback(() => {
+    if (session) return true;
+    setPickerOpen(true);
+    return false;
+  }, [session]);
 
   const connectDetail = useCallback(
     async (detail: Eip6963ProviderDetail) => {
@@ -211,6 +224,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       disconnect,
       requestProviders,
       refreshSession,
+      openConnect,
+      requireSession,
     }),
     [
       session,
@@ -223,11 +238,19 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       disconnect,
       requestProviders,
       refreshSession,
+      openConnect,
+      requireSession,
     ],
   );
 
   return (
-    <WalletContext.Provider value={value}>{children}</WalletContext.Provider>
+    <WalletContext.Provider value={value}>
+      {children}
+      <WalletPickerModal
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+      />
+    </WalletContext.Provider>
   );
 }
 

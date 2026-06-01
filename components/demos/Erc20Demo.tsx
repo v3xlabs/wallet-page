@@ -10,11 +10,11 @@ import {
   type Address,
 } from "viem";
 
-import { rpc } from "../../lib/ethereum";
+import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const erc20Abi = parseAbi([
@@ -30,10 +30,12 @@ const TRANSFER_AMOUNT = "0.0001";
 
 export function Erc20Demo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [token, setToken] = useState(DEFAULT_TOKEN);
   const [balance, setBalance] = useState<string>();
+  const [balanceError, setBalanceError] = useState<string>();
   const [txHash, setTxHash] = useState<string>();
-  const [error, setError] = useState<string>();
+  const [txError, setTxError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   const tokenAddress = isAddress(token.trim())
@@ -41,38 +43,41 @@ export function Erc20Demo() {
     : undefined;
 
   const balanceCall = useMemo(() => {
-    if (!session || !tokenAddress) return null;
+    if (!tokenAddress) return null;
     return {
       to: tokenAddress,
       data: encodeFunctionData({
         abi: erc20Abi,
         functionName: "balanceOf",
-        args: [session.accounts[0]],
+        args: [session?.accounts[0] ?? "0x0000000000000000000000000000000000000000"],
       }),
     };
   }, [session, tokenAddress]);
 
   const transferTx = useMemo(() => {
-    if (!session || !tokenAddress) return null;
+    if (!tokenAddress) return null;
     return {
-      from: session.accounts[0],
+      from: session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT,
       to: tokenAddress,
       data: encodeFunctionData({
         abi: erc20Abi,
         functionName: "transfer",
-        args: [session.accounts[0], parseUnits(TRANSFER_AMOUNT, 18)],
+        args: [
+          session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT,
+          parseUnits(TRANSFER_AMOUNT, 18),
+        ],
       }),
       value: "0x0" as const,
     };
   }, [session, tokenAddress]);
 
   const readBalance = async () => {
-    if (!session || !balanceCall) {
-      setError("Enter a valid ERC-20 contract address.");
+    if (!requireSession() || !balanceCall || !tokenAddress) {
+      setBalanceError("Enter a valid ERC-20 contract address.");
       return;
     }
     setPending(true);
-    setError(undefined);
+    setBalanceError(undefined);
     setBalance(undefined);
     try {
       const raw = await rpc(session.provider, "eth_call", [
@@ -93,7 +98,7 @@ export function Erc20Demo() {
       setBalance(formatUnits(BigInt(String(raw)), dec));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setBalanceError(formatError(err));
     }
     finally {
       setPending(false);
@@ -101,16 +106,23 @@ export function Erc20Demo() {
   };
 
   const sendTransfer = async () => {
-    if (!session || !transferTx) return;
+    if (!requireSession() || !transferTx) return;
     setPending(true);
-    setError(undefined);
+    setTxError(undefined);
     setTxHash(undefined);
     try {
-      const hash = await rpc(session.provider, "eth_sendTransaction", [transferTx]);
+      const hash = await rpc(session.provider, "eth_sendTransaction", [
+        {
+          from: session.accounts[0],
+          to: tokenAddress!,
+          data: transferTx.data,
+          value: "0x0" as const,
+        },
+      ]);
       setTxHash(String(hash));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setTxError(formatError(err));
     }
     finally {
       setPending(false);
@@ -133,23 +145,23 @@ export function Erc20Demo() {
         inspector={
           balanceCall
             ? {
-                user: <p>Read <code>balanceOf</code> for your connected account.</p>,
-                rpc: { method: "eth_call", params: [balanceCall, "latest"] },
+                user: <p>Read <code>balanceOf</code> for the active account.</p>,
+                request: { method: "eth_call", params: [balanceCall, "latest"] },
               }
             : undefined
         }
+        response={balance}
+        error={balanceError}
         actions={[
           {
             label: "Read balance",
             onClick: readBalance,
             primary: true,
-            disabled: !session || !tokenAddress,
+            disabled: !tokenAddress,
           },
         ]}
         pending={pending}
-      >
-        <ResultBlock label="Balance" value={balance} error={error} />
-      </WalletActionPanel>
+      />
 
       <WalletActionPanel
         inspector={
@@ -163,22 +175,22 @@ export function Erc20Demo() {
                     data={transferTx.data}
                   />
                 ),
-                rpc: { method: "eth_sendTransaction", params: [transferTx] },
+                request: { method: "eth_sendTransaction", params: [transferTx] },
               }
             : undefined
         }
+        response={txHash}
+        error={txError}
         pending={pending}
         actions={[
           {
             label: "Transfer to self",
             onClick: sendTransfer,
             primary: true,
-            disabled: !session || !tokenAddress,
+            disabled: !tokenAddress,
           },
         ]}
-      >
-        <ResultBlock label="Transaction" value={txHash} />
-      </WalletActionPanel>
+      />
     </DemoShell>
   );
 }

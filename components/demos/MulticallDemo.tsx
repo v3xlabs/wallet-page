@@ -11,8 +11,10 @@ import {
   type Hex,
 } from "viem";
 
-import { rpc } from "../../lib/ethereum";
+import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
+import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 export const MULTICALL3_ADDRESS =
@@ -40,17 +42,18 @@ type BatchResult = { label: string; value: string; success: boolean };
 
 export function MulticallDemo() {
   const { session } = useWallet();
-  const [results, setResults] = useState<BatchResult[]>();
+  const { requireSession } = useDemoFrame();
+  const [response, setResponse] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
+  const [preview, setPreview] = useState<BatchResult[]>();
 
   const wethAddress = session
     ? WETH_BY_CHAIN[session.chainId.toLowerCase() as Hex]
     : undefined;
 
   const calls = useMemo(() => {
-    if (!session) return [];
-    const account = session.accounts[0];
+    const account = session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT;
     const list: { label: string; target: Address; callData: Hex }[] = [
       {
         label: "ETH balance",
@@ -76,24 +79,30 @@ export function MulticallDemo() {
     return list;
   }, [session, wethAddress]);
 
-  const runBatch = async () => {
-    if (!session || calls.length === 0) return;
-    setPending(true);
-    setError(undefined);
-    setResults(undefined);
-    try {
-      const callData = encodeFunctionData({
+  const requestCall = useMemo(() => {
+    if (calls.length === 0) return null;
+    return {
+      to: MULTICALL3_ADDRESS,
+      data: encodeFunctionData({
         abi: MULTICALL3_ABI,
         functionName: "aggregate3",
         args: [calls.map((c) => ({ target: c.target, allowFailure: true, callData: c.callData }))],
-      });
+      }),
+    };
+  }, [calls]);
 
+  const runBatch = async () => {
+    if (!requireSession() || calls.length === 0 || !requestCall) return;
+    setPending(true);
+    setError(undefined);
+    setResponse(undefined);
+    setPreview(undefined);
+    try {
       const raw = await rpc(session.provider, "eth_call", [
-        { to: MULTICALL3_ADDRESS, data: callData },
+        requestCall,
         "latest",
       ]) as Hex;
 
-      // aggregate3 returns (bool success, bytes returnData)[]
       const [[...returnValues]] = decodeAbiParameters(
         parseAbiParameters("(bool success, bytes returnData)[]"),
         raw,
@@ -107,97 +116,70 @@ export function MulticallDemo() {
         try {
           const [val] = decodeAbiParameters(parseAbiParameters("uint256"), r.returnData);
           return { label, value: `${formatEther(val as bigint)} ETH`, success: true };
-        } catch {
+        }
+        catch {
           return { label, value: r.returnData, success: true };
         }
       });
 
-      setResults(decoded);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
+      setPreview(decoded);
+      setResponse(raw);
+    }
+    catch (err) {
+      setError(formatError(err));
+    }
+    finally {
       setPending(false);
     }
   };
 
-  const inspectorRpc = session && calls.length > 0
-    ? {
-        method: "eth_call",
-        params: [{
-          to: MULTICALL3_ADDRESS,
-          data: encodeFunctionData({
-            abi: MULTICALL3_ABI,
-            functionName: "aggregate3",
-            args: [calls.map((c) => ({ target: c.target, allowFailure: true, callData: c.callData }))],
-          }),
-        }, "latest"],
-      }
-    : undefined;
-
   return (
     <DemoShell>
       <p className="wallet-demo-muted">
-        Multicall3:{" "}
-        <code>{MULTICALL3_ADDRESS}</code>
+        Multicall3: <code>{MULTICALL3_ADDRESS}</code>
       </p>
       <p className="wallet-demo-muted" style={{ marginTop: "0.35rem" }}>
-        Batching{" "}
-        <strong>{calls.length} call{calls.length !== 1 ? "s" : ""}</strong>{" "}
-        into one <code>eth_call</code>:
+        Batching <strong>{calls.length} call{calls.length !== 1 ? "s" : ""}</strong> into one{" "}
+        <code>eth_call</code>
         {calls.map((c) => (
-          <span key={c.label}> <code>{c.label}</code></span>
+          <span key={c.label}> — <code>{c.label}</code></span>
         ))}
       </p>
 
-      <div className="wallet-action-panel">
-        {inspectorRpc && (
-          <div className="wallet-demo-section">
-            <details className="wallet-demo-details">
-              <summary style={{ cursor: "pointer", fontSize: "0.85rem", color: "var(--vocs-text-color-secondary)" }}>
-                View RPC call
-              </summary>
-              <pre className="wallet-demo-log" style={{ marginTop: "0.5rem" }}>
-                {JSON.stringify(inspectorRpc, null, 2)}
-              </pre>
-            </details>
-          </div>
-        )}
-        <div className="wallet-action-footer">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            onClick={() => void runBatch()}
-            disabled={pending || !session || calls.length === 0}
-          >
-            {pending ? "Fetching…" : "Run batch"}
-          </button>
-        </div>
-
-        {error && (
-          <div className="wallet-demo-result wallet-demo-result-error" style={{ marginTop: "0.75rem" }}>
-            <div className="wallet-demo-result-label">Error</div>
-            <pre>{error}</pre>
-          </div>
-        )}
-
-        {results && (
-          <div className="wallet-demo-result wallet-demo-result-ok" style={{ marginTop: "0.75rem" }}>
-            <div className="wallet-demo-result-label">
-              {results.length} result{results.length !== 1 ? "s" : ""} — 1 RPC round trip
-            </div>
-            {results.map((r) => (
-              <div key={r.label} style={{ display: "flex", gap: "0.75rem", marginTop: "0.35rem", alignItems: "baseline" }}>
-                <span style={{ fontSize: "0.78rem", color: "var(--vocs-text-color-secondary)", minWidth: "8rem" }}>
-                  {r.label}
-                </span>
-                <pre style={{ margin: 0, color: r.success ? undefined : "var(--vocs-color-destructive)" }}>
-                  {r.value}
-                </pre>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <WalletActionPanel
+        inspector={
+          requestCall
+            ? {
+                user: preview ? (
+                  <ul className="wallet-multicall-results">
+                    {preview.map((r) => (
+                      <li key={r.label}>
+                        <span>{r.label}</span>
+                        <code className={r.success ? "" : "wallet-multicall-fail"}>
+                          {r.value}
+                        </code>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="wallet-demo-muted">Run the batch to see decoded balances here.</p>
+                ),
+                request: { method: "eth_call", params: [requestCall, "latest"] },
+              }
+            : undefined
+        }
+        response={response}
+        error={error}
+        pending={pending}
+        actions={[
+          {
+            label: pending ? "Fetching…" : "Run batch",
+            onClick: runBatch,
+            primary: true,
+            disabled: calls.length === 0,
+          },
+        ]}
+      />
     </DemoShell>
   );
 }

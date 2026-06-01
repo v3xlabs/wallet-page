@@ -5,36 +5,16 @@ import type { Hex } from "viem";
 
 import { DEMO_CHAINS } from "../../../lib/chains";
 import { formatError, rpc } from "../../../lib/ethereum";
-import { WalletBadge } from "../../wallet/WalletBadge";
-import { WalletPickerModal } from "../../wallet/WalletPickerModal";
+import { DemoShell } from "../../wallet/DemoShell";
+import { useDemoFrame } from "../../wallet/DemoFrame";
 import { useWallet } from "../../wallet/WalletProvider";
 
 /** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
 export function ChainQuickGrid() {
   const { session, refreshSession } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
-  const [pickerOpen, setPickerOpen] = useState(false);
-
-  if (!session) {
-    return (
-      <div className="wallet-demo wallet-demo-chain-shell">
-        <div className="wallet-demo-panel wallet-demo-panel-gate">
-          <button
-            type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
-            onClick={() => setPickerOpen(true)}
-          >
-            Connect wallet
-          </button>
-          <WalletPickerModal
-            open={pickerOpen}
-            onClose={() => setPickerOpen(false)}
-          />
-        </div>
-      </div>
-    );
-  }
 
   const refreshChainId = async () => {
     try {
@@ -46,6 +26,7 @@ export function ChainQuickGrid() {
   };
 
   const switchChain = async (targetChainId: Hex) => {
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
     try {
@@ -68,6 +49,7 @@ export function ChainQuickGrid() {
   };
 
   const addChain = async (targetChainId: Hex) => {
+    if (!requireSession()) return;
     const meta = DEMO_CHAINS.find((c) => c.chainId === targetChainId);
     if (!meta) return;
     setPending(true);
@@ -91,53 +73,52 @@ export function ChainQuickGrid() {
     }
   };
 
-  const active = session.chainId.toLowerCase();
+  const active = session?.chainId.toLowerCase();
 
   return (
-    <div className="wallet-demo wallet-demo-chain-shell">
-      <div className="wallet-demo-panel wallet-demo-panel-connected">
-        <WalletBadge />
+    <DemoShell>
+      {session && (
         <p className="wallet-demo-muted">
           Active chain: <code>{session.chainId}</code>
         </p>
-        <div className="wallet-demo-chain-grid">
-          {DEMO_CHAINS.map((chain) => {
-            const isActive = chain.chainId.toLowerCase() === active;
-            return (
-              <div
-                key={chain.chainId}
-                className={`wallet-demo-chain-card${isActive ? " wallet-demo-chain-card-active" : ""}`}
-              >
-                <span>{chain.name}</span>
-                <code>{chain.chainId}</code>
-                <div className="wallet-demo-actions">
-                  <button
-                    type="button"
-                    className="wallet-demo-btn wallet-demo-btn-primary"
-                    disabled={pending || isActive}
-                    onClick={() => void switchChain(chain.chainId)}
-                  >
-                    {isActive ? "Active" : "Switch"}
-                  </button>
-                  <button
-                    type="button"
-                    className="wallet-demo-btn"
-                    disabled={pending}
-                    onClick={() => void addChain(chain.chainId)}
-                  >
-                    Add chain
-                  </button>
-                </div>
+      )}
+      <div className="wallet-demo-chain-grid">
+        {DEMO_CHAINS.map((chain) => {
+          const isActive = active && chain.chainId.toLowerCase() === active;
+          return (
+            <div
+              key={chain.chainId}
+              className={`wallet-demo-chain-card${isActive ? " wallet-demo-chain-card-active" : ""}`}
+            >
+              <span>{chain.name}</span>
+              <code>{chain.chainId}</code>
+              <div className="wallet-demo-actions">
+                <button
+                  type="button"
+                  className="wallet-demo-btn wallet-demo-btn-primary"
+                  disabled={pending || isActive}
+                  onClick={() => void switchChain(chain.chainId)}
+                >
+                  {isActive ? "Active" : "Switch"}
+                </button>
+                <button
+                  type="button"
+                  className="wallet-demo-btn"
+                  disabled={pending}
+                  onClick={() => void addChain(chain.chainId)}
+                >
+                  Add chain
+                </button>
               </div>
-            );
-          })}
-        </div>
-        {error && (
-          <p className="wallet-demo-error" role="alert">
-            {error}
-          </p>
-        )}
+            </div>
+          );
+        })}
       </div>
-    </div>
+      {error && (
+        <p className="wallet-demo-error" role="alert">
+          {error}
+        </p>
+      )}
+    </DemoShell>
   );
 }

@@ -12,7 +12,7 @@ import { ChainSelect } from "./ChainSelect";
 export function SwitchChainMiniDemo() {
   const { session, refreshSession } = useWallet();
   const [chainId, setChainId] = useState<Hex>("0xaa36a7");
-  const [result, setResult] = useState<string>();
+  const [response, setResponse] = useState<string>();
   const [error, setError] = useState<string>();
 
   const chain = getDemoChain(chainId);
@@ -22,7 +22,6 @@ export function SwitchChainMiniDemo() {
       title="wallet_switchEthereumChain"
       description={<ChainSelect value={chainId} onChange={setChainId} />}
       actionLabel="Switch chain"
-      idleHint={session ? undefined : "Connect on /connect first."}
       inspector={{
         user: (
           <p>
@@ -30,18 +29,15 @@ export function SwitchChainMiniDemo() {
             <code>{chainId}</code>).
           </p>
         ),
-        rpc: {
+        request: {
           method: "wallet_switchEthereumChain",
           params: [{ chainId }],
         },
       }}
-      result={result}
+      response={response}
       error={error}
       onAction={async () => {
-        if (!session) {
-          setError("Connect a wallet on /connect first.");
-          return;
-        }
+        if (!session) return;
         setError(undefined);
         try {
           await rpc(session.provider, "wallet_switchEthereumChain", [
@@ -49,10 +45,10 @@ export function SwitchChainMiniDemo() {
           ]);
           await refreshSession();
           const active = await getChainId(session.provider);
-          setResult(`Switched — active chainId: ${active}`);
+          setResponse(active);
         }
         catch (err) {
-          setResult(undefined);
+          setResponse(undefined);
           const message = formatError(err);
           setError(
             message.includes("4902") || message.includes("Unrecognized")

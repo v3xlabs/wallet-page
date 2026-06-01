@@ -12,7 +12,7 @@ import { ChainSelect } from "./ChainSelect";
 export function AddChainMiniDemo() {
   const { session, refreshSession } = useWallet();
   const [chainId, setChainId] = useState<Hex>("0xaa36a7");
-  const [result, setResult] = useState<string>();
+  const [response, setResponse] = useState<string>();
   const [error, setError] = useState<string>();
 
   const meta = getDemoChain(chainId);
@@ -32,7 +32,6 @@ export function AddChainMiniDemo() {
       title="wallet_addEthereumChain"
       description={<ChainSelect value={chainId} onChange={setChainId} />}
       actionLabel="Add chain"
-      idleHint={session ? undefined : "Connect on /connect first."}
       inspector={
         meta && addParams
           ? {
@@ -41,17 +40,14 @@ export function AddChainMiniDemo() {
                   Register <strong>{meta.name}</strong> in the wallet (RPC + currency).
                 </p>
               ),
-              rpc: { method: "wallet_addEthereumChain", params: [addParams] },
+              request: { method: "wallet_addEthereumChain", params: [addParams] },
             }
           : undefined
       }
-      result={result}
+      response={response}
       error={error}
       onAction={async () => {
-        if (!session) {
-          setError("Connect a wallet on /connect first.");
-          return;
-        }
+        if (!session) return;
         if (!addParams) {
           setError("Unknown demo chain.");
           return;
@@ -60,10 +56,10 @@ export function AddChainMiniDemo() {
         try {
           await rpc(session.provider, "wallet_addEthereumChain", [addParams]);
           await refreshSession();
-          setResult(`Added ${meta!.name} (${meta!.chainId}).`);
+          setResponse(`Added ${meta!.name} (${meta!.chainId}).`);
         }
         catch (err) {
-          setResult(undefined);
+          setResponse(undefined);
           setError(formatError(err));
         }
       }}

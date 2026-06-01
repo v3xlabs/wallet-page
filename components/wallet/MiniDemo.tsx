@@ -2,7 +2,10 @@
 
 import { useState, type ReactNode } from "react";
 
+import { mergeInspector } from "../../lib/demoInspector";
 import { DemoInspector, type DemoInspectorProps } from "./DemoInspector";
+import { DemoFrame } from "./DemoFrame";
+import { useWallet } from "./WalletProvider";
 
 type MiniDemoProps = {
   title: string;
@@ -10,27 +13,26 @@ type MiniDemoProps = {
   inspector?: DemoInspectorProps;
   actionLabel: string;
   onAction: () => void | Promise<void>;
-  result?: string;
+  response?: string;
   error?: string;
   pending?: boolean;
-  idleHint?: string;
 };
 
-/** Compact inline demo with tabbed inspector. */
-export function MiniDemo({
+function MiniDemoContent({
   title,
   description,
   inspector,
   actionLabel,
   onAction,
-  result,
+  response,
   error,
   pending,
-  idleHint,
 }: MiniDemoProps) {
+  const { requireSession } = useWallet();
   const [localPending, setLocalPending] = useState(false);
 
   const run = async () => {
+    if (!requireSession()) return;
     setLocalPending(true);
     try {
       await onAction();
@@ -41,14 +43,15 @@ export function MiniDemo({
   };
 
   const busy = pending ?? localPending;
+  const merged = mergeInspector(inspector, response, error);
 
   return (
-    <div className="wallet-mini-demo">
+    <>
       <h4 className="wallet-mini-demo-title">{title}</h4>
       {description && (
         <div className="wallet-demo-muted wallet-mini-demo-desc">{description}</div>
       )}
-      {inspector && <DemoInspector {...inspector} />}
+      {merged && <DemoInspector {...merged} />}
       <div className="wallet-action-footer">
         <button
           type="button"
@@ -59,15 +62,15 @@ export function MiniDemo({
           {actionLabel}
         </button>
       </div>
-      {error && (
-        <pre className="wallet-mini-demo-output wallet-mini-demo-error">{error}</pre>
-      )}
-      {result && !error && (
-        <pre className="wallet-mini-demo-output">{result}</pre>
-      )}
-      {!busy && !result && !error && idleHint && (
-        <p className="wallet-demo-muted wallet-mini-demo-idle">{idleHint}</p>
-      )}
-    </div>
+    </>
+  );
+}
+
+/** Compact RPC demo: Preview / Request / Response tabs + primary action. */
+export function MiniDemo(props: MiniDemoProps) {
+  return (
+    <DemoFrame variant="mini">
+      <MiniDemoContent {...props} />
+    </DemoFrame>
   );
 }

@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 import { eip191MessageHash } from "../../lib/messageHash";
-import { rpc } from "../../lib/ethereum";
+import { formatError, rpc } from "../../lib/ethereum";
 import { SignMessagePreview } from "../wallet/preview/SignMessagePreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../wallet/DemoBlock";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const MESSAGE = "wallet.page — personal_sign test";
@@ -15,12 +15,13 @@ const MESSAGE_HASH = eip191MessageHash(MESSAGE);
 
 export function PersonalSignDemo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   const sign = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setSignature(undefined);
     setError(undefined);
@@ -32,7 +33,7 @@ export function PersonalSignDemo() {
       setSignature(String(sig));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(formatError(err));
     }
     finally {
       setPending(false);
@@ -44,18 +45,18 @@ export function PersonalSignDemo() {
       <WalletActionPanel
         inspector={{
           user: <SignMessagePreview message={MESSAGE} />,
-          rpc: {
+          request: {
             method: "personal_sign",
             params: [MESSAGE, session?.accounts[0] ?? "0x…"],
           },
           hash: MESSAGE_HASH,
           hashNote: "EIP-191 — wallets hash the prefixed message before secp256k1.",
         }}
+        response={signature}
+        error={error}
         pending={pending}
         actions={[{ label: "Sign message", onClick: sign, primary: true }]}
-      >
-        <ResultBlock label="Signature" value={signature} error={error} />
-      </WalletActionPanel>
+      />
     </DemoBlock>
   );
 }

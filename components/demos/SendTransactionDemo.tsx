@@ -3,39 +3,45 @@
 import { useState } from "react";
 import type { Hex } from "viem";
 
-import { rpc } from "../../lib/ethereum";
+import { formatError, rpc } from "../../lib/ethereum";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 export function SendTransactionDemo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [txHash, setTxHash] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
-  const tx = session
-    ? {
-        from: session.accounts[0],
-        to: session.accounts[0],
-        value: "0x0" as Hex,
-        data: "0x" as Hex,
-      }
-    : null;
+  const tx = {
+    from: session?.accounts[0] ?? "0x…",
+    to: session?.accounts[0] ?? "0x…",
+    value: "0x0" as Hex,
+    data: "0x" as Hex,
+  };
 
   const sendSelfTransfer = async () => {
-    if (!session || !tx) return;
+    if (!requireSession()) return;
     setPending(true);
     setTxHash(undefined);
     setError(undefined);
     try {
-      const hash = await rpc(session.provider, "eth_sendTransaction", [tx]);
+      const hash = await rpc(session.provider, "eth_sendTransaction", [
+        {
+          from: session.accounts[0],
+          to: session.accounts[0],
+          value: "0x0" as Hex,
+          data: "0x" as Hex,
+        },
+      ]);
       setTxHash(String(hash));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(formatError(err));
     }
     finally {
       setPending(false);
@@ -45,32 +51,27 @@ export function SendTransactionDemo() {
   return (
     <DemoShell>
       <WalletActionPanel
-        inspector={
-          tx
-            ? {
-                user: (
-                  <TransactionPreview
-                    from={tx.from}
-                    to={tx.to}
-                    valueLabel="0 ETH"
-                  />
-                ),
-                rpc: { method: "eth_sendTransaction", params: [tx] },
-              }
-            : undefined
-        }
+        inspector={{
+          user: (
+            <TransactionPreview
+              from={tx.from}
+              to={tx.to}
+              valueLabel="0 ETH"
+            />
+          ),
+          request: { method: "eth_sendTransaction", params: [tx] },
+        }}
+        response={txHash}
+        error={error}
         pending={pending}
         actions={[
           {
             label: "Send test transaction",
             onClick: sendSelfTransfer,
             primary: true,
-            disabled: !session,
           },
         ]}
-      >
-        <ResultBlock label="Transaction hash" value={txHash} error={error} />
-      </WalletActionPanel>
+      />
     </DemoShell>
   );
 }

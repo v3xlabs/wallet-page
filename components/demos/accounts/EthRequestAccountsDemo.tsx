@@ -2,21 +2,22 @@
 
 import { useState } from "react";
 
-import { requestAccounts } from "../../../lib/ethereum";
+import { formatError, requestAccounts } from "../../../lib/ethereum";
 import { AccountsPreview } from "../../wallet/preview/AccountsPreview";
 import { WalletActionPanel } from "../../wallet/preview/WalletActionPanel";
 import { DemoBlock } from "../../wallet/DemoBlock";
-import { ResultBlock } from "../ResultBlock";
+import { useDemoFrame } from "../../wallet/DemoFrame";
 import { useWallet } from "../../wallet/WalletProvider";
 
 export function EthRequestAccountsDemo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [accounts, setAccounts] = useState<string[]>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   const request = async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
     try {
@@ -25,7 +26,7 @@ export function EthRequestAccountsDemo() {
     }
     catch (err) {
       setAccounts(undefined);
-      setError(err instanceof Error ? err.message : String(err));
+      setError(formatError(err));
     }
     finally {
       setPending(false);
@@ -39,11 +40,13 @@ export function EthRequestAccountsDemo() {
           user: (
             <AccountsPreview
               accounts={accounts ?? []}
-              firstAccountHint="Connect flows often bind UI to accounts[0] and never offer the others"
+              firstAccountHint="Many apps only bind UI to accounts[0] and never offer the others"
             />
           ),
-          rpc: { method: "eth_requestAccounts", params: [] },
+          request: { method: "eth_requestAccounts", params: [] },
         }}
+        response={accounts ? JSON.stringify(accounts, null, 2) : undefined}
+        error={error}
         pending={pending}
         actions={[
           {
@@ -52,13 +55,7 @@ export function EthRequestAccountsDemo() {
             primary: true,
           },
         ]}
-      >
-        <ResultBlock
-          label="Raw JSON"
-          value={accounts ? JSON.stringify(accounts, null, 2) : undefined}
-          error={error}
-        />
-      </WalletActionPanel>
+      />
     </DemoBlock>
   );
 }

@@ -3,11 +3,16 @@
 import { useMemo, useState } from "react";
 import { hashTypedData, type Hex } from "viem";
 
-import { rpc, stringifyTypedData } from "../../lib/ethereum";
+import {
+  DEMO_PLACEHOLDER_ACCOUNT,
+  formatError,
+  rpc,
+  stringifyTypedData,
+} from "../../lib/ethereum";
 import { PermitPreview } from "../wallet/preview/PermitPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const DEMO_DECIMALS = 6;
@@ -42,35 +47,38 @@ const permitTypedData = (owner: Hex, chainId: number) =>
 
 export function Erc20PermitDemo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   const typed = useMemo(() => {
-    if (!session) return null;
-    const chainId = Number.parseInt(session.chainId, 16);
-    return permitTypedData(session.accounts[0], chainId);
+    const chainId = session
+      ? Number.parseInt(session.chainId, 16)
+      : 1;
+    return permitTypedData(session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT, chainId);
   }, [session]);
 
-  const digest = useMemo(
-    () => (typed ? hashTypedData(typed) : null),
-    [typed],
-  );
+  const digest = useMemo(() => hashTypedData(typed), [typed]);
 
   const signPermit = async () => {
-    if (!session || !typed) return;
+    if (!requireSession()) return;
     setPending(true);
     setSignature(undefined);
     setError(undefined);
+    const liveTyped = permitTypedData(
+      session.accounts[0],
+      Number.parseInt(session.chainId, 16),
+    );
     try {
       const sig = await rpc(session.provider, "eth_signTypedData_v4", [
         session.accounts[0],
-        stringifyTypedData(typed),
+        stringifyTypedData(liveTyped),
       ]);
       setSignature(String(sig));
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(formatError(err));
     }
     finally {
       setPending(false);
@@ -78,7 +86,6 @@ export function Erc20PermitDemo() {
   };
 
   const showDigest = () => {
-    if (!digest) return;
     setSignature(digest);
     setError(undefined);
   };
@@ -86,36 +93,32 @@ export function Erc20PermitDemo() {
   return (
     <DemoShell>
       <WalletActionPanel
-        inspector={
-          typed
-            ? {
-                user: (
-                  <PermitPreview
-                    tokenName={typed.domain.name}
-                    tokenSymbol={DEMO_SYMBOL}
-                    decimals={DEMO_DECIMALS}
-                    value={typed.message.value}
-                    spender={typed.message.spender}
-                    deadline={typed.message.deadline}
-                  />
-                ),
-                rpc: {
-                  method: "eth_signTypedData_v4",
-                  params: [session!.accounts[0], stringifyTypedData(typed)],
-                },
-                hash: digest,
-                hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",
-              }
-            : undefined
-        }
+        inspector={{
+          user: (
+            <PermitPreview
+              tokenName={typed.domain.name}
+              tokenSymbol={DEMO_SYMBOL}
+              decimals={DEMO_DECIMALS}
+              value={typed.message.value}
+              spender={typed.message.spender}
+              deadline={typed.message.deadline}
+            />
+          ),
+          request: {
+            method: "eth_signTypedData_v4",
+            params: [session?.accounts[0] ?? "0x…", stringifyTypedData(typed)],
+          },
+          hash: digest,
+          hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",
+        }}
+        response={signature}
+        error={error}
         pending={pending}
         actions={[
-          { label: "Sign permit", onClick: signPermit, primary: true, disabled: !session },
-          { label: "Copy digest", onClick: showDigest, disabled: !session },
+          { label: "Sign permit", onClick: signPermit, primary: true },
+          { label: "Copy digest", onClick: showDigest },
         ]}
-      >
-        <ResultBlock label="Signature" value={signature} error={error} />
-      </WalletActionPanel>
+      />
     </DemoShell>
   );
 }

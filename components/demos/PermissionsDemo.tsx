@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
-import { rpc } from "../../lib/ethereum";
+import { formatError, rpc } from "../../lib/ethereum";
 import {
   buildCapabilityGroups,
   extractGrantedCapabilities,
@@ -10,6 +10,7 @@ import {
   type CapabilityGroup,
 } from "../../lib/walletPermissions";
 import { DemoShell } from "../wallet/DemoShell";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 function CapabilityChecklist({ groups }: { groups: CapabilityGroup[] }) {
@@ -37,6 +38,7 @@ function CapabilityChecklist({ groups }: { groups: CapabilityGroup[] }) {
 export function PermissionsDemo() {
   const baseId = useId();
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
   const [granted, setGranted] = useState<Set<string>>(() => new Set());
   const [raw, setRaw] = useState<string>();
   const [error, setError] = useState<string>();
@@ -46,7 +48,7 @@ export function PermissionsDemo() {
   const groups = useMemo(() => buildCapabilityGroups(granted), [granted]);
 
   const getPermissions = useCallback(async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
     try {
@@ -58,15 +60,15 @@ export function PermissionsDemo() {
     catch (err) {
       setGranted(new Set());
       setRaw(undefined);
-      setError(err instanceof Error ? err.message : String(err));
+      setError(formatError(err));
     }
     finally {
       setPending(false);
     }
-  }, [session]);
+  }, [session, requireSession]);
 
   const requestPermissions = useCallback(async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
     try {
@@ -76,7 +78,7 @@ export function PermissionsDemo() {
       await getPermissions();
     }
     catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+      const message = formatError(err);
       setError(
         message.includes("4001") || message.toLowerCase().includes("reject")
           ? `${message}\n\nUser rejected the permission request (EIP-1193 code 4001).`
@@ -89,7 +91,7 @@ export function PermissionsDemo() {
   }, [session, getPermissions]);
 
   const revokePermissions = useCallback(async () => {
-    if (!session) return;
+    if (!requireSession()) return;
     setPending(true);
     setError(undefined);
     try {
@@ -99,7 +101,7 @@ export function PermissionsDemo() {
       await getPermissions();
     }
     catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+      const message = formatError(err);
       setError(
         message.includes("-32601") || message.includes("not found")
           ? `${message}\n\nwallet_revokePermissions is recommended for revocable grants — some wallets are still adding support.`
@@ -122,7 +124,7 @@ export function PermissionsDemo() {
           <button
             type="button"
             className="wallet-demo-btn"
-            disabled={pending || !session}
+            disabled={pending}
             onClick={() => void getPermissions()}
           >
             Refresh
@@ -130,7 +132,7 @@ export function PermissionsDemo() {
           <button
             type="button"
             className="wallet-demo-btn wallet-demo-btn-primary"
-            disabled={pending || !session}
+            disabled={pending}
             onClick={() => void requestPermissions()}
           >
             Request permissions
@@ -138,7 +140,7 @@ export function PermissionsDemo() {
           <button
             type="button"
             className="wallet-demo-btn"
-            disabled={pending || !session}
+            disabled={pending}
             onClick={() => void revokePermissions()}
           >
             Revoke permissions
@@ -167,7 +169,7 @@ export function PermissionsDemo() {
               className={`wallet-demo-tab${tab === "raw" ? " wallet-demo-tab-active" : ""}`}
               onClick={() => setTab("raw")}
             >
-              Raw
+              Response
             </button>
           </div>
 

@@ -5,6 +5,8 @@ import { createPublicClient, http, isAddress, type Address } from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
 
+import { formatError } from "../../lib/ethereum";
+import { DemoShell } from "../wallet/DemoShell";
 import { useWallet } from "../wallet/WalletProvider";
 
 const ensClient = createPublicClient({
@@ -37,7 +39,7 @@ export function EnsDemo() {
       const address = await ensClient.getEnsAddress({ name: normalize(name) });
       setForwardResult(address ?? "No address registered for this name.");
     } catch (err) {
-      setForwardError(err instanceof Error ? err.message : String(err));
+      setForwardError(formatError(err));
     } finally {
       setForwardPending(false);
     }
@@ -56,18 +58,16 @@ export function EnsDemo() {
       const name = await ensClient.getEnsName({ address: addr as Address });
       setReverseResult(name ?? "No primary name set for this address.");
     } catch (err) {
-      setReverseError(err instanceof Error ? err.message : String(err));
+      setReverseError(formatError(err));
     } finally {
       setReversePending(false);
     }
   };
 
   return (
-    <div className="wallet-demo">
-      <div className="wallet-demo-panel" style={{ paddingTop: "1rem" }}>
+    <DemoShell>
         <p className="wallet-demo-muted" style={{ marginBottom: "1.25rem" }}>
-          Resolves against Ethereum mainnet via a public RPC — no wallet
-          connection required.
+          Resolves against Ethereum mainnet via a public RPC.
         </p>
 
         {/* Forward lookup */}
@@ -128,7 +128,7 @@ export function EnsDemo() {
               style={{ marginTop: "0.35rem" }}
               onClick={() => setReverseAddress(session.accounts[0])}
             >
-              Use connected address
+              Use wallet address
             </button>
           )}
           <div className="wallet-action-footer">
@@ -151,7 +151,6 @@ export function EnsDemo() {
             </div>
           )}
         </div>
-      </div>
-    </div>
+    </DemoShell>
   );
 }

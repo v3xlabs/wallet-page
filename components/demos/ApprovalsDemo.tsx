@@ -11,11 +11,11 @@ import {
   type Hex,
 } from "viem";
 
-import { rpc } from "../../lib/ethereum";
+import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
 import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { DemoShell } from "../wallet/DemoShell";
-import { ResultBlock } from "./ResultBlock";
+import { useDemoFrame } from "../wallet/DemoFrame";
 import { useWallet } from "../wallet/WalletProvider";
 
 const ERC20_ABI = parseAbi([
@@ -25,27 +25,40 @@ const ERC20_ABI = parseAbi([
   "function symbol() view returns (string)",
 ]);
 
-// Well-known spenders for quick selection
 const KNOWN_SPENDERS: { label: string; address: Address }[] = [
-  { label: "Uniswap v3 Router",   address: "0xE592427A0AEce92De3Edee1F18E0157C05861564" },
-  { label: "Uniswap Universal",   address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD" },
+  { label: "Uniswap v3 Router", address: "0xE592427A0AEce92De3Edee1F18E0157C05861564" },
+  { label: "Uniswap Universal", address: "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD" },
   { label: "OpenSea Seaport 1.5", address: "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC" },
-  { label: "1inch v5",            address: "0x1111111254EEB25477B68fb85Ed929f73A960582" },
+  { label: "1inch v5", address: "0x1111111254EEB25477B68fb85Ed929f73A960582" },
 ];
 
 export function ApprovalsDemo() {
   const { session } = useWallet();
+  const { requireSession } = useDemoFrame();
 
   const [token, setToken] = useState("");
   const [spender, setSpender] = useState("");
   const [allowance, setAllowance] = useState<string>();
+  const [allowanceError, setAllowanceError] = useState<string>();
   const [rawAllowance, setRawAllowance] = useState<bigint>();
   const [txHash, setTxHash] = useState<string>();
-  const [error, setError] = useState<string>();
+  const [txError, setTxError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   const tokenAddr = isAddress(token.trim()) ? (token.trim() as Address) : undefined;
   const spenderAddr = isAddress(spender.trim()) ? (spender.trim() as Address) : undefined;
+
+  const allowanceCall = useMemo(() => {
+    if (!tokenAddr || !spenderAddr) return null;
+    return {
+      to: tokenAddr,
+      data: encodeFunctionData({
+        abi: ERC20_ABI,
+        functionName: "allowance",
+        args: [session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT, spenderAddr],
+      }),
+    };
+  }, [session, tokenAddr, spenderAddr]);
 
   const revokeTx = useMemo(() => {
     if (!session || !tokenAddr || !spenderAddr) return null;
@@ -61,57 +74,71 @@ export function ApprovalsDemo() {
     };
   }, [session, tokenAddr, spenderAddr]);
 
-  const exec = async (fn: () => Promise<void>) => {
+  const readAllowance = async () => {
+    if (!requireSession()) return;
+    if (!tokenAddr) {
+      setAllowanceError("Enter a valid token address.");
+      return;
+    }
+    if (!spenderAddr) {
+      setAllowanceError("Enter a valid spender address.");
+      return;
+    }
     setPending(true);
-    setError(undefined);
-    try { await fn(); }
-    catch (err) { setError(err instanceof Error ? err.message : String(err)); }
-    finally { setPending(false); }
+    setAllowanceError(undefined);
+    setAllowance(undefined);
+    setTxHash(undefined);
+    try {
+      const [decimalsRaw, symbolRaw, allowanceRaw] = await Promise.all([
+        rpc(session.provider, "eth_call", [{ to: tokenAddr, data: encodeFunctionData({ abi: ERC20_ABI, functionName: "decimals" }) }, "latest"]).catch(() => null),
+        rpc(session.provider, "eth_call", [{ to: tokenAddr, data: encodeFunctionData({ abi: ERC20_ABI, functionName: "symbol" }) }, "latest"]).catch(() => null),
+        rpc(session.provider, "eth_call", [allowanceCall!, "latest"]),
+      ]);
+
+      const [val] = decodeFunctionResult({ abi: ERC20_ABI, functionName: "allowance", data: allowanceRaw as Hex }) as [bigint];
+      setRawAllowance(val);
+
+      const decimals = decimalsRaw
+        ? Number((decodeFunctionResult({ abi: ERC20_ABI, functionName: "decimals", data: decimalsRaw as Hex }) as [number])[0])
+        : 18;
+      const symbol = symbolRaw
+        ? String((decodeFunctionResult({ abi: ERC20_ABI, functionName: "symbol", data: symbolRaw as Hex }) as [string])[0])
+        : "tokens";
+
+      if (val === 0n) {
+        setAllowance(`0 ${symbol} — no allowance set`);
+      }
+      else if (val >= 2n ** 256n - 1n / 2n) {
+        setAllowance(`Unlimited ${symbol}`);
+      }
+      else {
+        setAllowance(`${formatUnits(val, decimals)} ${symbol}`);
+      }
+    }
+    catch (err) {
+      setAllowanceError(formatError(err));
+    }
+    finally {
+      setPending(false);
+    }
   };
 
-  const readAllowance = () => exec(async () => {
-    if (!session) throw new Error("Connect a wallet first.");
-    if (!tokenAddr) throw new Error("Enter a valid token address.");
-    if (!spenderAddr) throw new Error("Enter a valid spender address.");
-
-    setAllowance(undefined);
+  const revoke = async () => {
+    if (!requireSession() || !revokeTx) return;
+    setPending(true);
+    setTxError(undefined);
     setTxHash(undefined);
-
-    const [decimalsRaw, symbolRaw, allowanceRaw] = await Promise.all([
-      rpc(session.provider, "eth_call", [{ to: tokenAddr, data: encodeFunctionData({ abi: ERC20_ABI, functionName: "decimals" }) }, "latest"]).catch(() => null),
-      rpc(session.provider, "eth_call", [{ to: tokenAddr, data: encodeFunctionData({ abi: ERC20_ABI, functionName: "symbol" }) }, "latest"]).catch(() => null),
-      rpc(session.provider, "eth_call", [{
-        to: tokenAddr,
-        data: encodeFunctionData({ abi: ERC20_ABI, functionName: "allowance", args: [session.accounts[0], spenderAddr] }),
-      }, "latest"]),
-    ]);
-
-    const [val] = decodeFunctionResult({ abi: ERC20_ABI, functionName: "allowance", data: allowanceRaw as Hex }) as [bigint];
-    setRawAllowance(val);
-
-    const decimals = decimalsRaw
-      ? Number((decodeFunctionResult({ abi: ERC20_ABI, functionName: "decimals", data: decimalsRaw as Hex }) as [number])[0])
-      : 18;
-    const symbol = symbolRaw
-      ? String((decodeFunctionResult({ abi: ERC20_ABI, functionName: "symbol", data: symbolRaw as Hex }) as [string])[0])
-      : "tokens";
-
-    if (val === 0n) {
-      setAllowance(`0 ${symbol} — no allowance set`);
-    } else if (val >= 2n ** 256n - 1n / 2n) {
-      setAllowance(`Unlimited ${symbol}`);
-    } else {
-      setAllowance(`${formatUnits(val, decimals)} ${symbol}`);
+    try {
+      const hash = await rpc(session.provider, "eth_sendTransaction", [revokeTx]);
+      setTxHash(String(hash));
     }
-  });
-
-  const revoke = () => exec(async () => {
-    if (!revokeTx) throw new Error("Fill in token and spender addresses first.");
-    setTxHash(undefined);
-    setAllowance(undefined);
-    const hash = await rpc(session!.provider, "eth_sendTransaction", [revokeTx]);
-    setTxHash(String(hash));
-  });
+    catch (err) {
+      setTxError(formatError(err));
+    }
+    finally {
+      setPending(false);
+    }
+  };
 
   return (
     <DemoShell>
@@ -151,16 +178,23 @@ export function ApprovalsDemo() {
       </label>
 
       <WalletActionPanel
+        inspector={
+          allowanceCall
+            ? {
+                request: { method: "eth_call", params: [allowanceCall, "latest"] },
+              }
+            : undefined
+        }
+        response={allowance}
+        error={allowanceError}
         actions={[{
           label: "Read allowance",
           onClick: readAllowance,
           primary: true,
-          disabled: !session || !tokenAddr || !spenderAddr,
+          disabled: !tokenAddr || !spenderAddr,
         }]}
         pending={pending}
-      >
-        <ResultBlock label="Allowance" value={allowance} error={!txHash ? error : undefined} />
-      </WalletActionPanel>
+      />
 
       <WalletActionPanel
         inspector={revokeTx ? {
@@ -172,17 +206,17 @@ export function ApprovalsDemo() {
               data={revokeTx.data}
             />
           ),
-          rpc: { method: "eth_sendTransaction", params: [revokeTx] },
+          request: { method: "eth_sendTransaction", params: [revokeTx] },
         } : undefined}
+        response={txHash}
+        error={txError}
         pending={pending}
         actions={[{
           label: rawAllowance === 0n ? "Nothing to revoke" : "Revoke approval",
           onClick: revoke,
-          disabled: !session || !revokeTx || rawAllowance === 0n,
+          disabled: !revokeTx || rawAllowance === 0n,
         }]}
-      >
-        <ResultBlock label="Transaction" value={txHash} error={txHash ? undefined : error} />
-      </WalletActionPanel>
+      />
     </DemoShell>
   );
 }
