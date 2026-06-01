@@ -1,5 +1,7 @@
 import { formatUnits } from "viem";
 
+import { truncateAddress } from "./display";
+
 export type WalletAssetRow = {
   id: string;
   chainId: string;
@@ -11,14 +13,6 @@ export type WalletAssetRow = {
   iconUrl?: string;
   searchText: string;
 };
-
-function shortenAddress(address: string): string {
-  if (address === "native") return "native";
-
-  if (address.length < 12) return address;
-
-  return `${address.slice(0, 6)}…${address.slice(-4)}`;
-}
 
 export function chainIdToLabel(chainId: unknown): string {
   if (typeof chainId === "number" && Number.isFinite(chainId)) {
@@ -134,7 +128,7 @@ function labelsFromEntry(
     return { symbol: "Native", name: name ?? "Native asset", iconUrl };
   }
 
-  const short = shortenAddress(address);
+  const short = truncateAddress(address);
 
   return { symbol: short, name: name ?? short, iconUrl };
 }

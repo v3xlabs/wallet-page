@@ -1,5 +1,7 @@
 "use client";
 
+import { FiCode } from "react-icons/fi";
+
 import { sourceUrl } from "../../lib/repo";
 import { WalletBadge } from "./WalletBadge";
 import { useWallet } from "./WalletProvider";
@@ -19,7 +21,7 @@ export function WalletDemoChrome({ source }: { source?: string; }) {
           title="View demo source on GitHub"
           aria-label="View demo source on GitHub"
         >
-          {"</>"}
+          <FiCode />
         </a>
       )}
       {session

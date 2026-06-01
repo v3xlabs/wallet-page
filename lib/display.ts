@@ -1,10 +1,10 @@
-import { type Address, formatUnits } from "viem";
+import { formatUnits } from "viem";
 
-/** `0x1234…abcd` for UI previews */
-export function shortAddress(address: string, chars = 4) {
-  if (!address.startsWith("0x") || address.length < 10) return address;
+/** Single source of truth for truncated addresses: `0x225...c3B5`. */
+export function truncateAddress(address: string): string {
+  if (!address.startsWith("0x") || address.length <= 9) return address;
 
-  return `${address.slice(0, 2 + chars)}…${address.slice(-chars)}`;
+  return `${address.slice(0, 5)}...${address.slice(-4)}`;
 }
 
 export function formatTokenAmount(
@@ -25,12 +25,4 @@ export function formatDeadline(unixSeconds: bigint) {
     dateStyle: "medium",
     timeStyle: "short",
   });
-}
-
-export function isZeroAddress(address: string) {
-  return /^0x0{40}$/i.test(address);
-}
-
-export function explorerAddressLabel(address: Address) {
-  return shortAddress(address, 6);
 }

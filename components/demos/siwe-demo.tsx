@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 
-import { shortAddress } from "../../lib/display";
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
 import { eip191MessageHash } from "../../lib/messageHash";
 import { buildSiweMessage, generateSiweNonce, parseSiweMessage } from "../../lib/siwe";
+import { Address } from "../wallet/address";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
@@ -19,18 +19,21 @@ function SiwePreview({ message }: { message: string; }) {
   }
 
   return (
-    <>
+    <div className="wallet-preview-siwe">
       <p className="wallet-preview-siwe-lead">
         <strong>{parsed.domain}</strong>
         {" "}
-        · sign in as
+        wants you to sign in with
         {" "}
-        <code>{shortAddress(parsed.address, 6)}</code>
+        <Address address={parsed.address} />
       </p>
       {parsed.statement && (
-        <p className="wallet-preview-siwe-statement">{parsed.statement}</p>
+        <blockquote className="wallet-preview-siwe-statement">
+          <span className="wallet-preview-siwe-statement-label">Statement</span>
+          {parsed.statement}
+        </blockquote>
       )}
-      <dl className="wallet-preview-meta">
+      <dl className="wallet-preview-rows">
         <div>
           <dt>URI</dt>
           <dd>{parsed.uri}</dd>
@@ -41,12 +44,10 @@ function SiwePreview({ message }: { message: string; }) {
         </div>
         <div>
           <dt>Nonce</dt>
-          <dd>
-            <code>{parsed.nonce}</code>
-          </dd>
+          <dd className="wallet-mono">{parsed.nonce}</dd>
         </div>
       </dl>
-    </>
+    </div>
   );
 }
 

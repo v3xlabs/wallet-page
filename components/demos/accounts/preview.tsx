@@ -1,3 +1,5 @@
+import { Address } from "../../wallet/address";
+
 type AccountsPreviewProps = {
   accounts: string[];
   /** Label for what many dapps do with index 0 */
@@ -33,7 +35,7 @@ export function AccountsPreview({
             }
           >
             <span className="wallet-preview-account-index">{index}</span>
-            <code>{address}</code>
+            <Address address={address} full />
             {index === 0
               ? (
                   <span className="wallet-preview-account-tag wallet-preview-account-tag-primary">

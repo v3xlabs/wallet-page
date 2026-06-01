@@ -1,15 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { type Address, hashTypedData, type Hex } from "viem";
+import { hashTypedData, type Hex } from "viem";
 
-import { formatDeadline, formatTokenAmount, shortAddress } from "../../lib/display";
+import { formatDeadline, formatTokenAmount } from "../../lib/display";
 import {
   DEMO_PLACEHOLDER_ACCOUNT,
   formatError,
   rpc,
   stringifyRpcData,
 } from "../../lib/ethereum";
+import { Address } from "../wallet/address";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
@@ -23,7 +24,7 @@ type PermitPreviewProps = {
   tokenSymbol: string;
   decimals?: number;
   value: bigint;
-  spender: Address;
+  spender: string;
   deadline: bigint;
 };
 
@@ -46,17 +47,19 @@ function PermitPreview({
         </span>
         <div>
           <p className="wallet-preview-permit-amount">{amount}</p>
-          <p className="wallet-preview-permit-token">
-            to
-            {" "}
-            <code>{shortAddress(spender)}</code>
-            {" "}
-            · until
-            {" "}
-            {formatDeadline(deadline)}
-          </p>
+          <p className="wallet-preview-permit-token">{tokenName}</p>
         </div>
       </div>
+      <dl className="wallet-preview-rows">
+        <div>
+          <dt>Spender</dt>
+          <dd><Address address={spender} /></dd>
+        </div>
+        <div>
+          <dt>Expires</dt>
+          <dd>{formatDeadline(deadline)}</dd>
+        </div>
+      </dl>
     </div>
   );
 }

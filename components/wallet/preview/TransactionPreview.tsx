@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { isZeroAddress, shortAddress } from "../../../lib/display";
+import { Address } from "../address";
 
 export type TransactionPreviewProps = {
   from: string;
@@ -23,9 +23,9 @@ export function TransactionPreview({
     <>
       {subtitle}
       <p className="wallet-preview-tx-route">
-        <code>{shortAddress(from, 6)}</code>
+        <Address address={from} />
         <span aria-hidden> → </span>
-        <code>{isZeroAddress(to) ? "0x0…0" : shortAddress(to, 6)}</code>
+        <Address address={to} />
       </p>
       {valueLabel && <p className="wallet-preview-tx-value">{valueLabel}</p>}
       {hasCalldata && (

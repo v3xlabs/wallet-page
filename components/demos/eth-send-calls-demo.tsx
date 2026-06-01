@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Hex } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
+import { Address } from "../wallet/address";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
@@ -26,7 +27,7 @@ function CallsBatchPreview({
       {calls.map((call, i) => (
         <li key={`${call.to}-${i}`}>
           <span className="wallet-preview-batch-index">{i + 1}</span>
-          <code>{call.to}</code>
+          <Address address={call.to} />
           <span className="wallet-demo-muted">
             chain
             {" "}

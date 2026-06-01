@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import {
-  type Address,
+  type Address as EvmAddress,
   decodeAbiParameters,
   encodeFunctionData,
   formatEther,
@@ -12,13 +12,14 @@ import {
 } from "viem";
 
 import { DEMO_PLACEHOLDER_ACCOUNT, formatError, rpc } from "../../lib/ethereum";
+import { Address } from "../wallet/address";
 import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
 export const MULTICALL3_ADDRESS
-  = "0xcA11bde05977b3631167028862bE2a173976CA11" as Address;
+  = "0xcA11bde05977b3631167028862bE2a173976CA11" as EvmAddress;
 
 const MULTICALL3_ABI = parseAbi([
   "function aggregate3((address target, bool allowFailure, bytes callData)[] calls) external payable returns ((bool success, bytes returnData)[] returnData)",
@@ -29,7 +30,7 @@ const WETH_ABI = parseAbi([
   "function balanceOf(address) view returns (uint256)",
 ]);
 
-const WETH_BY_CHAIN: Record<string, Address> = {
+const WETH_BY_CHAIN: Record<string, EvmAddress> = {
   "0x1": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   "0xaa36a7": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
   "0x4268": "0x94373a4919B3240D86eA41593D5eBa789FEF3848",
@@ -54,7 +55,7 @@ export function MulticallDemo() {
 
   const calls = useMemo(() => {
     const account = session?.accounts[0] ?? DEMO_PLACEHOLDER_ACCOUNT;
-    const list: { label: string; target: Address; callData: Hex; }[] = [
+    const list: { label: string; target: EvmAddress; callData: Hex; }[] = [
       {
         label: "ETH balance",
         target: MULTICALL3_ADDRESS,
@@ -146,7 +147,7 @@ export function MulticallDemo() {
       <p className="wallet-demo-muted">
         Multicall3:
         {" "}
-        <code>{MULTICALL3_ADDRESS}</code>
+        <Address address={MULTICALL3_ADDRESS} />
       </p>
       <p className="wallet-demo-muted" style={{ marginTop: "0.35rem" }}>
         Batching

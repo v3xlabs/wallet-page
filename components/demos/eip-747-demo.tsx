@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import type { Address } from "viem";
 
 import { formatDemoOutput, formatError, rpc } from "../../lib/ethereum";
 import { useDemoFrame } from "../wallet/DemoFrame";
@@ -13,11 +12,10 @@ const WATCH_PARAMS = [
   {
     type: "ERC20",
     options: {
-      address: "0x779877A7B0D9E8603169DdbD7836e478b462Ed970" as Address,
-      symbol: "LINK",
+      address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       decimals: 18,
-      image:
-        "https://raw.githubusercontent.com/MetaMask/contract-metadata/master/images/link.svg",
+      symbol: "WETH",
+      chainId: "0x1",
     },
   },
 ] as const;

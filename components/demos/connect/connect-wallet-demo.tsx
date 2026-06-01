@@ -1,5 +1,7 @@
 "use client";
 
+import { FiCode } from "react-icons/fi";
+
 import { sourceUrl } from "../../../lib/repo";
 import { ProviderList } from "../../wallet/ProviderList";
 import { WalletBadge } from "../../wallet/WalletBadge";
@@ -32,7 +34,7 @@ export function ConnectWalletDemo() {
             title="View demo source on GitHub"
             aria-label="View demo source on GitHub"
           >
-            {"</>"}
+            <FiCode />
           </a>
           {session && <WalletBadge />}
         </div>
