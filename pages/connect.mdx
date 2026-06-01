@@ -23,7 +23,7 @@ To discover installed wallets a dapp can listen for a provider announce events.
 
 And thats it. The connect panel above requests providers automatically on load. You can use the button to re-request providers, and view the announced information.
 
-### Find Wallets
+### For Dapps
 
 :::code-group
 ```js [js]
@@ -55,7 +55,7 @@ const myApp = () => {
 ```
 :::
 
-### Be found
+### For Wallets
 
 :::code-group
 ```js [js]
@@ -74,16 +74,12 @@ window.addEventListener("eip6963:requestProvider", () => announce());
 ```
 :::
 
+## Other transports
 
-## What dapps should avoid
+Not all wallets are capable of browser context injection.
+For example mobile wallets often use a QR code flow for connecting to apps.
+A few of these protocols exist:
 
-- **Assuming `window.ethereum`** — Only one injected provider wins the global slot; users with multiple extensions installed may never see the wallet they actually want to use. Use EIP-6963 instead.
-- **Reconnecting on every page** — Hold one provider and account pair for the whole origin. This site does exactly that via shared session state.
-- **Treating all errors the same** — "User rejected the request" and "no wallet detected" call for different copy, different next steps, and different retry logic.
-- **Blocking the UI** — Show connection state inline; don't trap users in a modal with no escape path.
-
-## Connection transports
-
-**WalletConnect** and similar relay products route sessions through hosted infrastructure. They're useful for mobile or cross-device flows, but we don't recommend them as the default desktop path when a local extension or a direct peer-to-peer protocol is available.
-
-**[openlv](https://openlv.sh)** is open source and shows up in the provider list above as a local, peer-to-peer EIP-1193 provider — no `window.ethereum` overwrite, no vendor relay in the middle.
+- [WalletConnect](https://walletconnect.network) is the most widely used form of transport.
+  For use in apps & wallets it requires setting up an account via [WalletConnect Cloud](https://docs.walletconnect.network/app-sdk/react/installation#cloud-configuration).
+- [Open Lavatory](https://openlv.sh) is an newer privacy-first transport, it uses WebRTC and public signaling to establish an encrypted peer-to-peer connection.
