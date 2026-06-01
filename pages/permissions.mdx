@@ -11,6 +11,8 @@ This flow is defined in [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255) and 
 | [`wallet_requestPermissions`](https://eips.ethereum.org/EIPS/eip-2255#wallet_requestpermissions) | Ask the user to grant a capability — often the backing call for "Connect" |
 | [`wallet_revokePermissions`](https://eips.ethereum.org/EIPS/eip-1193) | Remove a previously granted capability for this site |
 
+<PermissionsDemo />
+
 ## Reading capabilities
 
 The `wallet_getPermissions` method allows for reading what extended capabilities a wallet might have available for use within the app.
@@ -23,5 +25,3 @@ Each entry in the returned array represents a single grant. The fields that matt
 - **`caveats`** — an optional array of scoping constraints, such as limiting which addresses are returned or which RPC methods are permitted.
 
 Caveat `type` values are wallet-defined. [MetaMask's rpc-cap](https://github.com/MetaMask/rpc-cap/blob/master/src/caveats.ts) documents common ones like `filterResponse` and `requiredMethods`; other wallets may define their own.
-
-<PermissionsDemo />

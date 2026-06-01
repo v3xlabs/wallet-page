@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Hex } from "viem";
+import { encodeFunctionData, type Hex, parseAbi, parseUnits } from "viem";
 
 import { formatError, rpc } from "../../lib/ethereum";
 import { Address } from "../wallet/address";
@@ -10,8 +10,21 @@ import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-const DEMO_CALL = {
-  to: "0x0000000000000000000000000000000000000000" as Hex,
+const WETH_ABI = parseAbi([
+  "function deposit() payable",
+  "function withdraw(uint256 wad)",
+  "function balanceOf(address) view returns (uint256)",
+]);
+
+const WRAP_ETH = {
+  to: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" as Hex,
+  data: encodeFunctionData({ abi: WETH_ABI, functionName: "deposit" }),
+  value: parseUnits("0.001", 18),
+};
+
+const UNWRAP_ETH = {
+  to: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" as Hex,
+  data: encodeFunctionData({ abi: WETH_ABI, functionName: "withdraw", args: [parseUnits("0.001", 18)] }),
   value: "0x0" as const,
 };
 
@@ -51,7 +64,7 @@ export function EthSendCallsDemo() {
       version: "1.0",
       chainId: session?.chainId ?? "0x1",
       from: session?.accounts[0] ?? "0x…",
-      calls: [DEMO_CALL],
+      calls: [WRAP_ETH, UNWRAP_ETH],
     }),
     [session],
   );
@@ -66,7 +79,7 @@ export function EthSendCallsDemo() {
       version: "1.0",
       chainId: session.chainId,
       from: session.accounts[0],
-      calls: [DEMO_CALL],
+      calls: [WRAP_ETH, UNWRAP_ETH],
     };
 
     try {
@@ -150,7 +163,7 @@ export function EthSendCallsDemo() {
         error={error}
         pending={pending}
         actions={[
-          { label: "Send demo batch", onClick: sendDemoBatch, primary: true },
+          { label: "Send batch", onClick: sendDemoBatch, primary: true },
           { label: "wallet_getCapabilities", onClick: probeCapabilities },
         ]}
       />
