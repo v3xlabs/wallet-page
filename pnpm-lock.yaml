@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@openlv/connector':
+        specifier: 0.0.1-beta.13
+        version: 0.0.1-beta.13(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+      '@openlv/core':
+        specifier: 0.0.1-beta.10
+        version: 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/modal':
         specifier: 0.0.1-beta.12
         version: 0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
-      '@openlv/core':
-        specifier: 0.0.1-beta.9
-        version: 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/modal':
-        specifier: 0.0.1-beta.11
-        version: 0.0.1-beta.11(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
       '@openlv/provider':
-        specifier: 0.0.1-beta.11
-        version: 0.0.1-beta.11(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+        specifier: 0.0.1-beta.12
+        version: 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -560,6 +560,10 @@ packages:
     resolution: {integrity: sha512-k11yZxZg+t+gWvBbIswW0yoJlu8cHOC7dhunwOzoWH/mXGBiYyR4YY6hAEK/3EUs4UpB8la1RfdRpeGsFHkWsA==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/curves@1.9.7':
+    resolution: {integrity: sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==}
+    engines: {node: ^14.21.3 || >=16}
+
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
@@ -579,44 +583,44 @@ packages:
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
 
-  '@openlv/connector@0.0.1-beta.12':
-    resolution: {integrity: sha512-dzR/zl4RwOQ0oiexvqaM2MQrbPoEmANM0ovoaQ7QFQ9smLKxGsj2UXkfSSAfBjf+zT7p4599E6JnCEof3yYHwg==}
+  '@openlv/connector@0.0.1-beta.13':
+    resolution: {integrity: sha512-VyODHtm6xKnNe82zcwkdTRdnmMuiin/YtexLSE3lPS9noGt1G3wdcIm1dA0DimcZaeEJJtXL6hzH3Z6E/dAc/A==}
     peerDependencies:
       '@wagmi/core': '2'
       viem: '2'
 
-  '@openlv/core@0.0.1-beta.9':
-    resolution: {integrity: sha512-zZ7+fLrzw2tL+aAsiD9VQlsF14DUXM9Jb4RGd6RFmGCYu7ezDIXIAjJuYfv64Wqh1z0ghFjYNqQWKdnqNApqJw==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-      wagmi: '2'
-
-  '@openlv/modal@0.0.1-beta.11':
-    resolution: {integrity: sha512-sxUjP8ZdWf9JEm94E+XpgCBm8bQk+g1OP2uaIQDMLcAW/bsv3q/jAnIKYmdYJdoxhRzEGMVwfsfAMJ9+icV80A==}
-
-  '@openlv/provider@0.0.1-beta.11':
-    resolution: {integrity: sha512-BlgSRNy/6WUT9Of76YaTbJ8eRyWJsqyMDRwGUHn09dbcfs8N5A2V4zoYv9+9Cy6SQlhf58sOSOtttm2d8jkdQQ==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-
-  '@openlv/session@0.0.1-beta.11':
-    resolution: {integrity: sha512-hIJuywUCdLLsQHfW1RmPZMWaAuJg4WHLEUz/aQmL+liNa5MmSvetDynb5gowsckAyvjXqz1OkQPBbTkPZ731cA==}
+  '@openlv/core@0.0.1-beta.10':
+    resolution: {integrity: sha512-AO3BGSoL4kvOzsXyC2JshOVTZq0m9iSYUbGg3jxh4Qcikw74h/et/QT0naD57D/djjC/fBSfwNX+L5CArjI9Xg==}
     peerDependencies:
       '@wagmi/core': '2'
       viem: '2'
       wagmi: '2'
 
-  '@openlv/signaling@0.0.1-beta.8':
-    resolution: {integrity: sha512-oM2jak+S7mGcI0y96ijrQ1VM1SH8b8c6lTxmr0XnDfUWs029h+oNudeGnKGxmrx9lV8ydJF8EUv0VZENC10B3w==}
+  '@openlv/modal@0.0.1-beta.12':
+    resolution: {integrity: sha512-f56JE0P1/SuCk3xjMtj065JuxvEaYMOImK3a3wmfWHZeNnVWrSvsp/OO+SsBX+Bb44b/Sa2fZuNmyAKhVehQDw==}
+
+  '@openlv/provider@0.0.1-beta.12':
+    resolution: {integrity: sha512-yCZKkppuHyHMd2c82L9owi2vYIVDkZd38LWpq2sOlWiQamyDrtCznyCn4uQpgeuqBlOcW5j8+KftB86a+J1rNg==}
+    peerDependencies:
+      '@wagmi/core': '2'
+      viem: '2'
+
+  '@openlv/session@0.0.1-beta.12':
+    resolution: {integrity: sha512-s6vnOWX6Fd8fiy1ZG6uNVNCfVQoqBQ9Soz3Ji/BNnukU47gfEBGSZakWapeopSoDlcuFtd0T8TUkW6xAGNPXNQ==}
     peerDependencies:
       '@wagmi/core': '2'
       viem: '2'
       wagmi: '2'
 
-  '@openlv/transport@0.0.1-beta.8':
-    resolution: {integrity: sha512-hgiUr7RYld0LXIluo+t/7ElUtUtGC1xiCqeTdljJL2t8nYZprheqQ/dzwlKdXS4zUaDboNxnYglL/qGh9H6jBg==}
+  '@openlv/signaling@0.0.1-beta.9':
+    resolution: {integrity: sha512-Jfn47nu0mpDxeUKYEtgRBMOFKAoQLzQyA6A8jTHfS8mwpwa8Z8oBhMWy0QZCM19Q/kbVkzQHMr41jOxeVwSgtQ==}
+    peerDependencies:
+      '@wagmi/core': '2'
+      viem: '2'
+      wagmi: '2'
+
+  '@openlv/transport@0.0.1-beta.9':
+    resolution: {integrity: sha512-qhXhN4OTwlAnmL9Q4V6TxMbqdatxIlFsrU1aoBIJFbqrlhRDrTrQs7c9TDixQe3RBWhdN9D7hy+DB6fl4i0RGQ==}
     peerDependencies:
       '@wagmi/core': '2'
       viem: '2'
@@ -3357,9 +3361,6 @@ packages:
   turbo-stream@3.2.0:
     resolution: {integrity: sha512-EK+bZ9UVrVh7JLslVFOV0GEMsociOqVOvEMTAd4ixMyffN5YNIEdLZWXUx5PJqDbTxSIBWw04HS9gCY4frYQDQ==}
 
-  tweetnacl@1.0.3:
-    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
-
   twoslash-protocol@0.3.8:
     resolution: {integrity: sha512-HmvAHoiEviK8LqvAQyc9/irkdvwTUiR1fHmNwH/0gq8EHxyBt4PWVPixjEXg6wJu1u6yBrILEWXGK9Kw58/8yQ==}
 
@@ -4280,6 +4281,10 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.8.0
 
+  '@noble/curves@1.9.7':
+    dependencies:
+      '@noble/hashes': 1.8.0
+
   '@noble/hashes@1.8.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -4296,11 +4301,11 @@ snapshots:
 
   '@open-draft/deferred-promise@2.2.0': {}
 
-  '@openlv/connector@0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
+  '@openlv/connector@0.0.1-beta.13(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/modal': 0.0.1-beta.11(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
-      '@openlv/provider': 0.0.1-beta.11(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/modal': 0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+      '@openlv/provider': 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
       eventemitter3: 5.0.1
       viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
     transitivePeerDependencies:
@@ -4312,18 +4317,19 @@ snapshots:
       - wagmi
       - zod
 
-  '@openlv/core@0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/core@0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
     dependencies:
+      '@noble/ciphers': 1.3.0
+      '@noble/curves': 1.9.7
       eventemitter3: 5.0.1
-      tweetnacl: 1.0.3
       viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
 
-  '@openlv/modal@0.0.1-beta.11(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
+  '@openlv/modal@0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/provider': 0.0.1-beta.11(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/session': 0.0.1-beta.11(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/provider': 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+      '@openlv/session': 0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
       classnames: 2.5.1
       eventemitter3: 5.0.1
       lucide-solid: 0.574.0(solid-js@1.9.13)
@@ -4344,28 +4350,28 @@ snapshots:
       - wagmi
       - zod
 
-  '@openlv/provider@0.0.1-beta.11(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/provider@0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/session': 0.0.1-beta.11(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/transport': 0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/session': 0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/transport': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
       eventemitter3: 5.0.1
       ox: 0.9.17(typescript@6.0.3)(zod@4.4.3)
       ts-pattern: 5.9.0
       viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
-      zod: 4.4.3
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
       - wagmi
+      - zod
 
-  '@openlv/session@0.0.1-beta.11(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/session@0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/transport': 0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/transport': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
       eventemitter3: 5.0.1
       globals: 16.5.0
       ts-pattern: 5.9.0
@@ -4374,9 +4380,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/signaling@0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/signaling@0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
       eventemitter3: 5.0.1
       globals: 16.5.0
       gun: 0.2020.1241
@@ -4387,9 +4393,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/transport@0.0.1-beta.8(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/transport@0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
     dependencies:
-      '@openlv/core': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
       eventemitter3: 5.0.1
       globals: 16.5.0
       ts-pattern: 5.9.0
@@ -7739,8 +7745,6 @@ snapshots:
       fsevents: 2.3.3
 
   turbo-stream@3.2.0: {}
-
-  tweetnacl@1.0.3: {}
 
   twoslash-protocol@0.3.8: {}
 
