@@ -15,6 +15,10 @@ export default defineConfig({
     light: "/icon_light.webp",
     dark: "/icon_dark.webp",
   },
+  logoUrl: {
+    light: "/logo_light.svg",
+    dark: "/logo_dark.svg",
+  },
   sidebar: [
     { text: "Introduction", link: "/" },
     { text: "Roadmap", link: "/roadmap" },
