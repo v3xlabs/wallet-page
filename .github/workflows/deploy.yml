@@ -24,7 +24,7 @@ jobs:
       - name: Build Docs
         run: pnpm build
       - name: Edgeserver Upload
-        uses: v3xlabs/edgeserver-upload@v0.2.1-pre.4
+        uses: v3xlabs/edgeserver-upload@v0.2.4
         with:
             site_id: s_305c36a033
             server: https://edgeserver.dev/api
