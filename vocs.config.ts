@@ -11,6 +11,10 @@ export default defineConfig({
   mcp: { enabled: false },
   accentColor: "#6c5ce7",
   basePath: "/",
+  iconUrl: {
+    light: "/icon_light.png",
+    dark: "/icon_dark.png",
+  },
   sidebar: [
     { text: "Introduction", link: "/" },
     { text: "Roadmap", link: "/roadmap" },
