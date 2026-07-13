@@ -20,6 +20,9 @@ importers:
       '@openlv/provider':
         specifier: 0.0.1-beta.12
         version: 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+      qr:
+        specifier: ^0.6.0
+        version: 0.6.0
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -2882,6 +2885,10 @@ packages:
   pvutils@1.1.5:
     resolution: {integrity: sha512-KTqnxsgGiQ6ZAzZCVlJH5eOjSnvlyEgx1m8bkRJfOhmGRqfo5KLvmAlACQkrjEtOQ4B7wF9TdSLIs9O90MX9xA==}
     engines: {node: '>=16.0.0'}
+
+  qr@0.6.0:
+    resolution: {integrity: sha512-P23VoX7SipHALdiIYG+D+LT/6n22dNKwV92FAb3d+Nlki/5WisSsfLt0UDFz2XEBtuwrECTznvu+chKKFCSYhA==}
+    engines: {node: '>= 20.19.0'}
 
   qrcode-generator@1.5.2:
     resolution: {integrity: sha512-pItrW0Z9HnDBnFmgiNrY1uxRdri32Uh9EjNYLPVC2zZ3ZRIIEqBoDgm4DkvDwNNDHTK7FNkmr8zAa77BYc9xNw==}
@@ -7122,6 +7129,8 @@ snapshots:
 
   pvutils@1.1.5:
     optional: true
+
+  qr@0.6.0: {}
 
   qrcode-generator@1.5.2: {}
 

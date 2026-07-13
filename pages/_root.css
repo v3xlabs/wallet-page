@@ -1,3 +1,14 @@
+@import "tailwindcss";
+
+/*
+ * Vocs' Tailwind v4 theme. Its tokens resolve to the runtime `--vocs-*`
+ * variables, so utilities like `bg-surface`, `text-secondary`,
+ * `border-primary` and `text-accent` follow the site theme (accent color,
+ * light/dark) automatically. Imported via a relative path because the
+ * package's `./styles/*` export doesn't resolve for CSS files.
+ */
+@import "../node_modules/vocs/dist/styles/theme.css" layer(theme);
+
 [data-v-ask-ai-container] {
   opacity: 0.8;
   user-select: none;

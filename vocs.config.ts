@@ -19,64 +19,102 @@ export default defineConfig({
     light: "/logo_light.svg",
     dark: "/logo_dark.svg",
   },
-  sidebar: [
-    { text: "Introduction", link: "/" },
-    { text: "Roadmap", link: "/roadmap" },
-    {
-      text: "Wallet specifications",
-      items: [
-        { text: "Connect", link: "/connect" },
-        {
-          text: "Account",
-          items: [
-            { text: "Addresses", link: "/addresses" },
-            { text: "Permissions", link: "/permissions" },
-            { text: "Chains", link: "/chains" },
-          ],
-        },
-        {
-          text: "Signing",
-          items: [
-            { text: "Personal signatures", link: "/signatures" },
-            { text: "Sign-In with Ethereum", link: "/siwe" },
-            { text: "Typed data", link: "/typed-signatures" },
-          ],
-        },
-        {
-          text: "Token",
-          items: [
-            { text: "Approvals", link: "/approvals" },
-            { text: "Discovery", link: "/assets" },
-          ],
-        },
-        {
-          text: "Transactions",
-          items: [
-            { text: "Send transaction", link: "/transactions" },
-            { text: "Batch calls", link: "/batching" },
-            { text: "EIP-7702", link: "/delegation" },
-          ],
-        },
-      ],
-    },
-    {
-      text: "Contracts",
-      items: [
-        { text: "ERC-20", link: "/erc-20" },
-        { text: "ERC-721", link: "/erc-721" },
-        { text: "ERC-1155", link: "/erc-1155" },
-        { text: "Multicall", link: "/multicall" },
-      ],
-    },
-    {
-      text: "Ecosystem",
-      items: [
-        { text: "Wrapped ETH", link: "/weth" },
-        { text: "Name Resolution", link: "/ens" },
-      ],
-    },
-  ],
+  sidebar: {
+    "/design": [
+      { text: "Overview", link: "/design" },
+      { text: "Principles", link: "/design/principles" },
+      {
+        text: "Account",
+        items: [
+          { text: "Onboarding", link: "/design/onboarding" },
+          { text: "Derivation", link: "/design/mnemonics" },
+          { text: "Importing", link: "/design/importing" },
+          { text: "Recovery", link: "/design/recovery" },
+        ],
+      },
+      {
+        text: "Actions",
+        items: [
+          { text: "Send", link: "/design/send" },
+          { text: "Receive", link: "/design/receive" },
+          { text: "Swap", link: "/design/swap" },
+          { text: "History", link: "/design/history" },
+          { text: "Signing", link: "/design/signing" },
+          { text: "Connect", link: "/design/connect" },
+        ],
+      },
+      {
+        text: "Data",
+        items: [
+          { text: "Prices", link: "/design/prices" },
+          { text: "Assets", link: "/design/assets" },
+          { text: "Networks", link: "/design/networks" },
+          { text: "Addresses", link: "/design/address" },
+          { text: "Amounts", link: "/design/amounts" },
+        ],
+      },
+    ],
+    "/": [
+      { text: "Introduction", link: "/" },
+      { text: "Roadmap", link: "/roadmap" },
+      {
+        text: "Wallet specifications",
+        items: [
+          { text: "Connect", link: "/connect" },
+          {
+            text: "Account",
+            items: [
+              { text: "Addresses", link: "/addresses" },
+              { text: "Permissions", link: "/permissions" },
+              { text: "Networks", link: "/networks" },
+            ],
+          },
+          {
+            text: "Signing",
+            items: [
+              { text: "Personal signatures", link: "/signatures" },
+              { text: "Sign-In with Ethereum", link: "/siwe" },
+              { text: "Typed data", link: "/typed-signatures" },
+            ],
+          },
+          {
+            text: "Token",
+            items: [
+              { text: "Approvals", link: "/approvals" },
+              { text: "Discovery", link: "/assets" },
+            ],
+          },
+          {
+            text: "Transactions",
+            items: [
+              { text: "Send transaction", link: "/transactions" },
+              { text: "Batch calls", link: "/batching" },
+              { text: "EIP-7702", link: "/delegation" },
+            ],
+          },
+        ],
+      },
+      {
+        text: "Contracts",
+        items: [
+          { text: "ERC-20", link: "/erc-20" },
+          { text: "ERC-721", link: "/erc-721" },
+          { text: "ERC-1155", link: "/erc-1155" },
+          { text: "Multicall", link: "/multicall" },
+        ],
+      },
+      {
+        text: "Ecosystem",
+        items: [
+          { text: "Wrapped ETH", link: "/weth" },
+          { text: "Name Resolution", link: "/ens" },
+        ],
+      },
+    ],
+  },
   topNav: [
+    { text: "Docs", link: "/", match: "/" },
+    { text: "Design", link: "/design", match: "/design" },
     { text: "walletbeat", link: "https://walletbeat.eth.link" },
   ],
 });
