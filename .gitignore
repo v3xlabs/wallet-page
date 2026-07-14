@@ -5,6 +5,8 @@ dist
 .DS_Store
 *.log
 
+.tmp
+
 # Devenv
 .devenv*
 devenv.local.nix

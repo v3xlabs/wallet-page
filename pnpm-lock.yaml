@@ -20,6 +20,9 @@ importers:
       '@openlv/provider':
         specifier: 0.0.3
         version: 0.0.3(typescript@6.0.3)(zod@4.4.3)
+      blo:
+        specifier: ^2.0.0
+        version: 2.0.0
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1494,6 +1497,9 @@ packages:
     resolution: {integrity: sha512-wbPvpyjJPC0zdfdKXxqEL3Ea+bOMD/87X4lftiJkkaBiuG6ALQy1SLmEd7BSmVCuwCQsBrCamgBoLyfFDD1EPg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+
+  blo@2.0.0:
+    resolution: {integrity: sha512-VUUr1+vWisNSaHVswkbPbk1+GhygClKILkGchae7nsyuJ4ZVz5l1hEW4eR5F/ly/asM5vzigYGXjPnvrd//CVg==}
 
   body-parser@2.2.2:
     resolution: {integrity: sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA==}
@@ -5603,6 +5609,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   baseline-browser-mapping@2.10.32: {}
+
+  blo@2.0.0: {}
 
   body-parser@2.2.2:
     dependencies:

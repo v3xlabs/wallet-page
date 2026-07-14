@@ -1,94 +1,55 @@
 "use client";
 
-import classNames from "classnames";
 import { encodeQR } from "qr";
-import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-import { hoodi, mainnet, sepolia } from "viem/chains";
+import { parseUnits } from "viem";
 
+import { SELF, TOKENS } from "../data";
+import { EnsAvatar } from "../ens-avatar";
+import { NetworkSelect } from "../network-select";
+import { truncate } from "../send/shared";
 import { DemoShell } from "../shell";
+import { Field, PrimaryButton, WalletFrame, WalletHeader } from "../ui";
 
-const NETWORKS = [
-  mainnet,
-  sepolia,
-  hoodi,
-];
+/**
+ * Receiving is just sharing an address. The QR can carry the raw address, or
+ * an EIP-681 link that also prefills network, asset and amount on the
+ * sender's side.
+ */
 
-const inputClass = "demo-input";
+type Mode = "raw" | "eip-681";
 
-const Field = ({ label, children }: { label: string; children: ReactNode; }) => (
-  <label className="flex flex-col gap-1.5">
-    <span className="text-xs font-medium tracking-wide text-secondary uppercase">{label}</span>
-    {children}
-  </label>
-);
+const ETH = TOKENS[0];
 
-const Segmented = <T extends string>({ options, value, onChange }: {
-  options: { value: T; label: string; }[];
-  value: T;
-  onChange: (value: T) => void;
-}) => (
-  <div className="grid auto-cols-fr grid-flow-col gap-0.5 rounded-lg border border-primary bg-surfaceMuted p-0.5">
-    {options.map(option => (
-      <button
-        key={option.value}
-        type="button"
-        onClick={() => onChange(option.value)}
-        className={classNames(
-          "rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors cursor-pointer",
-          option.value === value
-            ? "bg-surface text-primary"
-            : "text-secondary hover:text-primary",
-        )}
-      >
-        {option.label}
-      </button>
-    ))}
-  </div>
-);
+/** Base-units amount for the URL; undefined while the input is unparsable. */
+const parseAmount = (text: string, decimals: number) => {
+  if (!/^\d+(\.\d+)?$/.test(text.trim())) return;
 
-const NetworkSelect = ({ value, onChange }: { value: number; onChange: (id: number) => void; }) => (
-  <div className="relative">
-    <select
-      value={value}
-      onChange={e => onChange(Number(e.target.value))}
-      className="demo-select appearance-none pr-9"
-    >
-      {NETWORKS.map(network => (
-        <option key={network.id} value={network.id}>
-          {network.name}
-        </option>
-      ))}
-    </select>
-    <svg
-      aria-hidden
-      viewBox="0 0 16 16"
-      fill="none"
-      className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted"
-    >
-      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  </div>
-);
+  try {
+    return parseUnits(text.trim(), decimals);
+  }
+  catch {
+    return;
+  }
+};
 
 export const ReceiveDemo = () => {
-  const [mode, setMode] = useState<"raw" | "eip-681">("raw");
-  const [eip681Mode, setEip681Mode] = useState<"native" | "erc-20">("native");
-  const [networkId, setNetworkId] = useState<number>(1);
-  const [token, setToken] = useState<string>("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
-  const [amount, setAmount] = useState<number>(1_000_000_000_000_000_000);
-  const [to, setTo] = useState<string>("0x1234567890123456789012345678901234567890");
-  const url = useMemo(() => {
-    if (mode === "raw") return to;
+  const [mode, setMode] = useState<Mode>("raw");
+  const [networkId, setNetworkId] = useState(1);
+  const [symbol, setSymbol] = useState(ETH.symbol);
+  const [amountText, setAmountText] = useState("1");
 
-    if (mode === "eip-681") {
-      if (eip681Mode === "native") return `ethereum:${to}@${networkId}/?value=${amount}`;
+  const token = TOKENS.find(entry => entry.symbol === symbol) ?? ETH;
+  const native = token.symbol === "ETH";
+  const amount = parseAmount(amountText, token.decimals) ?? 0n;
 
-      if (eip681Mode === "erc-20") return `ethereum:${token}@${networkId}/transfer?uint256=${amount}&address=${to}`;
-    }
+  const url
+    = mode === "raw"
+      ? SELF.address
+      : (native
+          ? `ethereum:${SELF.address}@${networkId}/?value=${amount}`
+          : `ethereum:${token.address}@${networkId}/transfer?uint256=${amount}&address=${SELF.address}`);
 
-    return "invalid";
-  }, [mode, eip681Mode, networkId, to, token, amount]);
   const qr = useMemo(() => encodeQR(url, "svg", {}), [url]);
 
   const [copied, setCopied] = useState(false);
@@ -99,93 +60,92 @@ export const ReceiveDemo = () => {
   };
 
   return (
-    <DemoShell source="components/design/receive/receive.tsx">
-      <div className="">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4">
-          <div className="">
-            <div className="rounded-lg bg-white p-2.5 w-fit border border-primary">
-              <div className="aspect-square size-36 overflow-hidden">
-                <img
-                  src={`data:image/svg+xml;base64,${btoa(qr)}`}
-                  alt="Receive QR code"
-                  className="size-full aspect-square"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="min-w-0 flex flex-col gap-4">
-            <pre className="w-full rounded-md border border-primary bg-surface whitespace-pre-wrap wrap-anywhere grow">
-              <code className="font-mono text-xs text-secondary p-2 block">{url}</code>
-            </pre>
-            <button
-              type="button"
-              onClick={copy}
-              className="demo-btn w-full"
-            >
-              {copied ? "Copied!" : "Copy"}
-            </button>
-          </div>
-        </div>
-        <hr className="my-4 border-t border-primary" />
-        <div className="flex min-w-0 flex-col gap-4">
-          <Field label="URL standard">
-            <Segmented
-              value={mode}
-              onChange={setMode}
-              options={[
-                { value: "raw", label: "Raw address" },
-                { value: "eip-681", label: "EIP-681" },
-              ]}
+    <DemoShell
+      source="components/design/receive/receive.tsx"
+      controls={{
+        format: {
+          type: "tabs",
+          options: [
+            { value: "raw", label: "Raw address" },
+            { value: "eip-681", label: "EIP-681 link" },
+          ],
+          value: mode,
+          onChange: value => setMode(value as Mode),
+        },
+      }}
+    >
+      <WalletFrame className="min-h-[480px]">
+        <WalletHeader title="Receive" />
+        <div className="flex grow flex-col items-center gap-3 px-4 pt-2 pb-4">
+          <div className="rounded-2xl border border-primary bg-white p-3">
+            <img
+              src={`data:image/svg+xml;base64,${btoa(qr)}`}
+              alt="QR code for the receive link"
+              className="size-36"
             />
-          </Field>
-          <Field label="Recipient address">
-            <input
-              type="text"
-              value={to}
-              onChange={e => setTo(e.target.value)}
-              spellCheck={false}
-              className={classNames(inputClass, "font-mono")}
-            />
-          </Field>
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-primary">
+              <EnsAvatar address={SELF.address} name={SELF.name} size={18} />
+              {SELF.name}
+            </span>
+            <span title={SELF.address} className="font-mono text-xs text-muted">
+              {truncate(SELF.address)}
+            </span>
+          </div>
           {mode === "eip-681" && (
-            <>
+            <div className="flex w-full flex-col gap-3 pt-1">
               <Field label="Network">
                 <NetworkSelect value={networkId} onChange={setNetworkId} />
               </Field>
-              <Field label="Asset">
-                <Segmented
-                  value={eip681Mode}
-                  onChange={setEip681Mode}
-                  options={[
-                    { value: "native", label: "Native (ETH)" },
-                    { value: "erc-20", label: "ERC-20" },
-                  ]}
-                />
-              </Field>
-              {eip681Mode === "erc-20" && (
-                <Field label="Token contract">
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Asset">
+                  <span className="relative">
+                    <select
+                      value={symbol}
+                      onChange={e => setSymbol(e.target.value)}
+                      className="demo-select appearance-none pr-9 text-[13px]"
+                    >
+                      {TOKENS.map(entry => (
+                        <option key={entry.symbol} value={entry.symbol}>
+                          {entry.symbol}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted"
+                    >
+                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Field>
+                <Field label={`Amount (${token.symbol})`}>
                   <input
                     type="text"
-                    value={token}
-                    onChange={e => setToken(e.target.value)}
+                    inputMode="decimal"
+                    value={amountText}
+                    onChange={e => setAmountText(e.target.value)}
+                    placeholder="1.0"
                     spellCheck={false}
-                    className={classNames(inputClass, "font-mono")}
+                    className="demo-input font-mono text-[13px]"
                   />
                 </Field>
-              )}
-              <Field label={eip681Mode === "erc-20" ? "Amount (base units)" : "Amount (wei)"}>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={e => setAmount(Number(e.target.value))}
-                  min={0}
-                  className={classNames(inputClass, "font-mono")}
-                />
-              </Field>
-            </>
+              </div>
+            </div>
           )}
+          <div className="w-full rounded-lg bg-surfaceMuted px-3 py-2 font-mono text-[11px] leading-relaxed text-secondary wrap-anywhere">
+            {url}
+          </div>
+          <div className="mt-auto w-full pt-1">
+            <PrimaryButton onClick={copy}>
+              {copied ? "Copied!" : (mode === "raw" ? "Copy address" : "Copy payment link")}
+            </PrimaryButton>
+          </div>
         </div>
-      </div>
+      </WalletFrame>
     </DemoShell>
   );
 };

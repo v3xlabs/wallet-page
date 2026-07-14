@@ -1,18 +1,35 @@
+import { AddressDisplayDemo } from "../../components/design/address/address-display";
+import { AddressInputDemo } from "../../components/design/address/address-input";
+
 # Addresses
 
-:::note
-This page is under construction.
-:::
+An account is identified by a 20-byte address.
+A wallet handles addresses in two directions: **accepting them as input** and **displaying them back to the user**.
+Both directions have sharp edges — checksums, truncation, and ENS names.
 
-- eip55 checksum validation
-- truncating addresses
-- ens reverse resolution
-- anywhere address can be input ens name should also be accepted
-- ens names should be a soft suggestion, not hard replacement of address field
+## Address input
 
-### Truncating Addresses
+A single recipient field should accept both a raw hex address and an ENS name.
 
-Truncating 5..4, vs 6...6
-```
-0x225...c3B5
-```
+<AddressInputDemo />
+
+A few rules make this field trustworthy:
+
+- **Checksums are handled, not taught.** [EIP-55](https://eips.ethereum.org/EIPS/eip-55) encodes a checksum in the casing of the hex characters.
+  An all-lowercase address carries no checksum, so accept it and normalize.
+  A mixed-case address that fails the checksum was corrupted somewhere between copy and paste — refuse it outright.
+- **ENS names are a soft suggestion.** Show the resolved address next to the name the user typed, never silently replace the field contents.
+  The user confirms the pair, and the wallet submits the address.
+- **Clean up pastes.** Trim whitespace, and unwrap [EIP-681](https://eips.ethereum.org/EIPS/eip-681) URLs (`ethereum:0x…@1/…`) down to the part this field needs.
+
+Whatever the user typed, the output of the field is always one canonical, checksummed address.
+
+## Address display
+
+<AddressDisplayDemo />
+
+- **Always render the checksummed form** in monospace, even when the source was lowercase.
+- **Truncation is a display concern only.** `5..4` (`0x225...c3B5`) is compact for dense lists; `6..6` keeps more entropy visible where spoofed lookalike addresses matter.
+  Copying must always copy the full address — never the truncated string.
+- **Reverse resolution is decoration.** When an address has a primary ENS name, show the name first with the address still reachable behind it.
+  If the lookup fails, the address stands on its own.
