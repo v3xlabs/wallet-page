@@ -154,33 +154,32 @@ export function ApprovalsDemo() {
 
   return (
     <DemoShell source="components/demos/approvals-demo.tsx">
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Token contract</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Token contract</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={token}
           onChange={e => setToken(e.target.value)}
           placeholder="0x…"
         />
       </label>
 
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Spender contract</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Spender contract</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={spender}
           onChange={e => setSpender(e.target.value)}
           placeholder="0x…"
         />
-        <div className="wallet-demo-actions" style={{ marginTop: "0.35rem" }}>
+        <div className="mt-1.5 mb-3 flex flex-wrap gap-2">
           {KNOWN_SPENDERS.map(s => (
             <button
               key={s.address}
               type="button"
-              className="wallet-demo-btn"
-              style={{ fontSize: "0.78rem", padding: "0.25rem 0.6rem" }}
+              className="demo-btn px-2.5 py-1 text-[13px]"
               onClick={() => setSpender(s.address)}
             >
               {s.label}

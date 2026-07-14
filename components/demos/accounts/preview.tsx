@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import { Address } from "../../wallet/address";
 
 type AccountsPreviewProps = {
@@ -11,12 +13,12 @@ export function AccountsPreview({
   firstAccountHint = "Many dapps and wallets only use this entry",
 }: AccountsPreviewProps) {
   if (accounts.length === 0) {
-    return <p className="wallet-demo-muted">Wallet returned an empty list.</p>;
+    return <p className="text-sm text-secondary">Wallet returned an empty list.</p>;
   }
 
   return (
-    <div className="wallet-preview-accounts">
-      <p className="wallet-preview-accounts-count">
+    <div>
+      <p className="mb-2 text-sm font-semibold">
         {accounts.length}
         {" "}
         account
@@ -24,26 +26,27 @@ export function AccountsPreview({
         {" "}
         returned
       </p>
-      <ol className="wallet-preview-account-list">
+      <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
         {accounts.map((address, index) => (
           <li
             key={address}
-            className={
+            className={classNames(
+              "flex flex-wrap items-center gap-x-2 gap-y-1.5 rounded-md border p-2",
               index === 0
-                ? "wallet-preview-account-item wallet-preview-account-first"
-                : "wallet-preview-account-item"
-            }
+                ? "border-accent bg-accent/10"
+                : "border-primary bg-code-block",
+            )}
           >
-            <span className="wallet-preview-account-index">{index}</span>
+            <span className="inline-flex h-[1.35rem] min-w-[1.35rem] items-center justify-center rounded bg-surfaceMuted font-mono text-xs font-semibold">{index}</span>
             <Address address={address} full />
             {index === 0
               ? (
-                  <span className="wallet-preview-account-tag wallet-preview-account-tag-primary">
+                  <span className="rounded-full bg-accent/20 px-1.5 py-0.5 text-xs font-semibold text-primary">
                     accounts[0]
                   </span>
                 )
               : (
-                  <span className="wallet-preview-account-tag">
+                  <span className="rounded-full bg-surfaceMuted px-1.5 py-0.5 text-xs text-secondary">
                     accounts[
                     {index}
                     ]
@@ -53,7 +56,7 @@ export function AccountsPreview({
         ))}
       </ol>
       {accounts.length > 1 && (
-        <p className="wallet-demo-muted wallet-preview-accounts-note">
+        <p className="mt-2 text-[13px] leading-snug text-secondary">
           {firstAccountHint}
           {" "}
           — the rest are easy to miss in UI even though the

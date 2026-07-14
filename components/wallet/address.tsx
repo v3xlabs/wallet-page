@@ -9,7 +9,7 @@ type AddressProps = {
 /** Shared inline address display — use this instead of wrapping addresses in `<code>`. */
 export function Address({ address, full = false }: AddressProps) {
   return (
-    <span className="wallet-address" title={address}>
+    <span className="font-mono text-[0.85em] break-all text-primary" title={address}>
       {full ? address : truncateAddress(address)}
     </span>
   );

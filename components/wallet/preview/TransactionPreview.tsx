@@ -22,14 +22,14 @@ export function TransactionPreview({
   return (
     <>
       {subtitle}
-      <p className="wallet-preview-tx-route">
+      <p className="font-mono text-[13px]">
         <Address address={from} />
         <span aria-hidden> → </span>
         <Address address={to} />
       </p>
-      {valueLabel && <p className="wallet-preview-tx-value">{valueLabel}</p>}
+      {valueLabel && <p className="mt-1.5 font-semibold">{valueLabel}</p>}
       {hasCalldata && (
-        <p className="wallet-preview-tx-call">
+        <p className="mt-1.5 text-[13px] text-secondary">
           Contract call ·
           {" "}
           <code>

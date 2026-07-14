@@ -40,24 +40,27 @@ function PermitPreview({
   const iconLetter = (tokenSymbol ?? tokenName ?? "T").slice(0, 1).toUpperCase();
 
   return (
-    <div className="wallet-preview-permit">
-      <div className="wallet-preview-permit-hero">
-        <span className="wallet-preview-token-icon" aria-hidden>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[1.1rem] font-bold"
+          aria-hidden
+        >
           {iconLetter}
         </span>
         <div>
-          <p className="wallet-preview-permit-amount">{amount}</p>
-          <p className="wallet-preview-permit-token">{tokenName}</p>
+          <p className="text-[1.05rem] font-semibold">{amount}</p>
+          <p className="mt-0.5 text-sm text-secondary">{tokenName}</p>
         </div>
       </div>
-      <dl className="wallet-preview-rows">
-        <div>
-          <dt>Spender</dt>
-          <dd><Address address={spender} /></dd>
+      <dl className="m-0 flex flex-col gap-1">
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Spender</dt>
+          <dd className="m-0 break-all text-right"><Address address={spender} /></dd>
         </div>
-        <div>
-          <dt>Expires</dt>
-          <dd>{formatDeadline(deadline)}</dd>
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Expires</dt>
+          <dd className="m-0 break-all text-right">{formatDeadline(deadline)}</dd>
         </div>
       </dl>
     </div>

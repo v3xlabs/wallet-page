@@ -163,14 +163,14 @@ export function WethDemo() {
     <DemoShell source="components/demos/weth-demo.tsx">
       {wethAddress
         ? (
-            <p className="wallet-demo-muted">
+            <p className="text-sm text-secondary">
               WETH on this chain:
               {" "}
               <Address address={wethAddress} />
             </p>
           )
         : (
-            <p className="wallet-demo-muted">
+            <p className="text-sm text-secondary">
               {session
                 ? (
                     <>
@@ -208,11 +208,11 @@ export function WethDemo() {
         pending={pending}
       />
 
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Amount (ETH / WETH)</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Amount (ETH / WETH)</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={amount}
           onChange={e => setAmount(e.target.value)}
         />

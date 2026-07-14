@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { type ReactNode, useId, useMemo, useState } from "react";
 
 import { formatRpcCall, type RpcCall } from "../../lib/rpcDisplay";
@@ -51,8 +52,8 @@ export function DemoInspector({
   if (tabs.length === 0) return null;
 
   return (
-    <div className="wallet-demo-tabs">
-      <div className="wallet-demo-tab-list" role="tablist" aria-label="Demo views">
+    <div className="overflow-hidden rounded-md border border-primary bg-surfaceMuted">
+      <div className="flex border-b border-primary bg-code-block" role="tablist" aria-label="Demo views">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -61,7 +62,12 @@ export function DemoInspector({
             id={`${baseId}-${tab.id}`}
             aria-selected={current === tab.id}
             aria-controls={`${baseId}-panel-${tab.id}`}
-            className={`wallet-demo-tab${current === tab.id ? " wallet-demo-tab-active" : ""}`}
+            className={classNames(
+              "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
+              current === tab.id
+                ? "text-primary shadow-[inset_0_-2px_0_var(--vocs-color-accent)]"
+                : "text-secondary hover:text-primary",
+            )}
             onClick={() => setActive(tab.id)}
           >
             {tab.label}
@@ -73,7 +79,7 @@ export function DemoInspector({
           id={`${baseId}-panel-user`}
           role="tabpanel"
           aria-labelledby={`${baseId}-user`}
-          className="wallet-demo-tab-panel wallet-preview"
+          className="min-h-14 px-3.5 py-3 text-sm leading-[1.45]"
         >
           {user}
         </div>
@@ -83,9 +89,9 @@ export function DemoInspector({
           id={`${baseId}-panel-request`}
           role="tabpanel"
           aria-labelledby={`${baseId}-request`}
-          className="wallet-demo-tab-panel wallet-demo-rpc"
+          className="min-h-14 px-3.5 py-3"
         >
-          <pre>{formatRpcCall(request)}</pre>
+          <pre className="m-0 font-mono text-xs leading-[1.45] whitespace-pre-wrap wrap-break-word">{formatRpcCall(request)}</pre>
         </div>
       )}
       {current === "response" && response && (
@@ -93,9 +99,16 @@ export function DemoInspector({
           id={`${baseId}-panel-response`}
           role="tabpanel"
           aria-labelledby={`${baseId}-response`}
-          className={`wallet-demo-tab-panel wallet-demo-raw${responseError ? " wallet-demo-raw-error" : ""}`}
+          className="min-h-14"
         >
-          <pre className="wallet-demo-raw-pre">{response}</pre>
+          <pre
+            className={classNames(
+              "m-0 max-h-72 overflow-auto px-3.5 py-3 font-mono text-xs leading-[1.45] whitespace-pre",
+              { "text-destructive": responseError },
+            )}
+          >
+            {response}
+          </pre>
         </div>
       )}
       {current === "hash" && hash && (
@@ -103,10 +116,10 @@ export function DemoInspector({
           id={`${baseId}-panel-hash`}
           role="tabpanel"
           aria-labelledby={`${baseId}-hash`}
-          className="wallet-demo-tab-panel wallet-demo-hash"
+          className="min-h-14 px-3.5 py-3"
         >
-          {hashNote && <p className="wallet-demo-muted wallet-demo-hash-note">{hashNote}</p>}
-          <code>{hash}</code>
+          {hashNote && <p className="mb-2 text-[13px] text-secondary">{hashNote}</p>}
+          <code className="block font-mono text-xs break-all whitespace-pre-wrap">{hash}</code>
         </div>
       )}
     </div>

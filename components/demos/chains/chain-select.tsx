@@ -14,7 +14,7 @@ export function ChainSelect({ value, onChange, id }: ChainSelectProps) {
   return (
     <select
       id={id}
-      className="wallet-demo-select"
+      className="demo-select mt-2 max-w-[22rem]"
       value={value}
       onChange={e => onChange(e.target.value as Hex)}
     >

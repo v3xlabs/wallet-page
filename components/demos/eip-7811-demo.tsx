@@ -92,7 +92,7 @@ export function Eip7811Demo() {
         inspector={{
           user: (
             <>
-              {error && <pre className="wallet-asset-search-error">{error}</pre>}
+              {error && <pre className="mt-3 font-mono text-[13px] text-destructive whitespace-pre-wrap wrap-break-word">{error}</pre>}
               <WalletAssetSearch
                 assets={assets}
                 loading={pending && assets.length === 0}

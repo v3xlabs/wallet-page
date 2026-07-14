@@ -167,7 +167,7 @@ export function Eip7702Demo() {
 
   return (
     <DemoShell source="components/demos/eip-7702-demo.tsx">
-      <p className="wallet-demo-muted">
+      <p className="text-sm text-secondary">
         Wallet teams are standardizing RPC names for authorizations and type-4
         transactions. This page probes common method names and
         {" "}
@@ -175,11 +175,11 @@ export function Eip7702Demo() {
         {" "}
         handling.
       </p>
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Delegator contract (probe only)</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Delegator contract (probe only)</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={delegator}
           onChange={e => setDelegator(e.target.value as Address)}
           spellCheck={false}

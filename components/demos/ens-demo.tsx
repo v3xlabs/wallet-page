@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import { type Address, createPublicClient, http, isAddress } from "viem";
 import { mainnet } from "viem/chains";
@@ -79,29 +80,29 @@ export function EnsDemo() {
 
   return (
     <DemoShell source="components/demos/ens-demo.tsx">
-      <p className="wallet-demo-muted" style={{ marginBottom: "1.25rem" }}>
+      <p className="mb-5 text-sm text-secondary">
         Resolves against Ethereum mainnet via a public RPC.
       </p>
 
       {/* Forward lookup */}
-      <div className="wallet-demo-section">
-        <h3 className="wallet-demo-section-title">Forward lookup</h3>
-        <p className="wallet-demo-muted">name → address</p>
-        <label className="wallet-demo-field">
-          <span className="wallet-demo-muted">ENS name</span>
+      <div className="mt-5 first:mt-0">
+        <h3 className="mb-2 text-base">Forward lookup</h3>
+        <p className="text-sm text-secondary">name → address</p>
+        <label className="my-3 flex flex-col gap-1.5">
+          <span className="text-sm text-secondary">ENS name</span>
           <input
             type="text"
-            className="wallet-demo-input"
+            className="demo-input font-mono"
             value={forwardName}
             onChange={e => setForwardName(e.target.value)}
             onKeyDown={e => e.key === "Enter" && void lookupForward()}
             placeholder="vitalik.eth"
           />
         </label>
-        <div className="wallet-action-footer">
+        <div className="flex flex-wrap justify-end gap-2">
           <button
             type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
+            className="demo-btn demo-btn-primary"
             onClick={() => void lookupForward()}
             disabled={forwardPending || !forwardName.trim()}
           >
@@ -109,25 +110,29 @@ export function EnsDemo() {
           </button>
         </div>
         {(forwardResult || forwardError) && (
-          <div
-            className={`wallet-demo-result${forwardError ? " wallet-demo-result-error" : " wallet-demo-result-ok"}`}
-            style={{ marginTop: "0.75rem" }}
-          >
-            <div className="wallet-demo-result-label">Address</div>
-            <pre>{forwardError ?? forwardResult}</pre>
+          <div className="mt-3 rounded-md border border-primary bg-surfaceMuted px-4 py-3">
+            <div className="mb-1.5 text-xs tracking-[0.04em] uppercase text-secondary">Address</div>
+            <pre
+              className={classNames(
+                "m-0 overflow-x-auto font-mono text-[13px]",
+                forwardError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success",
+              )}
+            >
+              {forwardError ?? forwardResult}
+            </pre>
           </div>
         )}
       </div>
 
       {/* Reverse lookup */}
-      <div className="wallet-demo-section">
-        <h3 className="wallet-demo-section-title">Reverse lookup</h3>
-        <p className="wallet-demo-muted">address → primary name</p>
-        <label className="wallet-demo-field">
-          <span className="wallet-demo-muted">Ethereum address</span>
+      <div className="mt-5 first:mt-0">
+        <h3 className="mb-2 text-base">Reverse lookup</h3>
+        <p className="text-sm text-secondary">address → primary name</p>
+        <label className="my-3 flex flex-col gap-1.5">
+          <span className="text-sm text-secondary">Ethereum address</span>
           <input
             type="text"
-            className="wallet-demo-input"
+            className="demo-input font-mono"
             value={reverseAddress}
             onChange={e => setReverseAddress(e.target.value)}
             onKeyDown={e => e.key === "Enter" && void lookupReverse()}
@@ -137,17 +142,16 @@ export function EnsDemo() {
         {session && reverseAddress !== session.accounts[0] && (
           <button
             type="button"
-            className="wallet-demo-btn"
-            style={{ marginTop: "0.35rem" }}
+            className="demo-btn mt-1.5"
             onClick={() => setReverseAddress(session.accounts[0])}
           >
             Use wallet address
           </button>
         )}
-        <div className="wallet-action-footer">
+        <div className="flex flex-wrap justify-end gap-2">
           <button
             type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
+            className="demo-btn demo-btn-primary"
             onClick={() => void lookupReverse()}
             disabled={reversePending || !reverseAddress.trim()}
           >
@@ -155,12 +159,16 @@ export function EnsDemo() {
           </button>
         </div>
         {(reverseResult || reverseError) && (
-          <div
-            className={`wallet-demo-result${reverseError ? " wallet-demo-result-error" : " wallet-demo-result-ok"}`}
-            style={{ marginTop: "0.75rem" }}
-          >
-            <div className="wallet-demo-result-label">Primary name</div>
-            <pre>{reverseError ?? reverseResult}</pre>
+          <div className="mt-3 rounded-md border border-primary bg-surfaceMuted px-4 py-3">
+            <div className="mb-1.5 text-xs tracking-[0.04em] uppercase text-secondary">Primary name</div>
+            <pre
+              className={classNames(
+                "m-0 overflow-x-auto font-mono text-[13px]",
+                reverseError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success",
+              )}
+            >
+              {reverseError ?? reverseResult}
+            </pre>
           </div>
         )}
       </div>

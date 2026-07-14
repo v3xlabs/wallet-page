@@ -46,10 +46,10 @@ export function EthSignDemo() {
         inspector={{
           user: (
             <>
-              <p className="wallet-preview-warning">
+              <p className="mb-2 text-sm leading-snug text-warning">
                 Not human-readable — wallets should warn before signing a raw hash.
               </p>
-              <code className="wallet-preview-hash">{ZERO_HASH}</code>
+              <code className="block font-mono text-xs break-all whitespace-pre-wrap">{ZERO_HASH}</code>
             </>
           ),
           request: {

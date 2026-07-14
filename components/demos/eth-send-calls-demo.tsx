@@ -36,15 +36,15 @@ function CallsBatchPreview({
   calls: { to: string; value?: string; }[];
 }) {
   return (
-    <ul className="wallet-preview-batch-list">
+    <ul className="flex list-none flex-col gap-1.5 p-0">
       {calls.map((call, i) => (
-        <li key={`${call.to}-${i}`}>
-          <span className="wallet-preview-batch-index">{i + 1}</span>
+        <li key={`${call.to}-${i}`} className="flex items-center gap-2 text-[13px]">
+          <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-code-block text-xs font-semibold">{i + 1}</span>
           <Address address={call.to} />
-          <span className="wallet-demo-muted">
+          <span className="text-sm text-secondary">
             chain
             {" "}
-            <code>{chainId}</code>
+            <code className="font-mono text-[13px] break-all">{chainId}</code>
           </span>
         </li>
       ))}

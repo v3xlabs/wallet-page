@@ -16,18 +16,18 @@ type DemoFrameProps = {
 export function DemoFrame({ children, variant = "panel", source }: DemoFrameProps) {
   const rootClass
     = variant === "mini"
-      ? "wallet-mini-demo"
+      ? "my-4 overflow-hidden rounded-md border border-primary bg-code-block"
       : (variant === "inline"
-          ? "wallet-demo wallet-demo-inline"
-          : "wallet-demo");
+          ? "my-4 overflow-hidden rounded-lg border border-primary"
+          : "my-6 overflow-hidden rounded-lg border border-primary");
 
   return (
     <div className={rootClass}>
       <div
         className={
           variant === "mini"
-            ? "wallet-mini-demo-body"
-            : "wallet-demo-panel wallet-demo-panel-open"
+            ? "relative px-4 pt-9 pb-10"
+            : "relative bg-code-block px-5 pt-10 pb-4"
         }
       >
         <WalletDemoChrome source={source} />

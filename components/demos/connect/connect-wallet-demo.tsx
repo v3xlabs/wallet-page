@@ -23,11 +23,11 @@ export function ConnectWalletDemo() {
   const infoPayload = providers.map(p => p.info);
 
   return (
-    <div className="wallet-demo">
-      <div className="wallet-demo-panel wallet-demo-panel-discovery">
-        <div className="wallet-demo-chrome">
+    <div className="my-6 overflow-hidden rounded-lg border border-primary">
+      <div className="relative bg-code-block px-5 pt-10 pb-4">
+        <div className="absolute top-3 right-3 flex max-w-[calc(100%-1.5rem)] items-center gap-2">
           <a
-            className="wallet-demo-source"
+            className="inline-flex items-center rounded-full border border-primary px-1.5 py-1 font-mono text-xs leading-none text-secondary no-underline hover:border-secondary hover:bg-surfaceMuted hover:text-primary"
             href={sourceUrl(SOURCE)}
             target="_blank"
             rel="noreferrer"
@@ -39,13 +39,13 @@ export function ConnectWalletDemo() {
           {session && <WalletBadge />}
         </div>
 
-        <section className="wallet-demo-section">
-          <h3>Connect</h3>
-          <p className="wallet-demo-muted">
+        <section className="mt-5 first:mt-0">
+          <h3 className="mb-2 text-base">Connect</h3>
+          <p className="text-sm text-secondary">
             Choose a provider from the list below.
           </p>
           {connectError && (
-            <p className="wallet-demo-error" role="alert">
+            <p className="mb-4 rounded-md bg-destructive-tint px-4 py-3 text-sm text-primary" role="alert">
               {connectError}
             </p>
           )}
@@ -57,23 +57,23 @@ export function ConnectWalletDemo() {
           />
         </section>
 
-        <section className="wallet-demo-section">
-          <div className="wallet-demo-actions">
+        <section className="mt-5 first:mt-0">
+          <div className="my-3 flex flex-wrap gap-2">
             <button
               type="button"
-              className="wallet-demo-btn wallet-demo-btn-primary"
+              className="demo-btn demo-btn-primary"
               onClick={() => requestProviders()}
             >
               Request providers
             </button>
           </div>
-          <details className="wallet-demo-details">
+          <details className="mt-4 text-sm">
             <summary>
               Announce payloads (
               {infoPayload.length}
               )
             </summary>
-            <pre className="wallet-demo-log">
+            <pre className="mt-2 max-h-64 overflow-auto rounded-md border border-primary bg-surfaceMuted p-3 font-mono text-xs whitespace-pre-wrap wrap-break-word">
               {infoPayload.length === 0
                 ? "[]"
                 : JSON.stringify(infoPayload, null, 2)}

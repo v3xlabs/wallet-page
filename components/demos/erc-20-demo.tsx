@@ -140,11 +140,11 @@ export function Erc20Demo() {
 
   return (
     <DemoShell source="components/demos/erc-20-demo.tsx">
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Token contract</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Token contract</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={token}
           onChange={e => setToken(e.target.value)}
         />

@@ -46,7 +46,7 @@ export function PersonalSignDemo() {
     <DemoBlock source="components/demos/personal-sign-demo.tsx">
       <WalletActionPanel
         inspector={{
-          user: <p className="wallet-preview-message">{MESSAGE}</p>,
+          user: <p className="text-sm leading-normal whitespace-pre-wrap wrap-break-word">{MESSAGE}</p>,
           request: {
             method: "personal_sign",
             params: [MESSAGE, session?.accounts[0] ?? "0x…"],

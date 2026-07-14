@@ -46,30 +46,30 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
   const pickerDialog = (
     <dialog
       ref={dialogRef}
-      className="wallet-demo-dialog"
+      className="fixed inset-0 m-auto h-fit max-h-[min(90vh,calc(100dvh-2rem))] w-fit max-w-[min(28rem,calc(100vw-2rem))] overflow-visible bg-transparent p-0 backdrop:bg-black/45"
       onClose={onClose}
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose();
       }}
     >
-      <div className="wallet-demo-dialog-panel">
-        <div className="wallet-demo-dialog-header">
-          <h3>Choose a wallet</h3>
+      <div className="rounded-lg border border-primary bg-code-block px-5 py-4">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <h3 className="text-base">Choose a wallet</h3>
           <button
             type="button"
-            className="wallet-demo-badge-disconnect"
+            className="cursor-pointer px-1 text-[1.1rem] leading-none text-secondary hover:text-primary"
             onClick={onClose}
             aria-label="Close"
           >
             ×
           </button>
         </div>
-        <p className="wallet-demo-muted">
+        <p className="text-sm text-secondary">
           Wallets discovered via EIP-6963. Your choice applies to every demo on
           this site until you disconnect.
         </p>
         {connectError && (
-          <p className="wallet-demo-error" role="alert">
+          <p className="mb-4 rounded-md bg-destructive-tint px-4 py-3 text-sm text-primary" role="alert">
             {connectError}
           </p>
         )}
@@ -88,10 +88,10 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
             }
           }}
         />
-        <div className="wallet-demo-actions">
+        <div className="my-3 flex flex-wrap gap-2">
           <button
             type="button"
-            className="wallet-demo-btn"
+            className="demo-btn"
             onClick={() => requestProviders()}
           >
             Request providers again

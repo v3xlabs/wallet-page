@@ -51,7 +51,7 @@ export function Eip747Demo() {
 
   return (
     <DemoShell source="components/demos/eip-747-demo.tsx">
-      <p className="wallet-demo-muted">
+      <p className="text-sm text-secondary">
         Suggests Sepolia LINK metadata to the wallet UI.
       </p>
       <WalletActionPanel

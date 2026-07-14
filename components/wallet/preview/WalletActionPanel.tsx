@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import type { ReactNode } from "react";
 
 import { mergeInspector } from "../../../lib/demoInspector";
@@ -34,14 +35,14 @@ export function WalletActionPanel({
   const merged = mergeInspector(inspector, response, error);
 
   return (
-    <div className="wallet-action-panel">
+    <div className="my-4 flex flex-col gap-2.5">
       {merged && <DemoInspector {...merged} />}
-      <div className="wallet-action-footer">
+      <div className="flex flex-wrap justify-end gap-2">
         {actions.map(action => (
           <button
             key={action.label}
             type="button"
-            className={`wallet-demo-btn${action.primary ? " wallet-demo-btn-primary" : ""}`}
+            className={classNames("demo-btn", { "demo-btn-primary": action.primary })}
             disabled={pending || action.disabled}
             onClick={() => void action.onClick()}
           >

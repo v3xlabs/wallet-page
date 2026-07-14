@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { encodeQR } from "qr";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
@@ -13,8 +14,7 @@ const NETWORKS = [
   hoodi,
 ];
 
-const inputClass
-  = "w-full rounded-lg border border-primary bg-surface px-3 py-2 text-sm text-primary outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accenta3";
+const inputClass = "demo-input";
 
 const Field = ({ label, children }: { label: string; children: ReactNode; }) => (
   <label className="flex flex-col gap-1.5">
@@ -34,10 +34,12 @@ const Segmented = <T extends string>({ options, value, onChange }: {
         key={option.value}
         type="button"
         onClick={() => onChange(option.value)}
-        className={`rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors cursor-pointer ${option.value === value
-          ? "bg-surface text-primary"
-          : "text-secondary hover:text-primary"
-          }`}
+        className={classNames(
+          "rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors cursor-pointer",
+          option.value === value
+            ? "bg-surface text-primary"
+            : "text-secondary hover:text-primary",
+        )}
       >
         {option.label}
       </button>
@@ -50,7 +52,7 @@ const NetworkSelect = ({ value, onChange }: { value: number; onChange: (id: numb
     <select
       value={value}
       onChange={e => onChange(Number(e.target.value))}
-      className={`${inputClass} cursor-pointer appearance-none pr-9`}
+      className="demo-select appearance-none pr-9"
     >
       {NETWORKS.map(network => (
         <option key={network.id} value={network.id}>
@@ -118,7 +120,7 @@ export const ReceiveDemo = () => {
             <button
               type="button"
               onClick={copy}
-              className="w-full rounded-lg border border-primary bg-surfaceMuted px-3 py-1.5 text-[13px] font-medium text-primary transition-colors hover:bg-surfaceTint"
+              className="demo-btn w-full"
             >
               {copied ? "Copied!" : "Copy"}
             </button>
@@ -142,7 +144,7 @@ export const ReceiveDemo = () => {
               value={to}
               onChange={e => setTo(e.target.value)}
               spellCheck={false}
-              className={`${inputClass} font-mono`}
+              className={classNames(inputClass, "font-mono")}
             />
           </Field>
           {mode === "eip-681" && (
@@ -167,7 +169,7 @@ export const ReceiveDemo = () => {
                     value={token}
                     onChange={e => setToken(e.target.value)}
                     spellCheck={false}
-                    className={`${inputClass} font-mono`}
+                    className={classNames(inputClass, "font-mono")}
                   />
                 </Field>
               )}
@@ -177,7 +179,7 @@ export const ReceiveDemo = () => {
                   value={amount}
                   onChange={e => setAmount(Number(e.target.value))}
                   min={0}
-                  className={`${inputClass} font-mono`}
+                  className={classNames(inputClass, "font-mono")}
                 />
               </Field>
             </>
