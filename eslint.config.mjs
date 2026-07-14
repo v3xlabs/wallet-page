@@ -16,9 +16,6 @@ export default [
   {
     files: ["**/*.{ts,tsx,mts,js,mjs}"],
     rules: {
-      // This is a component-heavy React codebase; named function components and
-      // hooks read better as declarations than as arrow consts.
-      "func-style": "off",
       // The bare-`id` ban targets entity identifiers, but it also trips on
       // object keys and DOM/React `id` props that read perfectly well here.
       "no-restricted-syntax": "off",
