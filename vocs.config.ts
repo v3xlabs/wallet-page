@@ -22,7 +22,7 @@ export default defineConfig({
   sidebar: {
     "/design": [
       { text: "Overview", link: "/design" },
-      { text: "Principles", link: "/design/principles" },
+      { text: "Principles", link: "/design/principles", disabled: true },
       {
         text: "Account",
         items: [
