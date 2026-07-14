@@ -12,6 +12,7 @@ type Page =
   | { path: '/connect'; render: 'static' }
   | { path: '/delegation'; render: 'static' }
   | { path: '/design/address'; render: 'static' }
+  | { path: '/design/amounts/implementation'; render: 'static' }
   | { path: '/design/amounts'; render: 'static' }
   | { path: '/design/assets'; render: 'static' }
   | { path: '/design/connect'; render: 'static' }

@@ -50,7 +50,10 @@ export default defineConfig({
           { text: "Assets", link: "/design/assets" },
           { text: "Networks", link: "/design/networks" },
           { text: "Addresses", link: "/design/address" },
-          { text: "Amounts", link: "/design/amounts" },
+          { text: "Amounts", items: [
+            { text: "Overview", link: "/design/amounts" },
+            { text: "Implementation", link: "/design/amounts/implementation" },
+          ] },
         ],
       },
     ],
