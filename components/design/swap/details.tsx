@@ -103,7 +103,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Price impact"
-            value={`-${quote.impactPct.toFixed(2)}% · ${display(quote.impactUsd)}`}
+            value={`-${quote.impactPct.toFixed(2)}% - ${display(quote.impactUsd)}`}
             tone={impactTone(quote.impactPct)}
           />
           <DetailRow
@@ -113,11 +113,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Network fee"
-            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${display(networkFeeUsd)}`}
+            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH - ${display(networkFeeUsd)}`}
           />
           <DetailRow
             label="App fee"
-            value={`0.25% · ${display(quote.appFeeUsd)}`}
+            value={`0.25% - ${display(quote.appFeeUsd)}`}
             caption="shown, never hidden"
           />
           <div className="flex flex-col gap-2 px-4 py-2.5">

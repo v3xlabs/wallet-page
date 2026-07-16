@@ -148,7 +148,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
             />
           )}
           title={current.token.name}
-          subtitle={`${current.token.symbol} · ${current.token.decimals} decimals · resolved from contract`}
+          subtitle={`${current.token.symbol} - ${current.token.decimals} decimals - resolved from contract`}
           onClick={() => onPick(current.token)}
         />
       )}

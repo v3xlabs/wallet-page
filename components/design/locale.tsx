@@ -16,14 +16,14 @@ import { denominationFor, DENOMINATIONS } from "./data";
  */
 
 const LOCALES = [
-  { value: "en-US", label: "en-US · English (United States)" },
-  { value: "de-DE", label: "de-DE · Deutsch (Deutschland)" },
-  { value: "nl-NL", label: "nl-NL · Nederlands (Nederland)" },
-  { value: "sv-SE", label: "sv-SE · Svenska (Sverige)" },
-  { value: "fr-FR", label: "fr-FR · Français (France)" },
-  { value: "hi-IN", label: "hi-IN · हिन्दी (भारत)" },
-  { value: "ar-EG", label: "ar-EG · العربية (مصر)" },
-  { value: "fa-IR", label: "fa-IR · فارسی (ایران)" },
+  { value: "en-US", label: "en-US - English (United States)" },
+  { value: "de-DE", label: "de-DE - Deutsch (Deutschland)" },
+  { value: "nl-NL", label: "nl-NL - Nederlands (Nederland)" },
+  { value: "sv-SE", label: "sv-SE - Svenska (Sverige)" },
+  { value: "fr-FR", label: "fr-FR - Français (France)" },
+  { value: "hi-IN", label: "hi-IN - हिन्दी (भारत)" },
+  { value: "ar-EG", label: "ar-EG - العربية (مصر)" },
+  { value: "fa-IR", label: "fa-IR - فارسی (ایران)" },
 ] as const;
 
 const AUTOMATIC = "automatic";

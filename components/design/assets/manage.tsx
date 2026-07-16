@@ -148,7 +148,7 @@ export const ManageScreen: FC<{
             <span className="flex min-w-0 grow flex-col items-start gap-px">
               <span className="w-full truncate text-sm font-medium text-primary">{item.token.name}</span>
               <span className="w-full truncate text-xs text-warning tabular-nums">
-                {`${formatTokenAmount(item.token.balance, item.token, locale)} ${item.token.symbol} · ${item.note}`}
+                {`${formatTokenAmount(item.token.balance, item.token, locale)} ${item.token.symbol} - ${item.note}`}
               </span>
             </span>
             <button

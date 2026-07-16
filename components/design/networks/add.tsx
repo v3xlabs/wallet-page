@@ -94,7 +94,7 @@ const AddNetworkScreen = () => {
             </span>
             <span className="text-xs text-muted tabular-nums">
               {chain.nativeCurrency.symbol}
-              {" · id "}
+              {" - id "}
               {chain.id}
             </span>
           </span>

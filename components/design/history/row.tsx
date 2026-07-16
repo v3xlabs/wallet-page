@@ -151,7 +151,7 @@ export const EntryRow: FC<{
         <div className="-mt-1.5 flex items-center gap-2 pr-4 pb-2.5 pl-16">
           <span className="flex items-center gap-1.5 text-xs text-muted">
             <Spinner size={12} />
-            {speeding ? "Speeding up…" : "Pending · 12 sec"}
+            {speeding ? "Speeding up…" : "Pending - 12 sec"}
           </span>
           {!speeding && (
             <button

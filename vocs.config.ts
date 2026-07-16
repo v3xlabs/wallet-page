@@ -2,7 +2,7 @@ import { defineConfig } from "vocs/config";
 
 export default defineConfig({
   title: "wallet.page",
-  titleTemplate: "%s · wallet.page",
+  titleTemplate: "%s - wallet.page",
   description:
     "Interactive docs at wallet.page - test whether your browser wallet supports common EIPs and RPC methods.",
   rootDir: ".",

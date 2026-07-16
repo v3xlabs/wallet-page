@@ -64,7 +64,7 @@ const TypedDataSheet = () => {
       <Panel>
         <TreeSection label="Domain">
           <TreeRow label="name" value="USD Coin" />
-          <TreeRow label="chainId" value={<span className="tabular-nums">1 · Ethereum</span>} />
+          <TreeRow label="chainId" value={<span className="tabular-nums">1 - Ethereum</span>} />
           <TreeRow label="verifyingContract" value={<Mono>{truncate(USDC.address)}</Mono>} />
         </TreeSection>
         <TreeSection label="Message">

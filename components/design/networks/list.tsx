@@ -79,7 +79,7 @@ const rowCaption = (network: Network) => {
   }
 
   if (network.rpcs.some(rpc => rpc.unreachable)) {
-    return { tone: "text-warning", text: `Using fallback · ${host(active.url)}` };
+    return { tone: "text-warning", text: `Using fallback - ${host(active.url)}` };
   }
 
   return { tone: "text-muted", text: host(active.url) };

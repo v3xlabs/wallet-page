@@ -93,7 +93,7 @@ export const AssetsDemo = () => {
         {screen === "manage"
           ? (
               <>
-                <WalletHeader title="Manage tokens" onBack={() => setScreen("list")} />
+                <WalletHeader title="Manage assets" onBack={() => setScreen("list")} />
                 <ManageScreen
                   catalog={catalog}
                   enabledSymbols={enabledSymbols}
@@ -108,14 +108,14 @@ export const AssetsDemo = () => {
             )
           : (
               <>
-                <WalletHeader title="Tokens" />
+                <WalletHeader title="Assets" />
                 <div className="flex flex-col items-start gap-0.5 px-4 pt-2 pb-3">
                   <span className="text-3xl font-semibold text-primary tabular-nums">
                     {display(total)}
                   </span>
                   <div className="flex w-full items-center justify-between">
                     <span className="text-xs text-muted">
-                      {`${visible.length} tokens · Ethereum`}
+                      {`${visible.length} assets - Ethereum`}
                     </span>
                     <button
                       type="button"

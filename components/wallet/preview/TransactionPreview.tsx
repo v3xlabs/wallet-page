@@ -30,7 +30,7 @@ export const TransactionPreview = ({
       {valueLabel && <p className="mt-1.5 font-semibold">{valueLabel}</p>}
       {hasCalldata && (
         <p className="mt-1.5 text-[13px] text-secondary">
-          Contract call ·
+          Contract call -
           {" "}
           <code>
             {data.slice(0, 10)}

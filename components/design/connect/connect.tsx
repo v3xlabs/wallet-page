@@ -45,8 +45,8 @@ const REQUESTED_PERMISSIONS: { capability: string; icon: IconType; label: string
   {
     capability: "wallet_watchAsset",
     icon: FiPlusCircle,
-    label: "Suggest tokens",
-    caption: "Propose tokens for your asset list - you approve each one",
+    label: "Suggest assets",
+    caption: "Propose assets for your asset list - you approve each one",
   },
 ];
 

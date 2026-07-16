@@ -17,7 +17,7 @@ type WalletAssetSearchProps = {
 export const WalletAssetSearch = ({
   assets,
   loading,
-  placeholder = "Search tokens by name, symbol, or address…",
+  placeholder = "Search assets by name, symbol, or address...",
 }: WalletAssetSearchProps) => {
   const listId = useId();
   const [query, setQuery] = useState("");

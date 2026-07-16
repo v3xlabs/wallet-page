@@ -97,7 +97,7 @@ export const HiddenShelf: FC<{
   const count = dust.length + userHidden.length;
   const label = userHidden.length === 0
     ? `${count} low-value token${count === 1 ? "" : "s"} hidden`
-    : `${count} tokens hidden`;
+    : `${count} assets hidden`;
 
   return (
     <div>

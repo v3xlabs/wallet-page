@@ -170,7 +170,7 @@ export const RecoveryDemo = () => {
             icon={<FiKey className="size-4" />}
             tone="success"
             title="Recovery phrase"
-            caption={`Backed up · verified ${verifiedWhen}`}
+            caption={`Backed up - verified ${verifiedWhen}`}
             expanded={expanded === "phrase"}
             onToggle={() => toggle("phrase")}
           >
@@ -193,7 +193,7 @@ export const RecoveryDemo = () => {
             icon={<FiSmartphone className="size-4" />}
             tone={passkey ? "success" : "warning"}
             title="Second device passkey"
-            caption={passkey ? "Configured · this laptop" : "Not set up"}
+            caption={passkey ? "Configured - this laptop" : "Not set up"}
             expanded={expanded === "passkey"}
             onToggle={() => toggle("passkey")}
           >
