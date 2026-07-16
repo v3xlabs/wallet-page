@@ -2,8 +2,34 @@ import { OnboardingDemo } from "../../components/design/onboarding/onboarding";
 
 # Onboarding
 
-:::note
-This page is under construction.
-:::
+Setting up your first ethereum wallet should be a smooth and secure experience.
+During onboarding users are able to choose between [starting fresh](/design/mnemonics), or [importing an existing wallet](/design/importing).
+Many wallets also allow for "view-only" accounts, so the wallet can be used more like a portfolio, or to watch external accounts.
 
 <OnboardingDemo />
+
+## Authentication & Authorization
+
+During the initial onboarding the user generally sets up some form of authentication / encryption for the underlying key storage mechanism.
+This is to ensure the wallet can be locked, unlocked, and actions like signing or transacting can be authorized.
+
+## Establish Preferences
+
+After the authentication step completes is the perfect time to ask the user for their preferences.
+Would they prefer light theme over dark?
+What is their prefered display currency?
+How would the user expect [numbers formatting](/design/amounts)?
+
+## Network Setup
+
+The next crucial step is establishing network connectivity.
+During the network setup step the user indicates what networks (mainnet, sepolia, etc) they want to add, and what RPC urls should be used.
+The perfect wallet does not contact any api's or make network requests until this step is complete.
+
+## The first account
+
+### Mnemonic Validation
+
+Some wallets may choose to show a mnemonic validation step, to confirm the user has backed up their seedphrase.
+We encourage wallet to allow skipping this step, and instead opt for an "ask later" approach instead.
+This reduces onboarding friction and avoids pressuring the user to decide on a backup method right this moment.
