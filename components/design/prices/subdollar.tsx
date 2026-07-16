@@ -1,6 +1,6 @@
 "use client";
 
-import { useDemoCurrency, useDemoLocale } from "../locale";
+import { useDemoLocale, useDenomination } from "../locale";
 import { DemoShell } from "../shell";
 import { TokenIcon } from "../ui";
 import { formatPrice, formatPriceNaive } from "./shared";
@@ -17,7 +17,7 @@ const CASES: { symbol: string; name: string; color: string; priceUsd: number; }[
 
 export const SubDollarDemo = () => {
   const locale = useDemoLocale();
-  const currency = useDemoCurrency();
+  const denomination = useDenomination();
 
   return (
     <DemoShell source="components/design/prices/subdollar.tsx" i18n>
@@ -32,13 +32,13 @@ export const SubDollarDemo = () => {
               </span>
               <span className="ml-auto flex shrink-0 flex-col items-end">
                 <span className="text-sm font-medium text-success tabular-nums">
-                  {formatPrice(token.priceUsd, currency, locale)}
+                  {formatPrice(token.priceUsd, denomination, locale)}
                 </span>
                 <span className="text-[11px] text-muted">4 significant digits</span>
               </span>
               <span className="flex w-24 shrink-0 flex-col items-end">
                 <span className="text-sm text-destructive line-through tabular-nums">
-                  {formatPriceNaive(token.priceUsd, currency, locale)}
+                  {formatPriceNaive(token.priceUsd, denomination, locale)}
                 </span>
                 <span className="text-[11px] text-muted">2 fixed decimals</span>
               </span>
@@ -46,7 +46,7 @@ export const SubDollarDemo = () => {
           ))}
         </div>
         <p className="text-xs text-muted">
-          {`Prices of ${formatPriceNaive(1, currency, locale)} and above get two fixed decimals; below that, four significant digits keep sub-dollar prices honest instead of rounding them toward ${formatPriceNaive(0, currency, locale)}.`}
+          {`Prices of ${formatPriceNaive(1, denomination, locale)} and above get two fixed decimals; below that, four significant digits keep sub-dollar prices honest instead of rounding them toward ${formatPriceNaive(0, denomination, locale)}.`}
         </p>
       </div>
     </DemoShell>

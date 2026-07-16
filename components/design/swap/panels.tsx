@@ -5,7 +5,7 @@ import type { PropsWithChildren } from "react";
 
 import type { DemoToken } from "../data";
 import { formatTokenAmount } from "../data";
-import { useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { Spinner, TokenIcon } from "../ui";
 import type { Quote } from "./shared";
 import { formatAmount } from "./shared";
@@ -44,7 +44,7 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
   onPickToken: () => void;
 }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <Panel label="You pay">
@@ -82,7 +82,7 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
           </button>
         </span>
         <span className="text-xs text-muted tabular-nums">
-          {priceless ? "" : fiat(payUsd ?? 0)}
+          {priceless ? "" : display(payUsd ?? 0)}
         </span>
       </div>
     </Panel>
@@ -98,7 +98,7 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
   onPickToken: () => void;
 }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <Panel label="You receive">
@@ -133,7 +133,7 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
               </span>
             )}
         <span className="text-xs text-muted tabular-nums">
-          {quoting || unavailable || token.priceUsd === 0 ? "" : fiat(quote?.receiveUsd ?? 0)}
+          {quoting || unavailable || token.priceUsd === 0 ? "" : display(quote?.receiveUsd ?? 0)}
         </span>
       </div>
     </Panel>

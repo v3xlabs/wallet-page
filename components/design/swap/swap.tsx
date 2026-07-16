@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { DemoShell } from "../shell";
 import type { PickedToken } from "../token-picker";
 import { TokenPicker } from "../token-picker";
@@ -38,7 +38,7 @@ const BACK: Partial<Record<Step, Step>> = {
 
 export const SwapDemo = () => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const [step, setStep] = useState<Step>("swap");
   const [selectSide, setSelectSide] = useState<"pay" | "receive">("pay");
   const [pay, setPay] = useState<PickedToken>(ETH);
@@ -174,7 +174,7 @@ export const SwapDemo = () => {
                     {" "}
                     - this trade is large for the route's depth; you lose
                     {" "}
-                    <span className="font-semibold tabular-nums">{fiat(quote.impactUsd)}</span>
+                    <span className="font-semibold tabular-nums">{display(quote.impactUsd)}</span>
                     {" "}
                     to it. Swap anyway.
                   </span>

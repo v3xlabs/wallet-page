@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { DemoShell } from "../shell";
 import { WalletFrame, WalletHeader } from "../ui";
 import type { EntryKind } from "./entries";
@@ -26,7 +26,7 @@ const FILTER_KIND: Record<Exclude<Filter, "all">, EntryKind> = {
 
 export const HistoryDemo = () => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const [filter, setFilter] = useState<Filter>("all");
   const [expandedId, setExpandedId] = useState<string>();
   const [speedUp, setSpeedUp] = useState<"idle" | "speeding" | "confirmed">("idle");
@@ -36,7 +36,7 @@ export const HistoryDemo = () => {
     setTimeout(() => setSpeedUp("confirmed"), 800);
   };
 
-  const entries = historyEntries(locale, fiat).map(entry =>
+  const entries = historyEntries(locale, display).map(entry =>
     (entry.status === "pending" && speedUp === "confirmed" ? confirmPending(entry) : entry),
   );
 

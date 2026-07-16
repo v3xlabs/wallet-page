@@ -117,26 +117,34 @@ export const CONTACTS: { name: string; address: Address; }[] = [
   { name: "κασσάνδρα.eth", address: "0x1d60C34f508BbBd7f1cb50b375c4CdD25e718D1c" },
 ];
 
-/** Fiat value of a token quantity given in base units. */
-export const fiatValue = (token: DemoToken, amount: bigint) =>
+/** A token quantity valued in the mock feed's quote units (USD). */
+export const usdValue = (token: DemoToken, amount: bigint) =>
   Number(formatUnits(amount, token.decimals)) * token.priceUsd;
 
-export type DisplayCurrency = "USD" | "EUR";
-
 /**
- * Display currencies with fixed demo FX rates (units per USD) - a real
- * wallet sources rates next to its token prices.
+ * Anything the user can denominate value in: a fiat currency or an asset.
+ * Nothing downstream assumes fiat - the wallet can price a portfolio in
+ * euros or in ether alike. `rate` converts from the mock feed's quote
+ * units; a real wallet sources these next to its token prices.
  */
-export const CURRENCY_INFO: Record<DisplayCurrency, { symbol: string; rate: number; }> = {
-  USD: { symbol: "$", rate: 1 },
-  EUR: { symbol: "€", rate: 0.92 },
+export type Denomination = {
+  code: string;
+  kind: "fiat" | "asset";
+  /** Prefix for amount entry: currency sign for fiat, ticker for assets. */
+  symbol: string;
+  /** Units of this denomination per quote unit of the price feed. */
+  rate: number;
 };
 
-export const DISPLAY_CURRENCIES: readonly DisplayCurrency[] = ["USD", "EUR"];
+export const DENOMINATIONS: readonly Denomination[] = [
+  { code: "USD", kind: "fiat", symbol: "$", rate: 1 },
+  { code: "EUR", kind: "fiat", symbol: "€", rate: 0.92 },
+  // TOKENS[0] is ETH; denominating in it turns every value into an ETH amount.
+  { code: "ETH", kind: "asset", symbol: "ETH", rate: 1 / TOKENS[0].priceUsd },
+];
 
-/** A USD amount converted into the selected display currency. */
-export const toDisplayCurrency = (usd: number, currency: DisplayCurrency) =>
-  usd * CURRENCY_INFO[currency].rate;
+export const denominationFor = (code: string) =>
+  DENOMINATIONS.find(entry => entry.code === code) ?? DENOMINATIONS[0];
 
 /**
  * Human-friendly token quantity: enough precision to be honest, few enough

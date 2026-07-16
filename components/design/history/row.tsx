@@ -83,7 +83,7 @@ const DetailRow: FC<{ label: string; children: ReactNode; }> = ({ label, childre
   </div>
 );
 
-/** Right column: signed amount over fiat - or a loud pill when it failed. */
+/** Right column: signed amount over its display value - or a loud pill when it failed. */
 const TrailingValue: FC<{ entry: HistoryEntry; }> = ({ entry }) => {
   if (entry.status === "failed") {
     return (
@@ -108,7 +108,7 @@ const TrailingValue: FC<{ entry: HistoryEntry; }> = ({ entry }) => {
       >
         {entry.amount}
       </span>
-      {entry.fiat !== undefined && <span className="text-xs text-muted tabular-nums">{entry.fiat}</span>}
+      {entry.value !== undefined && <span className="text-xs text-muted tabular-nums">{entry.value}</span>}
     </span>
   );
 };

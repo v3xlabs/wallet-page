@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { DemoToken } from "../data";
-import { CURRENCY_INFO, fiatValue, formatTokenAmount } from "../data";
+import { formatTokenAmount, usdValue } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useDemoCurrency, useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDenomination, useDisplayValue } from "../locale";
 import { DemoShell } from "../shell";
 import { TokenPicker } from "../token-picker";
 import {
@@ -45,7 +45,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
   onConfirm: () => void;
 }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const [sending, setSending] = useState(false);
 
   const confirm = () => {
@@ -53,8 +53,8 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
     setTimeout(onConfirm, 900);
   };
 
-  const feeUsd = fiatValue(ETH, FEE_WEI);
-  const totalUsd = fiatValue(token, amount) + feeUsd;
+  const feeUsd = usdValue(ETH, FEE_WEI);
+  const totalUsd = usdValue(token, amount) + feeUsd;
   // Tokens resolved from a pasted contract carry no price feed.
   const priceless = token.priceUsd === 0;
 
@@ -69,7 +69,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
         </span>
         {!priceless && (
           <span className="text-sm text-muted tabular-nums">
-            {fiat(fiatValue(token, amount))}
+            {display(usdValue(token, amount))}
           </span>
         )}
       </div>
@@ -88,10 +88,10 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
         <ReviewRow
           label="Network fee"
           value={`${formatTokenAmount(FEE_WEI, ETH, locale)} ETH`}
-          subvalue={fiat(feeUsd)}
+          subvalue={display(feeUsd)}
         />
         {!priceless && (
-          <ReviewRow label="Total" value={fiat(totalUsd)} />
+          <ReviewRow label="Total" value={display(totalUsd)} />
         )}
       </div>
       <div className="px-4 pb-4">
@@ -126,14 +126,14 @@ const BACK: Partial<Record<Step, Step>> = {
 
 export const SendDemo = () => {
   const locale = useDemoLocale();
-  const currency = useDemoCurrency();
+  const denomination = useDenomination();
   const [step, setStep] = useState<Step>("recipient");
   const [recipient, setRecipient] = useState<Recipient>();
   const [token, setToken] = useState<DemoToken>(ETH);
   const [amountText, setAmountText] = useState("");
   const [unit, setUnit] = useState<"token" | "fiat">("token");
 
-  const amount = parseAmount(amountText, token, unit, locale, CURRENCY_INFO[currency].rate) ?? 0n;
+  const amount = parseAmount(amountText, token, unit, locale, denomination.rate) ?? 0n;
 
   const reset = () => {
     setStep("recipient");

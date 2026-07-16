@@ -5,8 +5,8 @@ import type { FC } from "react";
 import { FiChevronDown, FiEyeOff, FiMoreHorizontal } from "react-icons/fi";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount } from "../data";
-import { useDemoLocale, useFiat } from "../locale";
+import { formatTokenAmount, usdValue } from "../data";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { TokenIcon } from "../ui";
 
 /** 24h move, quietly toned: green up, red down, muted flat. */
@@ -36,7 +36,7 @@ export const TokenRow: FC<{
   justAdded?: boolean;
 }> = ({ token, menuOpen, onToggleMenu, onHide, justAdded }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <div style={justAdded ? { animation: "design-token-in 0.4s ease-out" } : undefined}>
@@ -52,7 +52,7 @@ export const TokenRow: FC<{
         </span>
         <span className="flex shrink-0 flex-col items-end gap-px">
           <span className="text-sm font-medium text-primary tabular-nums">
-            {fiat(fiatValue(token, token.balance))}
+            {display(usdValue(token, token.balance))}
           </span>
           <Change token={token} />
         </span>
@@ -93,7 +93,7 @@ export const HiddenShelf: FC<{
   onShow: (symbol: string) => void;
 }> = ({ dust, userHidden, open, onToggle, onShow }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const count = dust.length + userHidden.length;
   const label = userHidden.length === 0
     ? `${count} low-value token${count === 1 ? "" : "s"} hidden`
@@ -126,7 +126,7 @@ export const HiddenShelf: FC<{
             </span>
           </span>
           <span className="text-xs text-muted tabular-nums">
-            {fiat(fiatValue(token, token.balance))}
+            {display(usdValue(token, token.balance))}
           </span>
           {userHidden.includes(token) && (
             <button

@@ -4,9 +4,9 @@ import classNames from "classnames";
 
 import { formatBaseUnits } from "../../../lib/amounts";
 import type { DemoToken } from "../data";
-import { CURRENCY_INFO, fiatValue, formatTokenAmount } from "../data";
+import { formatTokenAmount, usdValue } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useDemoCurrency, useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDenomination, useDisplayValue } from "../locale";
 import { PrimaryButton, TokenIcon } from "../ui";
 import type { Recipient } from "./shared";
 import { FEE_WEI, parseAmount, truncate } from "./shared";
@@ -43,10 +43,10 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
   onContinue: () => void;
 }) => {
   const locale = useDemoLocale();
-  const currency = useDemoCurrency();
-  const fiat = useFiat();
-  const fx = CURRENCY_INFO[currency];
-  const amount = parseAmount(amountText, token, unit, locale, fx.rate);
+  const denomination = useDenomination();
+  const display = useDisplayValue();
+
+  const amount = parseAmount(amountText, token, unit, locale, denomination.rate);
   const insufficient = amount !== undefined && amount > token.balance;
   // Tokens resolved from a pasted contract carry no price feed.
   const priceless = token.priceUsd === 0;
@@ -54,7 +54,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
     = amount === undefined
       ? undefined
       : (unit === "token"
-          ? fiat(fiatValue(token, amount))
+          ? display(usdValue(token, amount))
           : `${formatTokenAmount(amount, token, locale)} ${token.symbol}`);
 
   const setFraction = (fraction: number) => {
@@ -96,7 +96,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
           </div>
           <div className="flex items-baseline justify-center gap-1 py-4">
             {unit === "fiat" && (
-              <span className="text-2xl font-semibold text-muted">{fx.symbol}</span>
+              <span className="text-2xl font-semibold text-muted">{denomination.symbol}</span>
             )}
             <input
               type="text"
@@ -125,7 +125,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
                     <svg viewBox="0 0 16 16" fill="none" className="size-3.5">
                       <path d="M11 2.5l2.5 2.5L11 7.5M13.5 5h-11M5 13.5L2.5 11 5 8.5M2.5 11h11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    {converted ?? (unit === "token" ? fiat(0) : `0 ${token.symbol}`)}
+                    {converted ?? (unit === "token" ? display(0) : `0 ${token.symbol}`)}
                   </button>
                 )}
             <button

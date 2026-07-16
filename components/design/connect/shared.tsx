@@ -4,9 +4,9 @@ import classNames from "classnames";
 import type { FC, PropsWithChildren } from "react";
 import type { Address } from "viem";
 
-import { ACCOUNT_2, fiatValue, SELF, TOKENS } from "../data";
+import { ACCOUNT_2, SELF, TOKENS, usdValue } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useFiat } from "../locale";
+import { useDisplayValue } from "../locale";
 
 export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
 
@@ -16,7 +16,7 @@ export const ACCOUNTS: Account[] = [
   {
     name: SELF.name,
     address: SELF.address,
-    balanceUsd: TOKENS.reduce((sum, token) => sum + fiatValue(token, token.balance), 0),
+    balanceUsd: TOKENS.reduce((sum, token) => sum + usdValue(token, token.balance), 0),
   },
   {
     name: ACCOUNT_2.name,
@@ -43,7 +43,7 @@ export const AccountRow = ({ account, selected, onSelect }: {
   selected: boolean;
   onSelect: () => void;
 }) => {
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <button
@@ -63,7 +63,7 @@ export const AccountRow = ({ account, selected, onSelect }: {
         <span className="truncate text-sm font-medium text-primary">{account.name}</span>
         <span className="font-mono text-[11px] text-muted">{truncate(account.address)}</span>
       </span>
-      <span className="text-xs text-secondary tabular-nums">{fiat(account.balanceUsd)}</span>
+      <span className="text-xs text-secondary tabular-nums">{display(account.balanceUsd)}</span>
       <span
         className={classNames(
           "flex size-4 shrink-0 items-center justify-center rounded-full border",

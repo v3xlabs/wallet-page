@@ -40,7 +40,7 @@ export type HistoryEntry = {
   amount?: string;
   /** Incoming value renders in the success tone; everything else stays quiet. */
   incoming?: boolean;
-  fiat?: string;
+  value?: string;
   /** Extra muted line under the row: spend limits, failure reasons, … */
   caption?: string;
   detail?: EntryDetail;
@@ -56,7 +56,11 @@ export const truncateHash = (hash: string) => `${hash.slice(0, 10)}…${hash.sli
 const rowAmount = (sign: "+" | "-", quantity: string, token: DemoToken, locale: string) =>
   `${sign}${formatTokenAmount(parseUnits(quantity, token.decimals), token, locale)} ${token.symbol}`;
 
-export const historyEntries = (locale: string, fiat: (usd: number) => string): HistoryEntry[] => [
+/** Detail fee line like "0.00048 ETH · $1.87" - localized like every other amount. */
+const feeLine = (quantity: string, locale: string, displayValue: (quoted: number) => string) =>
+  `${formatTokenAmount(parseUnits(quantity, ETH.decimals), ETH, locale)} ETH · ${displayValue(Number(quantity) * ETH.priceUsd)}`;
+
+export const historyEntries = (locale: string, displayValue: (quoted: number) => string): HistoryEntry[] => [
   {
     id: "send-eth-pending",
     group: "Today",
@@ -66,11 +70,11 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     subtitle: "To vitalik.eth",
     icon: { type: "address", address: VITALIK.address },
     amount: rowAmount("-", "0.25", ETH, locale),
-    fiat: fiat(0.25 * ETH.priceUsd),
+    value: displayValue(0.25 * ETH.priceUsd),
     // Shown once the speed-up replacement lands.
     detail: {
       hash: "0x7d4e2f8a91c3b6d05e4f7a2c8b1d9e3f6a0c5b8d2e7f4a1c9b3d6e0f5a8c2b47",
-      fee: "0.00058 ETH · $2.26",
+      fee: feeLine("0.00058", locale, displayValue),
       blockTime: "Today · 9:42 AM",
       association: "Submitted by this wallet - replaced a slower transaction",
     },
@@ -85,7 +89,7 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     icon: { type: "address", address: LUC.address },
     amount: rowAmount("+", "500", USDC, locale),
     incoming: true,
-    fiat: fiat(500 * USDC.priceUsd),
+    value: displayValue(500 * USDC.priceUsd),
     detail: {
       hash: "0x9b2f6c1e84a7d3f05c8e2b9d4a6f1c7e3b0d8f5a2c9e6b4d1f7a3c0e5b8d2f61",
       fee: "Paid by sender",
@@ -104,7 +108,7 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     amount: rowAmount("-", "0.4", ETH, locale),
     detail: {
       hash: "0x3a8c5d2f97b1e6c40d3f8a5b2e9c6d1f4a7b0e3c8d5f2a9b6e1c4d7f0a3b8e52",
-      fee: "0.00184 ETH · $7.16",
+      fee: feeLine("0.00184", locale, displayValue),
       blockTime: "Yesterday · 3:47 PM",
       association: "Submitted by this wallet",
     },
@@ -118,10 +122,10 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     subtitle: `To ${KASSANDRA.name}`,
     icon: { type: "address", address: KASSANDRA.address },
     amount: rowAmount("-", "120", DAI, locale),
-    fiat: fiat(120 * DAI.priceUsd),
+    value: displayValue(120 * DAI.priceUsd),
     detail: {
       hash: "0x5e1b9f4c72a8d6e30f5c2a9b7d4e1f8c6a3b0d7e4f1c8a5b2d9e6f3a0c7b4d18",
-      fee: "0.00048 ETH · $1.87",
+      fee: feeLine("0.00048", locale, displayValue),
       blockTime: "Yesterday · 11:26 AM",
       association: "Submitted by this wallet",
     },
@@ -136,7 +140,7 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     icon: { type: "token", token: USDC },
     detail: {
       hash: "0x2c7f4a1d85e9b3c60a2d7f4e1b8c5a9d3e6f0b7c4a1d8e5f2b9c6a3d0e7f4b25",
-      fee: "0.00092 ETH · $3.58",
+      fee: feeLine("0.00092", locale, displayValue),
       blockTime: "May 2 · 2:31 PM",
       association: "Part of a batch - 2 actions",
     },
@@ -150,7 +154,7 @@ export const historyEntries = (locale: string, fiat: (usd: number) => string): H
     subtitle: "ENS Registrar · 1 yr extension",
     icon: { type: "address", address: SELF.address },
     amount: rowAmount("-", "0.0042", ETH, locale),
-    fiat: fiat(0.0042 * ETH.priceUsd),
+    value: displayValue(0.0042 * ETH.priceUsd),
     detail: {
       hash: "0x6d3a8e5f21c7b4d90e6a3f8c5b2d9e4f1a7c0b6d3e8f5a2c9b4d1e7f0a5c8b34",
       fee: "Sponsored - paid by relayer",

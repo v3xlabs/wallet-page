@@ -22,6 +22,10 @@ export const formatTokenAmount = (
 export const formatFiat = (value: number, currency: string, locale: string) =>
   new Intl.NumberFormat(locale, { style: "currency", currency }).format(value);
 
+/** Localized display for a value denominated in an asset: "0.0234 ETH". */
+export const formatAssetAmount = (value: number, symbol: string, locale: string) =>
+  `${new Intl.NumberFormat(locale, { maximumSignificantDigits: 5 }).format(value)} ${symbol}`;
+
 export const formatDeadline = (unixSeconds: bigint) => {
   const date = new Date(Number(unixSeconds) * 1000);
 

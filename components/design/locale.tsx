@@ -4,18 +4,18 @@ import type { FC, ReactNode } from "react";
 import { useSyncExternalStore } from "react";
 import { LuLanguages } from "react-icons/lu";
 
-import { formatFiat } from "../../lib/display";
-import type { DisplayCurrency } from "./data";
-import { DISPLAY_CURRENCIES, toDisplayCurrency } from "./data";
+import { formatAssetAmount, formatFiat } from "../../lib/display";
+import { denominationFor, DENOMINATIONS } from "./data";
 
 /**
  * Shared i18n settings for the design demos, modelled on how a wallet should
  * treat them: one wallet-wide setting, defaulting locale to the device and
- * display currency to USD. Every demo reads the same store, so changing
- * either value in any demo footer changes it everywhere.
+ * the value denomination to the first configured one. Every demo reads the
+ * same store, so changing either value in any demo footer changes it
+ * everywhere.
  */
 
-export const LOCALES = [
+const LOCALES = [
   { value: "en-US", label: "en-US · English (United States)" },
   { value: "de-DE", label: "de-DE · Deutsch (Deutschland)" },
   { value: "nl-NL", label: "nl-NL · Nederlands (Nederland)" },
@@ -31,10 +31,11 @@ const AUTOMATIC = "automatic";
 type I18nSettings = {
   /** A locale code, or `automatic` to follow the device. */
   locale: string;
-  currency: DisplayCurrency;
+  /** Code of the denomination values display in - fiat or asset. */
+  denomination: string;
 };
 
-let settings: I18nSettings = { locale: AUTOMATIC, currency: "USD" };
+let settings: I18nSettings = { locale: AUTOMATIC, denomination: DENOMINATIONS[0].code };
 
 /** Stable snapshot for prerendering, where the store never changes. */
 const INITIAL_SETTINGS = settings;
@@ -59,7 +60,7 @@ const unsubscribeNever = () => {};
 const subscribeNever = () => unsubscribeNever;
 
 /** The reader's device locale - "en-US" while prerendering. */
-export const useBrowserLocale = () =>
+const useBrowserLocale = () =>
   useSyncExternalStore(subscribeNever, () => navigator.language, () => "en-US");
 
 const useI18nSettings = () =>
@@ -73,18 +74,25 @@ export const useDemoLocale = () => {
   return locale === AUTOMATIC ? browserLocale : locale;
 };
 
-/** The display currency every demo prices fiat in. */
-export const useDemoCurrency = () => useI18nSettings().currency;
+/** The denomination every demo displays value in - fiat or asset. */
+export const useDenomination = () => denominationFor(useI18nSettings().denomination);
 
 /**
- * Fiat display bound to the shared locale and display currency: takes a USD
- * amount, returns it converted and localized.
+ * Value display bound to the shared locale and denomination: takes an
+ * amount in the price feed's quote units, returns it converted and
+ * localized - "$1.87", "1,72 €", or "0.00048 ETH" alike.
  */
-export const useFiat = () => {
+export const useDisplayValue = () => {
   const locale = useDemoLocale();
-  const currency = useDemoCurrency();
+  const denomination = useDenomination();
 
-  return (usd: number) => formatFiat(toDisplayCurrency(usd, currency), currency, locale);
+  return (quoted: number) => {
+    const value = quoted * denomination.rate;
+
+    return denomination.kind === "fiat"
+      ? formatFiat(value, denomination.code, locale)
+      : formatAssetAmount(value, denomination.code, locale);
+  };
 };
 
 /**
@@ -122,12 +130,12 @@ const CompactSelect: FC<{
 );
 
 /**
- * The wallet's two i18n settings - locale and display currency - as one
- * quiet footer cluster: an i18n glyph plus two label-less selects.
+ * The wallet's two i18n settings - locale and value denomination - as one
+ * quiet footer cluster: two label-less selects plus an i18n glyph.
  */
 export const I18nControls = () => {
   const browserLocale = useBrowserLocale();
-  const { locale, currency } = useI18nSettings();
+  const { locale, denomination } = useI18nSettings();
 
   return (
     <span className="flex items-center gap-0.5 text-muted">
@@ -139,15 +147,11 @@ export const I18nControls = () => {
         onChange={value => update({ locale: value })}
       />
       <CompactSelect
-        label="Display currency"
-        value={currency}
-        display={currency}
-        options={DISPLAY_CURRENCIES.map(entry => ({ value: entry, label: entry }))}
-        onChange={(value) => {
-          const next = DISPLAY_CURRENCIES.find(entry => entry === value);
-
-          if (next) update({ currency: next });
-        }}
+        label="Display denomination"
+        value={denomination}
+        display={denomination}
+        options={DENOMINATIONS.map(entry => ({ value: entry.code, label: entry.code }))}
+        onChange={value => update({ denomination: denominationFor(value).code })}
       />
       <LuLanguages className="size-3.5 shrink-0" aria-hidden />
     </span>

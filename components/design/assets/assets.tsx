@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { Address } from "viem";
 
 import type { DemoToken } from "../data";
-import { fiatValue, TOKENS } from "../data";
-import { useFiat } from "../locale";
+import { TOKENS, usdValue } from "../data";
+import { useDisplayValue } from "../locale";
 import { DemoShell } from "../shell";
 import { WalletFrame, WalletHeader } from "../ui";
 import { ManageScreen } from "./manage";
@@ -26,7 +26,7 @@ const INITIAL_ENABLED = INITIAL_CATALOG
 const DUST_SYMBOLS = new Set(DUST_TOKENS.map(token => token.symbol));
 
 export const AssetsDemo = () => {
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const [screen, setScreen] = useState<"list" | "manage">("list");
   const [catalog, setCatalog] = useState<DemoToken[]>(INITIAL_CATALOG);
   const [enabledSymbols, setEnabledSymbols] = useState<string[]>(INITIAL_ENABLED);
@@ -42,7 +42,7 @@ export const AssetsDemo = () => {
   const visible = listed.filter(token => !hiddenSymbols.includes(token.symbol));
   const userHidden = listed.filter(token => hiddenSymbols.includes(token.symbol));
   const dust = enabled.filter(token => DUST_SYMBOLS.has(token.symbol));
-  const total = visible.reduce((sum, token) => sum + fiatValue(token, token.balance), 0);
+  const total = visible.reduce((sum, token) => sum + usdValue(token, token.balance), 0);
 
   const hide = (symbol: string) => {
     setHiddenSymbols(current => [...current, symbol]);
@@ -111,7 +111,7 @@ export const AssetsDemo = () => {
                 <WalletHeader title="Tokens" />
                 <div className="flex flex-col items-start gap-0.5 px-4 pt-2 pb-3">
                   <span className="text-3xl font-semibold text-primary tabular-nums">
-                    {fiat(total)}
+                    {display(total)}
                   </span>
                   <div className="flex w-full items-center justify-between">
                     <span className="text-xs text-muted">

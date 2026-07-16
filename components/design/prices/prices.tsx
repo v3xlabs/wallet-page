@@ -5,8 +5,8 @@ import { useState } from "react";
 import { FiClock } from "react-icons/fi";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount, TOKENS } from "../data";
-import { useDemoCurrency, useDemoLocale } from "../locale";
+import { formatTokenAmount, TOKENS, usdValue } from "../data";
+import { useDemoLocale, useDenomination } from "../locale";
 import { DemoShell } from "../shell";
 import { Field, StatusPill, TokenIcon } from "../ui";
 import { formatPrice } from "./shared";
@@ -141,7 +141,7 @@ const PriceTile: FC<{ token: DemoToken; freshness: Freshness; }> = ({
   freshness,
 }) => {
   const locale = useDemoLocale();
-  const currency = useDemoCurrency();
+  const denomination = useDenomination();
   const trendTone
     = token.change24h > 0 ? "text-success" : (token.change24h < 0 ? "text-destructive" : "text-muted");
 
@@ -168,7 +168,7 @@ const PriceTile: FC<{ token: DemoToken; freshness: Freshness; }> = ({
         </div>
         <div className="flex flex-col gap-0.5">
           <span className="text-3xl font-semibold text-primary tabular-nums">
-            {freshness === "unavailable" ? "-" : formatPrice(token.priceUsd, currency, locale)}
+            {freshness === "unavailable" ? "-" : formatPrice(token.priceUsd, denomination, locale)}
           </span>
           {freshness === "live" && <span className="text-[11px] text-muted">Updated just now</span>}
         </div>
@@ -195,7 +195,7 @@ const PriceTile: FC<{ token: DemoToken; freshness: Freshness; }> = ({
             <span className="text-xs text-muted tabular-nums">
               {freshness === "unavailable"
                 ? "value unavailable"
-                : formatPrice(fiatValue(token, token.balance), currency, locale)}
+                : formatPrice(usdValue(token, token.balance), denomination, locale)}
             </span>
           </span>
         </div>

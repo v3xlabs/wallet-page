@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount } from "../data";
-import { useDemoLocale, useFiat } from "../locale";
+import { formatTokenAmount, usdValue } from "../data";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { Segmented } from "../ui";
 import type { Quote, Slippage } from "./shared";
 import {
@@ -51,11 +51,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
   onSlippage: (slippage: Slippage) => void;
 }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const [open, setOpen] = useState(false);
   const [inverted, setInverted] = useState(false);
   const [from, to] = inverted ? [receive, pay] : [pay, receive];
-  const networkFeeUsd = fiatValue(ETH, NETWORK_FEE_WEI);
+  const networkFeeUsd = usdValue(ETH, NETWORK_FEE_WEI);
 
   return (
     <div className="rounded-2xl border border-primary">
@@ -103,7 +103,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Price impact"
-            value={`-${quote.impactPct.toFixed(2)}% · ${fiat(quote.impactUsd)}`}
+            value={`-${quote.impactPct.toFixed(2)}% · ${display(quote.impactUsd)}`}
             tone={impactTone(quote.impactPct)}
           />
           <DetailRow
@@ -113,11 +113,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Network fee"
-            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${fiat(networkFeeUsd)}`}
+            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${display(networkFeeUsd)}`}
           />
           <DetailRow
             label="App fee"
-            value={`0.25% · ${fiat(quote.appFeeUsd)}`}
+            value={`0.25% · ${display(quote.appFeeUsd)}`}
             caption="shown, never hidden"
           />
           <div className="flex flex-col gap-2 px-4 py-2.5">

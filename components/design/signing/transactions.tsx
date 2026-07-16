@@ -6,13 +6,13 @@ import { parseUnits } from "viem";
 
 import {
   CONTACTS,
-  fiatValue,
   formatTokenAmount,
   PERMIT2_ADDRESS,
   TOKENS,
   UNKNOWN_CONTRACT_ADDRESS,
+  usdValue,
 } from "../data";
-import { useDemoLocale, useFiat } from "../locale";
+import { useDemoLocale, useDisplayValue } from "../locale";
 import { DemoShell } from "../shell";
 import type { Tone } from "../ui";
 import { WalletFrame, WalletHeader } from "../ui";
@@ -55,7 +55,7 @@ const FEES = {
 /** Every transaction shows its cost before asking for a decision. */
 const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
   const rows = [
     { label: "network fee", amount: fee },
     ...(total === undefined ? [] : [{ label: "total", amount: total }]),
@@ -67,7 +67,7 @@ const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
         <TreeRow
           key={row.label}
           label={row.label}
-          value={fiat(fiatValue(ETH, row.amount))}
+          value={display(usdValue(ETH, row.amount))}
           sub={`${formatTokenAmount(row.amount, ETH, locale)} ETH`}
         />
       ))}
@@ -78,7 +78,7 @@ const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
 /** Native transfer: value moves, no calldata to decode. The baseline. */
 const SendEthSheet = () => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <>
@@ -88,7 +88,7 @@ const SendEthSheet = () => {
           <TreeRow
             label="amount"
             value={`${formatTokenAmount(SEND_VALUE, ETH, locale)} ETH`}
-            sub={fiat(fiatValue(ETH, SEND_VALUE))}
+            sub={display(usdValue(ETH, SEND_VALUE))}
           />
         </TreeSection>
         <CostSection fee={FEES.send} total={SEND_VALUE + FEES.send} />
@@ -103,7 +103,7 @@ const SendEthSheet = () => {
 /** ERC-20 transfer: the tx's `to` is the token contract, not the recipient. */
 const TokenTransferSheet = () => {
   const locale = useDemoLocale();
-  const fiat = useFiat();
+  const display = useDisplayValue();
 
   return (
     <>
@@ -117,7 +117,7 @@ const TokenTransferSheet = () => {
           <TreeRow
             label="amount"
             value={`${formatTokenAmount(TRANSFER_VALUE, USDC, locale)} ${USDC.symbol}`}
-            sub={fiat(fiatValue(USDC, TRANSFER_VALUE))}
+            sub={display(usdValue(USDC, TRANSFER_VALUE))}
           />
         </TreeSection>
         <CostSection fee={FEES.transfer} />
