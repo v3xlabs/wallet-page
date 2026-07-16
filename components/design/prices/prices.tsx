@@ -6,45 +6,19 @@ import { FiClock } from "react-icons/fi";
 
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount, TOKENS } from "../data";
+import { useDemoLocale, useLocaleControl } from "../locale";
 import { DemoShell } from "../shell";
 import { Field, StatusPill, TokenIcon } from "../ui";
+import type { Currency } from "./shared";
+import { CURRENCIES, formatPrice } from "./shared";
 
-type Currency = "USD" | "EUR";
 type Freshness = "live" | "stale" | "unavailable";
-
-/** Fixed mock FX rate — a real wallet sources this next to its token prices. */
-const EUR_PER_USD = 0.92;
-
-const CURRENCIES: { value: Currency; label: string; }[] = [
-  { value: "USD", label: "USD" },
-  { value: "EUR", label: "EUR" },
-];
 
 const FRESHNESS: { value: Freshness; label: string; }[] = [
   { value: "live", label: "Live" },
   { value: "stale", label: "Stale" },
   { value: "unavailable", label: "Unavailable" },
 ];
-
-const toCurrency = (usd: number, currency: Currency) =>
-  (currency === "USD" ? usd : usd * EUR_PER_USD);
-
-/** At or above 1 unit: two fixed decimals. Below: four significant digits. */
-const formatPrice = (usd: number, currency: Currency) => {
-  const value = toCurrency(usd, currency);
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    ...(value >= 1
-      ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-      : { maximumSignificantDigits: 4 }),
-  }).format(value);
-};
-
-/** Naive two-fixed-decimals formatter — kept only to show what it gets wrong. */
-const formatPriceNaive = (usd: number, currency: Currency) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(toCurrency(usd, currency));
 
 /** FNV-1a hash: deterministic seed per token symbol. */
 const hashSeed = (input: string) => {
@@ -168,11 +142,12 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
   currency,
   freshness,
 }) => {
+  const locale = useDemoLocale();
   const trendTone
     = token.change24h > 0 ? "text-success" : (token.change24h < 0 ? "text-destructive" : "text-muted");
 
   return (
-    <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl border border-primary bg-surface shadow-sm">
+    <div className="mx-auto w-full max-w-sm overflow-hidden rounded-2xl border border-primary bg-surface">
       {freshness === "stale" && (
         <div className="flex items-center gap-1.5 bg-warning-tint px-4 py-1.5 text-[11px] font-medium text-warning">
           <FiClock className="size-3 shrink-0" aria-hidden />
@@ -194,7 +169,7 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
         </div>
         <div className="flex flex-col gap-0.5">
           <span className="text-3xl font-semibold text-primary tabular-nums">
-            {freshness === "unavailable" ? "—" : formatPrice(token.priceUsd, currency)}
+            {freshness === "unavailable" ? "—" : formatPrice(token.priceUsd, currency, locale)}
           </span>
           {freshness === "live" && <span className="text-[11px] text-muted">Updated just now</span>}
         </div>
@@ -214,14 +189,14 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
           <span className="text-xs text-secondary">Your balance</span>
           <span className="flex flex-col items-end">
             <span className="text-sm font-medium text-primary tabular-nums">
-              {formatTokenAmount(token.balance, token)}
+              {formatTokenAmount(token.balance, token, locale)}
               {" "}
               {token.symbol}
             </span>
             <span className="text-xs text-muted tabular-nums">
               {freshness === "unavailable"
                 ? "value unavailable"
-                : formatPrice(fiatValue(token, token.balance), currency)}
+                : formatPrice(fiatValue(token, token.balance), currency, locale)}
             </span>
           </span>
         </div>
@@ -230,10 +205,8 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
   );
 };
 
-/** Sub-dollar mock, local to this demo — exercises the significant-digit path. */
-const MICRO_TOKEN = { symbol: "PEPE", name: "Pepe (mock)", color: "#4c9540", priceUsd: 0.000_021_3 };
-
 export const PricesDemo = () => {
+  const [locale, localeControl] = useLocaleControl();
   const [symbol, setSymbol] = useState("ETH");
   const [currency, setCurrency] = useState<Currency>("USD");
   const [freshness, setFreshness] = useState<Freshness>("live");
@@ -243,6 +216,7 @@ export const PricesDemo = () => {
   return (
     <DemoShell
       source="components/design/prices/prices.tsx"
+      locale={locale}
       controls={{
         "Price feed": {
           type: "tabs",
@@ -257,6 +231,7 @@ export const PricesDemo = () => {
           value: currency,
           onChange: value => setCurrency(value as Currency),
         },
+        "locale": localeControl,
       }}
     >
       <div className="flex flex-col gap-4">
@@ -277,42 +252,6 @@ export const PricesDemo = () => {
         </Field>
         <hr className="border-t border-primary" />
         <PriceTile token={token} currency={currency} freshness={freshness} />
-        <hr className="border-t border-primary" />
-        <div className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium tracking-wide text-secondary uppercase">
-            Sub-dollar precision
-          </span>
-          <div className="flex items-center gap-3 rounded-lg border border-primary bg-surface px-3 py-2.5">
-            <TokenIcon symbol={MICRO_TOKEN.symbol} color={MICRO_TOKEN.color} size={28} />
-            <span className="flex min-w-0 flex-col">
-              <span className="truncate text-sm font-medium text-primary">{MICRO_TOKEN.name}</span>
-              <span className="text-xs text-muted">{MICRO_TOKEN.symbol}</span>
-            </span>
-            <span className="ml-auto flex shrink-0 flex-col items-end">
-              <span className="text-sm font-medium text-success tabular-nums">
-                {formatPrice(MICRO_TOKEN.priceUsd, currency)}
-              </span>
-              <span className="text-[11px] text-muted">4 significant digits</span>
-            </span>
-            <span className="flex shrink-0 flex-col items-end">
-              <span className="text-sm text-destructive line-through tabular-nums">
-                {formatPriceNaive(MICRO_TOKEN.priceUsd, currency)}
-              </span>
-              <span className="text-[11px] text-muted">2 fixed decimals</span>
-            </span>
-          </div>
-          <p className="text-xs text-muted">
-            Prices of
-            {" "}
-            {formatPriceNaive(1, currency)}
-            {" "}
-            and above get two fixed decimals; below that, four significant digits keep
-            micro-prices from collapsing to
-            {" "}
-            {formatPriceNaive(0, currency)}
-            .
-          </p>
-        </div>
       </div>
     </DemoShell>
   );

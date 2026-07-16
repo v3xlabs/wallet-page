@@ -10,13 +10,13 @@ export type TransactionPreviewProps = {
   subtitle?: ReactNode;
 };
 
-export function TransactionPreview({
+export const TransactionPreview = ({
   from,
   to,
   valueLabel,
   data,
   subtitle,
-}: TransactionPreviewProps) {
+}: TransactionPreviewProps) => {
   const hasCalldata = data && data !== "0x" && data !== "0x0";
 
   return (
@@ -40,4 +40,4 @@ export function TransactionPreview({
       )}
     </>
   );
-}
+};

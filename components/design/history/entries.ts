@@ -1,7 +1,8 @@
 import type { Address } from "viem";
+import { parseUnits } from "viem";
 
 import type { DemoToken } from "../data";
-import { CONTACTS, formatUsd, SELF, TOKENS } from "../data";
+import { CONTACTS, formatTokenAmount, formatUsd, SELF, TOKENS } from "../data";
 
 /**
  * Fixed, deterministic activity feed for the history demo. Every entry kind a
@@ -51,7 +52,11 @@ const [VITALIK, LUC, KASSANDRA] = CONTACTS;
 
 export const truncateHash = (hash: string) => `${hash.slice(0, 10)}…${hash.slice(-6)}`;
 
-export const ENTRIES: HistoryEntry[] = [
+/** Signed row amount like "-0.25 ETH", localized through the exact formatter. */
+const rowAmount = (sign: "+" | "-", quantity: string, token: DemoToken, locale: string) =>
+  `${sign}${formatTokenAmount(parseUnits(quantity, token.decimals), token, locale)} ${token.symbol}`;
+
+export const historyEntries = (locale: string): HistoryEntry[] => [
   {
     id: "send-eth-pending",
     group: "Today",
@@ -60,8 +65,8 @@ export const ENTRIES: HistoryEntry[] = [
     title: "Sending ETH",
     subtitle: "To vitalik.eth",
     icon: { type: "address", address: VITALIK.address },
-    amount: "−0.25 ETH",
-    fiat: formatUsd(0.25 * ETH.priceUsd),
+    amount: rowAmount("-", "0.25", ETH, locale),
+    fiat: formatUsd(0.25 * ETH.priceUsd, locale),
     // Shown once the speed-up replacement lands.
     detail: {
       hash: "0x7d4e2f8a91c3b6d05e4f7a2c8b1d9e3f6a0c5b8d2e7f4a1c9b3d6e0f5a8c2b47",
@@ -78,9 +83,9 @@ export const ENTRIES: HistoryEntry[] = [
     title: "Received USDC",
     subtitle: `From ${LUC.name}`,
     icon: { type: "address", address: LUC.address },
-    amount: "+500 USDC",
+    amount: rowAmount("+", "500", USDC, locale),
     incoming: true,
-    fiat: formatUsd(500 * USDC.priceUsd),
+    fiat: formatUsd(500 * USDC.priceUsd, locale),
     detail: {
       hash: "0x9b2f6c1e84a7d3f05c8e2b9d4a6f1c7e3b0d8f5a2c9e6b4d1f7a3c0e5b8d2f61",
       fee: "Paid by sender",
@@ -96,8 +101,7 @@ export const ENTRIES: HistoryEntry[] = [
     title: "Swap ETH → USDC",
     subtitle: "Swap router",
     icon: { type: "token", token: ETH },
-    amount: "−0.4 ETH",
-    caption: "Slippage exceeded",
+    amount: rowAmount("-", "0.4", ETH, locale),
     detail: {
       hash: "0x3a8c5d2f97b1e6c40d3f8a5b2e9c6d1f4a7b0e3c8d5f2a9b6e1c4d7f0a3b8e52",
       fee: "0.00184 ETH · $7.16",
@@ -113,8 +117,8 @@ export const ENTRIES: HistoryEntry[] = [
     title: "Sent DAI",
     subtitle: `To ${KASSANDRA.name}`,
     icon: { type: "address", address: KASSANDRA.address },
-    amount: "−120 DAI",
-    fiat: formatUsd(120 * DAI.priceUsd),
+    amount: rowAmount("-", "120", DAI, locale),
+    fiat: formatUsd(120 * DAI.priceUsd, locale),
     detail: {
       hash: "0x5e1b9f4c72a8d6e30f5c2a9b7d4e1f8c6a3b0d7e4f1c8a5b2d9e6f3a0c7b4d18",
       fee: "0.00048 ETH · $1.87",
@@ -127,10 +131,9 @@ export const ENTRIES: HistoryEntry[] = [
     group: "May 2",
     kind: "approve",
     status: "confirmed",
-    title: "Approved USDC",
+    title: "Approved 500 USDC",
     subtitle: "Permit2",
     icon: { type: "token", token: USDC },
-    caption: "Spend limit: 500 USDC",
     detail: {
       hash: "0x2c7f4a1d85e9b3c60a2d7f4e1b8c5a9d3e6f0b7c4a1d8e5f2b9c6a3d0e7f4b25",
       fee: "0.00092 ETH · $3.58",
@@ -143,11 +146,11 @@ export const ENTRIES: HistoryEntry[] = [
     group: "May 2",
     kind: "interact",
     status: "confirmed",
-    title: "Renewed petra.eth",
+    title: "Renewed luc.eth",
     subtitle: "ENS Registrar · 1 yr extension",
     icon: { type: "address", address: SELF.address },
-    amount: "−0.0042 ETH",
-    fiat: formatUsd(0.0042 * ETH.priceUsd),
+    amount: rowAmount("-", "0.0042", ETH, locale),
+    fiat: formatUsd(0.0042 * ETH.priceUsd, locale),
     detail: {
       hash: "0x6d3a8e5f21c7b4d90e6a3f8c5b2d9e4f1a7c0b6d3e8f5a2c9b4d1e7f0a5c8b34",
       fee: "Sponsored — paid by relayer",

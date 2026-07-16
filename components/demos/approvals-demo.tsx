@@ -32,7 +32,7 @@ const KNOWN_SPENDERS: { label: string; address: Address; }[] = [
   { label: "1inch v5", address: "0x1111111254EEB25477B68fb85Ed929f73A960582" },
 ];
 
-export function ApprovalsDemo() {
+export const ApprovalsDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
 
@@ -232,4 +232,4 @@ export function ApprovalsDemo() {
       />
     </DemoShell>
   );
-}
+};

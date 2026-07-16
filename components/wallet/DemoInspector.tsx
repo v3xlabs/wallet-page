@@ -19,14 +19,14 @@ export type DemoInspectorProps = {
 
 type TabId = "user" | "request" | "response" | "hash";
 
-export function DemoInspector({
+export const DemoInspector = ({
   user,
   request,
   response,
   hash,
   hashNote,
   responseError,
-}: DemoInspectorProps) {
+}: DemoInspectorProps) => {
   const baseId = useId();
 
   const tabs = useMemo(() => {
@@ -65,7 +65,7 @@ export function DemoInspector({
             className={classNames(
               "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
               current === tab.id
-                ? "text-primary shadow-[inset_0_-2px_0_var(--vocs-color-accent)]"
+                ? "text-primary"
                 : "text-secondary hover:text-primary",
             )}
             onClick={() => setActive(tab.id)}
@@ -124,4 +124,4 @@ export function DemoInspector({
       )}
     </div>
   );
-}
+};

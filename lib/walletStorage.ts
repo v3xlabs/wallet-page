@@ -11,7 +11,7 @@ export type StoredWalletSession = {
   chainId: Hex;
 };
 
-export function loadStoredSession(): StoredWalletSession | undefined {
+export const loadStoredSession = (): StoredWalletSession | undefined => {
   if (globalThis.window === undefined) return undefined;
 
   try {
@@ -24,12 +24,12 @@ export function loadStoredSession(): StoredWalletSession | undefined {
   catch {
     return undefined;
   }
-}
+};
 
-export function saveStoredSession(session: StoredWalletSession) {
+export const saveStoredSession = (session: StoredWalletSession) => {
   sessionStorage.setItem(STORAGE_KEY, JSON.stringify(session));
-}
+};
 
-export function clearStoredSession() {
+export const clearStoredSession = () => {
   sessionStorage.removeItem(STORAGE_KEY);
-}
+};

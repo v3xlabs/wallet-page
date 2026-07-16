@@ -11,7 +11,7 @@ type WalletPickerModalProps = {
   onClose: () => void;
 };
 
-export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
+export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const {
@@ -104,4 +104,4 @@ export function WalletPickerModal({ open, onClose }: WalletPickerModalProps) {
   if (!portalTarget) return null;
 
   return createPortal(pickerDialog, portalTarget);
-}
+};

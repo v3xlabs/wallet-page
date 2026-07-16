@@ -14,7 +14,7 @@ export type WalletAssetRow = {
   searchText: string;
 };
 
-export function chainIdToLabel(chainId: unknown): string {
+export const chainIdToLabel = (chainId: unknown): string => {
   if (typeof chainId === "number" && Number.isFinite(chainId)) {
     return `0x${chainId.toString(16)}`;
   }
@@ -28,17 +28,17 @@ export function chainIdToLabel(chainId: unknown): string {
   }
 
   return "";
-}
+};
 
-function readString(...values: unknown[]): string | undefined {
+const readString = (...values: unknown[]): string | undefined => {
   for (const value of values) {
     if (typeof value === "string" && value.length > 0) return value;
   }
 
   return undefined;
-}
+};
 
-function readDecimals(...sources: Record<string, unknown>[]): number | undefined {
+const readDecimals = (...sources: Record<string, unknown>[]): number | undefined => {
   for (const source of sources) {
     const decimals = source.decimals;
 
@@ -50,9 +50,9 @@ function readDecimals(...sources: Record<string, unknown>[]): number | undefined
   }
 
   return undefined;
-}
+};
 
-function formatHexBalance(balance: string, decimals?: number): string {
+const formatHexBalance = (balance: string, decimals?: number): string => {
   if (typeof decimals === "number" && balance.startsWith("0x")) {
     try {
       return formatUnits(BigInt(balance), decimals);
@@ -63,12 +63,12 @@ function formatHexBalance(balance: string, decimals?: number): string {
   }
 
   return balance;
-}
+};
 
-function balanceLabelFromEntry(
+const balanceLabelFromEntry = (
   entry: Record<string, unknown>,
   decimals?: number,
-): string {
+): string => {
   const display = readString(entry.displayBalance, entry.displayValue);
 
   if (display) return display;
@@ -76,13 +76,13 @@ function balanceLabelFromEntry(
   const balance = String(entry.balance ?? "0x0");
 
   return formatHexBalance(balance, decimals);
-}
+};
 
-function labelsFromEntry(
+const labelsFromEntry = (
   entry: Record<string, unknown>,
   address: string,
   type: string,
-): { symbol: string; name: string; iconUrl?: string; } {
+): { symbol: string; name: string; iconUrl?: string; } => {
   const currencyInfo
     = entry.currencyInfo && typeof entry.currencyInfo === "object"
       ? (entry.currencyInfo as Record<string, unknown>)
@@ -131,13 +131,13 @@ function labelsFromEntry(
   const short = truncateAddress(address);
 
   return { symbol: short, name: name ?? short, iconUrl };
-}
+};
 
-function pushRow(
+const pushRow = (
   rows: WalletAssetRow[],
   seen: Set<string>,
   params: Omit<WalletAssetRow, "searchText">,
-): void {
+): void => {
   let id = params.id;
   let suffix = 0;
 
@@ -158,9 +158,9 @@ function pushRow(
     .toLowerCase();
 
   rows.push({ ...params, id, searchText });
-}
+};
 
-function parseErc7811ByChain(raw: Record<string, unknown>): WalletAssetRow[] {
+const parseErc7811ByChain = (raw: Record<string, unknown>): WalletAssetRow[] => {
   const rows: WalletAssetRow[] = [];
   const seen = new Set<string>();
 
@@ -197,15 +197,15 @@ function parseErc7811ByChain(raw: Record<string, unknown>): WalletAssetRow[] {
   }
 
   return rows;
-}
+};
 
-function groupedTypeName(groupKey: string): string {
+const groupedTypeName = (groupKey: string): string => {
   if (groupKey === "nativeCurrency") return "native";
 
   return groupKey.toLowerCase();
-}
+};
 
-function parseGroupedByAssetType(raw: Record<string, unknown>): WalletAssetRow[] {
+const parseGroupedByAssetType = (raw: Record<string, unknown>): WalletAssetRow[] => {
   const rows: WalletAssetRow[] = [];
   const seen = new Set<string>();
 
@@ -243,21 +243,17 @@ function parseGroupedByAssetType(raw: Record<string, unknown>): WalletAssetRow[]
   }
 
   return rows;
-}
+};
 
-function isErc7811ByChain(raw: Record<string, unknown>): boolean {
-  return Object.keys(raw).some(
-    key => key.startsWith("0x") && Array.isArray(raw[key]),
-  );
-}
+const isErc7811ByChain = (raw: Record<string, unknown>): boolean => Object.keys(raw).some(
+  key => key.startsWith("0x") && Array.isArray(raw[key]),
+);
 
-function isGroupedByAssetType(raw: Record<string, unknown>): boolean {
-  return Object.entries(raw).some(
-    ([key, value]) => !key.startsWith("0x") && Array.isArray(value),
-  );
-}
+const isGroupedByAssetType = (raw: Record<string, unknown>): boolean => Object.entries(raw).some(
+  ([key, value]) => !key.startsWith("0x") && Array.isArray(value),
+);
 
-export function parseWalletGetAssetsResponse(raw: unknown): WalletAssetRow[] {
+export const parseWalletGetAssetsResponse = (raw: unknown): WalletAssetRow[] => {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return [];
 
   const obj = raw as Record<string, unknown>;
@@ -277,15 +273,15 @@ export function parseWalletGetAssetsResponse(raw: unknown): WalletAssetRow[] {
 
     return a.symbol.localeCompare(b.symbol);
   });
-}
+};
 
-export function filterWalletAssets(
+export const filterWalletAssets = (
   rows: WalletAssetRow[],
   query: string,
-): WalletAssetRow[] {
+): WalletAssetRow[] => {
   const q = query.trim().toLowerCase();
 
   if (!q) return rows;
 
   return rows.filter(row => row.searchText.includes(q));
-}
+};

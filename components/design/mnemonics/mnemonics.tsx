@@ -67,7 +67,7 @@ const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: numbe
           aria-label="Decrement address index"
           className="flex size-6 cursor-pointer items-center justify-center rounded text-secondary transition-colors enabled:hover:bg-accenta3 enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
         >
-          −
+          -
         </button>
         <button
           type="button"

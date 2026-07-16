@@ -20,7 +20,7 @@ const WATCH_PARAMS = [
   },
 ] as const;
 
-export function Eip747Demo() {
+export const Eip747Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [response, setResponse] = useState<string>();
@@ -71,4 +71,4 @@ export function Eip747Demo() {
       />
     </DemoShell>
   );
-}
+};

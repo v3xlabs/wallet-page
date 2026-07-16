@@ -1,4 +1,4 @@
-import { AmountDisplayDemo, AmountInputDemo, AmountsLocaleProvider } from "../../components/design/amounts/amounts";
+import { AmountDisplayDemo, AmountInputDemo } from "../../components/design/amounts/amounts";
 
 # Input and display of amounts
 
@@ -10,8 +10,6 @@ Wallets should use the user's preferred locale for both displaying and entering 
 :::note
 Never guess what a separator means, and never pass an asset amount through a floating-point number.
 :::
-
-<AmountsLocaleProvider>
 
 ### Input
 
@@ -25,8 +23,6 @@ An interface should retain an incomplete value while the user is typing, but an 
 <AmountDisplayDemo />
 
 Start with integer base units, insert the decimal point using the asset's decimals, then format the exact value using the user's locale. Avoid intermediate floating-point numbers if possible.
-
-</AmountsLocaleProvider>
 
 ## Test cases
 

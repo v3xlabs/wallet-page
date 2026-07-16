@@ -2,11 +2,9 @@
 
 import { useWallet } from "./WalletProvider";
 
-function trimAddress(address: string) {
-  return `${address.slice(0, 6)}…${address.slice(-4)}`;
-}
+const trimAddress = (address: string) => `${address.slice(0, 6)}…${address.slice(-4)}`;
 
-export function WalletBadge() {
+export const WalletBadge = () => {
   const { session, disconnect } = useWallet();
 
   if (!session) return null;
@@ -38,4 +36,4 @@ export function WalletBadge() {
       </button>
     </div>
   );
-}
+};

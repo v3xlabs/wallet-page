@@ -12,10 +12,6 @@ import { DEMO_PRIVATE_KEY, truncate } from "./shared";
 
 const KEY_PATTERN = /^0x[0-9a-fA-F]{64}$/;
 
-/**
- * Private-key import: masked by default, derived address shown live, and an
- * unmissable reminder that a raw key has no safety net.
- */
 export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => void; }) => {
   const [text, setText] = useState("");
   const [visible, setVisible] = useState(false);
@@ -79,9 +75,6 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
           Use the demo key
         </button>
       </div>
-      <p className="rounded-xl bg-warning-tint px-3 py-2.5 text-xs leading-relaxed text-warning">
-        A raw key has no backup phrase — anyone who ever saw it controls the account forever.
-      </p>
       {account && (
         <div className="mt-auto flex flex-col gap-3 border-t border-primary pt-3">
           <div className="flex items-center gap-3 px-1">

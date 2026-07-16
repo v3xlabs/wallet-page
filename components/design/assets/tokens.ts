@@ -1,7 +1,6 @@
 import { parseUnits } from "viem";
 
 import type { DemoToken } from "../data";
-import { TOKENS } from "../data";
 
 /**
  * Local extras for the assets demo: dust positions worth under a dollar, and
@@ -35,20 +34,15 @@ export const DUST_TOKENS: DemoToken[] = [
 
 export type DiscoveredToken = {
   token: DemoToken;
-  /** Metadata matched a curated token list. */
-  verified: boolean;
   note: string;
 };
 
-// TOKENS is ordered ETH, WETH, … — the shared WETH position starts undiscovered.
-const [, WETH] = TOKENS;
-
+/**
+ * On-chain findings the user never opted into. Discovery is the one route
+ * spam can take into the wallet, so everything here stays quarantined until
+ * explicitly added.
+ */
 export const DISCOVERED: DiscoveredToken[] = [
-  {
-    token: WETH,
-    verified: true,
-    note: "Verified metadata",
-  },
   {
     token: {
       symbol: "CLAIM",
@@ -60,7 +54,6 @@ export const DISCOVERED: DiscoveredToken[] = [
       priceUsd: 0,
       change24h: 0,
     },
-    verified: false,
     note: "Unverified contract",
   },
 ];

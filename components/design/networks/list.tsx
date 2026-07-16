@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import { useState } from "react";
-import { FiChevronDown, FiPlus } from "react-icons/fi";
+import { FiChevronDown, FiMinus, FiPlus, FiX } from "react-icons/fi";
 import { hoodi, sepolia } from "viem/chains";
 
 import { DemoShell } from "../shell";
@@ -85,43 +85,69 @@ const rowCaption = (network: Network) => {
   return { tone: "text-muted", text: host(active.url) };
 };
 
-const RpcRow = ({ rpc, active, onUse }: { rpc: Rpc; active: boolean; onUse: () => void; }) => (
-  <button
-    type="button"
-    onClick={onUse}
-    disabled={active}
-    className={classNames(
-      "group flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
-      !active && "cursor-pointer hover:bg-surfaceMuted",
-    )}
-  >
-    <span
+const RpcRow = ({ rpc, active, onUse, onRemove }: {
+  rpc: Rpc;
+  active: boolean;
+  onUse: () => void;
+  onRemove: () => void;
+}) => (
+  <div className="group flex items-center gap-1">
+    <button
+      type="button"
+      onClick={onUse}
+      disabled={active}
       className={classNames(
-        "truncate font-mono text-xs",
-        rpc.unreachable ? "text-muted line-through" : "text-secondary",
+        "flex min-w-0 grow items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
+        !active && "cursor-pointer hover:bg-surfaceMuted",
       )}
     >
-      {host(rpc.url)}
-    </span>
+      <span
+        className={classNames(
+          "truncate font-mono text-xs",
+          rpc.unreachable ? "text-muted line-through" : "text-secondary",
+        )}
+      >
+        {host(rpc.url)}
+      </span>
+      {active
+        ? <span className="shrink-0 text-[11px] font-medium text-accent">In use</span>
+        : (rpc.unreachable
+            ? <span className="shrink-0 text-[11px] text-destructive">Unreachable</span>
+            : (
+                <span className="shrink-0 text-[11px] text-muted opacity-0 transition-opacity group-hover:opacity-100">
+                  Use
+                </span>
+              ))}
+    </button>
     {active
-      ? <span className="shrink-0 text-[11px] font-medium text-accent">In use</span>
-      : (rpc.unreachable
-          ? <span className="shrink-0 text-[11px] text-destructive">Unreachable</span>
-          : (
-              <span className="shrink-0 text-[11px] text-muted opacity-0 transition-opacity group-hover:opacity-100">
-                Use
-              </span>
-            ))}
-  </button>
+      ? <span aria-hidden className="size-6 shrink-0" />
+      : (
+          <button
+            type="button"
+            onClick={onRemove}
+            aria-label={`Remove ${host(rpc.url)}`}
+            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted opacity-0 transition-opacity group-hover:opacity-100 hover:bg-surfaceMuted hover:text-destructive"
+          >
+            <FiMinus className="size-3.5" />
+          </button>
+        )}
+  </div>
 );
 
-const NetworkPanel = ({ network, onUseRpc, onAddRpc }: {
+const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
   network: Network;
   onUseRpc: (index: number) => void;
   onAddRpc: (url: string) => void;
+  onRemoveRpc: (index: number) => void;
 }) => {
+  const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
   const valid = /^https?:\/\/.+\../.test(draft.trim());
+
+  const close = () => {
+    setAdding(false);
+    setDraft("");
+  };
 
   return (
     <div className="mx-4 mb-3 flex flex-col gap-1 border-b border-primary pb-3">
@@ -134,35 +160,57 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc }: {
           rpc={rpc}
           active={index === network.active}
           onUse={() => onUseRpc(index)}
+          onRemove={() => onRemoveRpc(index)}
         />
       ))}
-      <form
-        className="flex items-center gap-1.5 px-2 pt-1"
-        onSubmit={(e) => {
-          e.preventDefault();
+      {adding
+        ? (
+            <form
+              className="flex items-center gap-1.5 px-2 pt-1"
+              onSubmit={(e) => {
+                e.preventDefault();
 
-          if (!valid) return;
+                if (!valid) return;
 
-          onAddRpc(draft.trim());
-          setDraft("");
-        }}
-      >
-        <input
-          type="text"
-          value={draft}
-          onChange={e => setDraft(e.target.value)}
-          placeholder="https://…"
-          spellCheck={false}
-          className="w-full rounded-md border border-primary bg-surface px-2 py-1 font-mono text-xs text-primary outline-none placeholder:text-muted focus:border-accent"
-        />
-        <button
-          type="submit"
-          disabled={!valid}
-          className="shrink-0 cursor-pointer rounded-md border border-primary bg-surfaceMuted px-2 py-1 text-[11px] font-medium text-secondary transition-colors enabled:hover:bg-surfaceTint enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-45"
-        >
-          Add RPC
-        </button>
-      </form>
+                onAddRpc(draft.trim());
+                close();
+              }}
+            >
+              <input
+                type="text"
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                placeholder="https://…"
+                spellCheck={false}
+                className="w-full rounded-md border border-primary bg-surface px-2 py-1 font-mono text-xs text-primary outline-none placeholder:text-muted focus:border-accent"
+              />
+              <button
+                type="submit"
+                disabled={!valid}
+                className="shrink-0 cursor-pointer rounded-md border border-primary bg-surfaceMuted px-2 py-1 text-[11px] font-medium text-secondary transition-colors enabled:hover:bg-surfaceTint enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-45"
+              >
+                Add
+              </button>
+              <button
+                type="button"
+                onClick={close}
+                aria-label="Cancel adding an endpoint"
+                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-surfaceMuted hover:text-primary"
+              >
+                <FiX className="size-3.5" />
+              </button>
+            </form>
+          )
+        : (
+            <button
+              type="button"
+              onClick={() => setAdding(true)}
+              className="flex w-fit cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium text-accent hover:underline"
+            >
+              <FiPlus className="size-3" aria-hidden />
+              Add RPC
+            </button>
+          )}
       <div className="flex items-center justify-between gap-2 border-t border-primary px-2 pt-1.5 pb-0.5">
         <span className="text-[11px] text-muted">Native token</span>
         <span className="text-[11px] font-medium text-secondary">{network.symbol}</span>
@@ -171,12 +219,13 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc }: {
   );
 };
 
-const NetworkRow = ({ network, expanded, onToggle, onUseRpc, onAddRpc }: {
+const NetworkRow = ({ network, expanded, onToggle, onUseRpc, onAddRpc, onRemoveRpc }: {
   network: Network;
   expanded: boolean;
   onToggle: () => void;
   onUseRpc: (index: number) => void;
   onAddRpc: (url: string) => void;
+  onRemoveRpc: (index: number) => void;
 }) => {
   const caption = rowCaption(network);
 
@@ -203,7 +252,12 @@ const NetworkRow = ({ network, expanded, onToggle, onUseRpc, onAddRpc }: {
         />
       </button>
       {expanded && (
-        <NetworkPanel network={network} onUseRpc={onUseRpc} onAddRpc={onAddRpc} />
+        <NetworkPanel
+          network={network}
+          onUseRpc={onUseRpc}
+          onAddRpc={onAddRpc}
+          onRemoveRpc={onRemoveRpc}
+        />
       )}
     </div>
   );
@@ -327,6 +381,12 @@ export const NetworkListDemo = () => {
       onUseRpc={index => update(network.id, current => ({ ...current, active: index }))}
       onAddRpc={url =>
         update(network.id, current => ({ ...current, rpcs: [...current.rpcs, { url }] }))}
+      onRemoveRpc={index =>
+        update(network.id, current => ({
+          ...current,
+          rpcs: current.rpcs.filter((_, position) => position !== index),
+          active: index < current.active ? current.active - 1 : current.active,
+        }))}
     />
   );
 
@@ -335,7 +395,7 @@ export const NetworkListDemo = () => {
 
   return (
     <DemoShell source="components/design/networks/list.tsx">
-      <WalletFrame className="min-h-[480px]">
+      <WalletFrame>
         <WalletHeader
           title={adding ? "Add network" : "Networks"}
           onBack={adding ? () => setAdding(false) : undefined}

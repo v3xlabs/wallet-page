@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { formatUsd } from "../data";
+import { useLocaleControl } from "../locale";
 import { DemoShell } from "../shell";
 import type { PickedToken } from "../token-picker";
 import { TokenPicker } from "../token-picker";
@@ -37,6 +38,7 @@ const BACK: Partial<Record<Step, Step>> = {
 };
 
 export const SwapDemo = () => {
+  const [locale, localeControl] = useLocaleControl();
   const [step, setStep] = useState<Step>("swap");
   const [selectSide, setSelectSide] = useState<"pay" | "receive">("pay");
   const [pay, setPay] = useState<PickedToken>(ETH);
@@ -47,7 +49,7 @@ export const SwapDemo = () => {
   const [flips, setFlips] = useState(0);
   const [ackImpact, setAckImpact] = useState(false);
 
-  const payAmount = parsePayAmount(amountText);
+  const payAmount = parsePayAmount(amountText, locale);
   const hasAmount = payAmount !== undefined && payAmount > 0;
   // Tokens resolved from a pasted contract carry no price feed, so the
   // quote engine cannot price a pair that includes one.
@@ -75,7 +77,7 @@ export const SwapDemo = () => {
   const setAmount = (text: string) => {
     setAmountText(text);
 
-    const parsed = parsePayAmount(text);
+    const parsed = parsePayAmount(text, locale);
 
     requote(parsed !== undefined && parsed > 0);
   };
@@ -121,7 +123,11 @@ export const SwapDemo = () => {
   const back = BACK[step];
 
   return (
-    <DemoShell source="components/design/swap/swap.tsx">
+    <DemoShell
+      source="components/design/swap/swap.tsx"
+      locale={locale}
+      controls={{ locale: localeControl }}
+    >
       <WalletFrame className="min-h-[440px]">
         <WalletHeader
           title={TITLES[step]}
@@ -137,7 +143,7 @@ export const SwapDemo = () => {
                 priceless={pay.priceUsd === 0}
                 insufficient={insufficient}
                 onAmount={setAmount}
-                onMax={() => setAmount(maxPayText(pay))}
+                onMax={() => setAmount(maxPayText(pay, locale))}
                 onPickToken={() => openSelect("pay")}
               />
               <FlipButton flips={flips} onFlip={flip} />
@@ -172,7 +178,7 @@ export const SwapDemo = () => {
                     {" "}
                     — this trade is large for the route's depth; you lose
                     {" "}
-                    <span className="font-semibold tabular-nums">{formatUsd(quote.impactUsd)}</span>
+                    <span className="font-semibold tabular-nums">{formatUsd(quote.impactUsd, locale)}</span>
                     {" "}
                     to it. Swap anyway.
                   </span>
@@ -210,9 +216,9 @@ export const SwapDemo = () => {
             <div className="flex flex-col items-center gap-1">
               <span className="text-lg font-semibold text-primary">Swapped</span>
               <span className="text-sm text-secondary tabular-nums">
-                {`${formatAmount(quote.payAmount)} ${pay.symbol} → `}
+                {`${formatAmount(quote.payAmount, locale)} ${pay.symbol} → `}
                 <span className="font-medium text-primary">
-                  {`${formatAmount(quote.receiveAmount)} ${receive.symbol}`}
+                  {`${formatAmount(quote.receiveAmount, locale)} ${receive.symbol}`}
                 </span>
               </span>
               <span className="text-xs text-muted">Filled at the best of 4 quoted venues</span>

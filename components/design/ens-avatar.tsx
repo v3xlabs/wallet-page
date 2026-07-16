@@ -71,7 +71,10 @@ const EnsAvatarInner: FC<{ address: string; name?: string; size: number; }> = ({
   }, [address, name]);
 
   return (
-    <span className="relative block shrink-0" style={{ width: size, height: size }}>
+    <span
+      className="relative block shrink-0 overflow-hidden rounded-full"
+      style={{ width: size, height: size }}
+    >
       <AddressAvatar address={address} size={size} />
       {src && (
         <img
@@ -81,7 +84,7 @@ const EnsAvatarInner: FC<{ address: string; name?: string; size: number; }> = ({
           onLoad={() => setLoaded(true)}
           onError={() => setSrc(undefined)}
           className={classNames(
-            "absolute inset-0 size-full rounded-full object-cover transition-opacity duration-200",
+            "absolute inset-0 size-full object-cover transition-opacity duration-200",
             loaded ? "opacity-100" : "opacity-0",
           )}
         />

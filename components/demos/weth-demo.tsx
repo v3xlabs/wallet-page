@@ -36,7 +36,7 @@ const WETH_BY_CHAIN: Record<string, EvmAddress> = {
 
 const DEFAULT_AMOUNT = "0.001";
 
-export function WethDemo() {
+export const WethDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [amount, setAmount] = useState(DEFAULT_AMOUNT);
@@ -268,4 +268,4 @@ export function WethDemo() {
       />
     </DemoShell>
   );
-}
+};

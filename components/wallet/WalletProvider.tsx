@@ -62,12 +62,10 @@ type WalletContextValue = {
 
 const WalletContext = createContext<WalletContextValue | null>(null);
 
-function logId() {
-  return `${Date.now()}-${Math.random().toString(36)
-    .slice(2, 8)}`;
-}
+const logId = () => `${Date.now()}-${Math.random().toString(36)
+  .slice(2, 8)}`;
 
-export function WalletProvider({ children }: { children: ReactNode; }) {
+export const WalletProvider = ({ children }: { children: ReactNode; }) => {
   const [session, setSession] = useState<WalletSession | undefined>();
   const [providers, setProviders] = useState<Eip6963ProviderDetail[]>([]);
   const [discoveryLog, setDiscoveryLog] = useState<DiscoveryLogEntry[]>([]);
@@ -268,9 +266,9 @@ export function WalletProvider({ children }: { children: ReactNode; }) {
       />
     </WalletContext.Provider>
   );
-}
+};
 
-export function useWallet() {
+export const useWallet = () => {
   const ctx = useContext(WalletContext);
 
   if (!ctx) {
@@ -278,6 +276,6 @@ export function useWallet() {
   }
 
   return ctx;
-}
+};
 
 export { type Eip6963ProviderDetail } from "../../lib/ethereum";

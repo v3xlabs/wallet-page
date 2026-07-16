@@ -10,7 +10,7 @@ import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { WalletAssetSearch } from "../wallet/WalletAssetSearch";
 import { useWallet } from "../wallet/WalletProvider";
 
-export function Eip7811Demo() {
+export const Eip7811Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [assets, setAssets] = useState<ReturnType<typeof parseWalletGetAssetsResponse>>(
@@ -119,4 +119,4 @@ export function Eip7811Demo() {
       />
     </DemoShell>
   );
-}
+};

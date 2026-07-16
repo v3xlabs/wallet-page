@@ -92,9 +92,6 @@ export const PhraseScreen = ({ onImport }: { onImport: (result: ImportResult) =>
           ))}
         </div>
       )}
-      <p className="text-[11px] text-muted">
-        Whitespace and casing are cleaned up automatically — paste from anywhere.
-      </p>
       {account && (
         <div className="mt-auto flex flex-col gap-3 border-t border-primary pt-3">
           <div className="flex items-center gap-3 px-1">

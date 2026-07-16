@@ -1,5 +1,6 @@
 import { formatUnits, parseUnits } from "viem";
 
+import { formatBaseUnits, parseLocalizedDecimal } from "../../../lib/amounts";
 import type { DemoToken } from "../data";
 import { TOKENS } from "../data";
 
@@ -41,13 +42,16 @@ export type Quote = {
 export const balanceOf = (token: DemoToken) =>
   Number(formatUnits(token.balance, token.decimals));
 
-/** Forgiving amount parser: tolerates both decimal separators. */
-export const parsePayAmount = (text: string): number | undefined => {
-  const normalized = text.replace(",", ".");
+/**
+ * Localized amount parser (see /design/amounts). The quote engine works in
+ * floats, so the exact decimal converts to a number at this boundary.
+ */
+export const parsePayAmount = (text: string, locale: string): number | undefined => {
+  const parsed = parseLocalizedDecimal(text, locale);
 
-  if (!/^\d*\.?\d*$/.test(normalized) || normalized === "" || normalized === ".") return;
+  if (parsed === undefined) return;
 
-  return Number(normalized);
+  return Number(parsed.coefficient) / 10 ** parsed.scale;
 };
 
 /**
@@ -70,20 +74,20 @@ export const minReceived = (quote: Quote, slippage: Slippage) =>
   quote.receiveAmount * (1 - slippage / 100);
 
 /** Human-friendly plain-number token quantity, mirroring formatTokenAmount. */
-export const formatAmount = (value: number) => {
+export const formatAmount = (value: number, locale: string) => {
   if (value === 0) return "0";
 
   if (value > 0 && value < 0.0001) return "<0.0001";
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: value < 1 ? 6 : (value < 1000 ? 4 : 2),
   }).format(value);
 };
 
 /** Spot exchange rate line: "1 ETH = 3,892.40 USDC". */
-export const formatRate = (from: DemoToken, to: DemoToken) => {
+export const formatRate = (from: DemoToken, to: DemoToken, locale: string) => {
   const rate = from.priceUsd / to.priceUsd;
-  const formatted = new Intl.NumberFormat("en-US", {
+  const formatted = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: rate < 1 ? 6 : 2,
   }).format(rate);
@@ -92,8 +96,9 @@ export const formatRate = (from: DemoToken, to: DemoToken) => {
 };
 
 /** Full spendable balance as input text; the gas token reserves the fee. */
-export const maxPayText = (token: DemoToken) => {
+export const maxPayText = (token: DemoToken, locale: string) => {
   const max = token.symbol === "ETH" ? token.balance - NETWORK_FEE_WEI : token.balance;
 
-  return Number(formatUnits(max, token.decimals)).toString();
+  // Exact and localized, so what lands in the field always parses back.
+  return formatBaseUnits(max, locale, token.decimals) ?? "";
 };

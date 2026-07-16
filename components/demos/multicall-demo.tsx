@@ -41,7 +41,7 @@ const WETH_BY_CHAIN: Record<string, EvmAddress> = {
 
 type BatchResult = { label: string; value: string; success: boolean; };
 
-export function MulticallDemo() {
+export const MulticallDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [response, setResponse] = useState<string>();
@@ -209,4 +209,4 @@ export function MulticallDemo() {
       />
     </DemoShell>
   );
-}
+};

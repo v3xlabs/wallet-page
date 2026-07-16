@@ -12,7 +12,7 @@ import { useWallet } from "../wallet/WalletProvider";
 const MESSAGE = "wallet.page — personal_sign test";
 const MESSAGE_HASH = eip191MessageHash(MESSAGE);
 
-export function PersonalSignDemo() {
+export const PersonalSignDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -61,4 +61,4 @@ export function PersonalSignDemo() {
       />
     </DemoBlock>
   );
-}
+};

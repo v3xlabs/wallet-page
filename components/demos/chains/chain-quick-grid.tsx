@@ -11,7 +11,7 @@ import { DemoShell } from "../../wallet/DemoShell";
 import { useWallet } from "../../wallet/WalletProvider";
 
 /** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
-export function ChainQuickGrid() {
+export const ChainQuickGrid = () => {
   const { session, refreshSession } = useWallet();
   const { requireSession } = useDemoFrame();
   const [error, setError] = useState<string>();
@@ -135,4 +135,4 @@ export function ChainQuickGrid() {
       )}
     </DemoShell>
   );
-}
+};

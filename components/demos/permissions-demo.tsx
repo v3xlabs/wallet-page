@@ -14,32 +14,30 @@ import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { useWallet } from "../wallet/WalletProvider";
 
-function CapabilityChecklist({ groups }: { groups: CapabilityGroup[]; }) {
-  return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(11.5rem,1fr))] items-start gap-x-5 gap-y-2">
-      {groups.map(group => (
-        <ul key={group.prefix} className="flex min-w-0 list-none flex-col gap-0.5 p-0">
-          {group.items.map(item => (
-            <li key={item.id} className="flex items-baseline gap-2 text-[13px] leading-snug">
-              <span
-                className={classNames(
-                  "flex-none basis-4 text-center font-semibold select-none",
-                  item.granted ? "text-success" : "text-secondary",
-                )}
-                aria-label={item.granted ? "granted" : "not granted"}
-              >
-                {item.granted ? "✓" : "−"}
-              </span>
-              <code className="font-mono text-[13px]">{item.id}</code>
-            </li>
-          ))}
-        </ul>
-      ))}
-    </div>
-  );
-}
+const CapabilityChecklist = ({ groups }: { groups: CapabilityGroup[]; }) => (
+  <div className="grid grid-cols-[repeat(auto-fill,minmax(11.5rem,1fr))] items-start gap-x-5 gap-y-2">
+    {groups.map(group => (
+      <ul key={group.prefix} className="flex min-w-0 list-none flex-col gap-0.5 p-0">
+        {group.items.map(item => (
+          <li key={item.id} className="flex items-baseline gap-2 text-[13px] leading-snug">
+            <span
+              className={classNames(
+                "flex-none basis-4 text-center font-semibold select-none",
+                item.granted ? "text-success" : "text-secondary",
+              )}
+              aria-label={item.granted ? "granted" : "not granted"}
+            >
+              {item.granted ? "✓" : "-"}
+            </span>
+            <code className="font-mono text-[13px]">{item.id}</code>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+);
 
-export function PermissionsDemo() {
+export const PermissionsDemo = () => {
   const baseId = useId();
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
@@ -171,7 +169,7 @@ export function PermissionsDemo() {
               className={classNames(
                 "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
                 tab === "capabilities"
-                  ? "text-primary shadow-[inset_0_-2px_0_var(--vocs-color-accent)]"
+                  ? "text-primary"
                   : "text-secondary hover:text-primary",
               )}
               onClick={() => setTab("capabilities")}
@@ -187,7 +185,7 @@ export function PermissionsDemo() {
               className={classNames(
                 "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
                 tab === "raw"
-                  ? "text-primary shadow-[inset_0_-2px_0_var(--vocs-color-accent)]"
+                  ? "text-primary"
                   : "text-secondary hover:text-primary",
               )}
               onClick={() => setTab("raw")}
@@ -242,4 +240,4 @@ export function PermissionsDemo() {
       </div>
     </DemoShell>
   );
-}
+};

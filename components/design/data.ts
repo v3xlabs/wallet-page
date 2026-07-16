@@ -90,6 +90,26 @@ export const SELF = {
   address: "0x225f137127d9067788314bc7fcc1f36746a3c3B5" as Address,
 };
 
+/** A second wallet account for flows that switch between accounts. */
+export const ACCOUNT_2 = {
+  name: "Account 2",
+  address: "0x3f8CBe7177E4cC2Cb1f9AB1e26dA5F2b84942A6d" as Address,
+};
+
+/**
+ * Contracts the demos reference, kept in one place so every demo cites the
+ * same addresses and they stay maintainable.
+ */
+
+/** Canonical Permit2 — the spender granted allowances in demos. */
+export const PERMIT2_ADDRESS: Address = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
+
+/** Contract an EIP-7702 authorization would delegate the account to. */
+export const DELEGATE_ADDRESS: Address = "0x63c0C19a282a1B52b07dD5a65b58948A07DAE32B";
+
+/** Unverified contract used by blind/undecodable-call scenarios. */
+export const UNKNOWN_CONTRACT_ADDRESS: Address = "0x7F2a9bE4C1b5cD83Fd91c2aE9d3C4E5F6a7B8C9D";
+
 /** Address book used for recipient suggestions and ENS-style lookups. */
 export const CONTACTS: { name: string; address: Address; }[] = [
   { name: "vitalik.eth", address: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" },
@@ -101,21 +121,23 @@ export const CONTACTS: { name: string; address: Address; }[] = [
 export const fiatValue = (token: DemoToken, amount: bigint) =>
   Number(formatUnits(amount, token.decimals)) * token.priceUsd;
 
-export const formatUsd = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+export const formatUsd = (value: number, locale: string) =>
+  new Intl.NumberFormat(locale, { style: "currency", currency: "USD" }).format(value);
 
 /**
  * Human-friendly token quantity: enough precision to be honest, few enough
- * digits to be readable. Display only — never round what gets signed.
+ * digits to be readable. Display only — never round what gets signed. The
+ * float only picks the precision tier; Intl formats the exact base units
+ * (see /design/amounts/implementation).
  */
-export const formatTokenAmount = (amount: bigint, token: DemoToken) => {
+export const formatTokenAmount = (amount: bigint, token: DemoToken, locale: string) => {
   const value = Number(formatUnits(amount, token.decimals));
 
   if (value === 0) return "0";
 
   if (value < 0.0001) return "<0.0001";
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: value < 1 ? 6 : (value < 1000 ? 4 : 2),
-  }).format(value);
+  }).format(`${amount}E-${token.decimals}` as Intl.StringNumericLiteral);
 };

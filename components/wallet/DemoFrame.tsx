@@ -13,7 +13,7 @@ type DemoFrameProps = {
   source?: string;
 };
 
-export function DemoFrame({ children, variant = "panel", source }: DemoFrameProps) {
+export const DemoFrame = ({ children, variant = "panel", source }: DemoFrameProps) => {
   const rootClass
     = variant === "mini"
       ? "my-4 overflow-hidden rounded-md border border-primary bg-code-block"
@@ -35,11 +35,11 @@ export function DemoFrame({ children, variant = "panel", source }: DemoFrameProp
       </div>
     </div>
   );
-}
+};
 
 /** Prefer `useWallet().requireSession` — alias for demo action handlers. */
-export function useDemoFrame() {
+export const useDemoFrame = () => {
   const { openConnect, requireSession } = useWallet();
 
   return { openConnect, requireSession };
-}
+};

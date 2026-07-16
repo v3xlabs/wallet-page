@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { type Address, getAddress, isAddress } from "viem";
 
 import { mainnetClient } from "../client";
+import { CONTACTS } from "../data";
 import { EnsAvatar } from "../ens-avatar";
 import { DemoShell } from "../shell";
 import { Field } from "../ui";
@@ -47,7 +48,9 @@ const AddressChip = ({ address, style, onCopy, copied }: {
 );
 
 export const AddressDisplayDemo = () => {
-  const [input, setInput] = useState("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045");
+  const [input, setInput] = useState<string>(
+    (CONTACTS.find(contact => contact.name === "vitalik.eth") ?? CONTACTS[0]).address,
+  );
   const [style, setStyle] = useState<TruncationStyle>("5-4");
 
   const address = useMemo(

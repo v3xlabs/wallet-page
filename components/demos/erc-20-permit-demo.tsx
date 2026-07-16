@@ -28,14 +28,14 @@ type PermitPreviewProps = {
   deadline: bigint;
 };
 
-function PermitPreview({
+const PermitPreview = ({
   tokenName,
   tokenSymbol,
   decimals = 6,
   value,
   spender,
   deadline,
-}: PermitPreviewProps) {
+}: PermitPreviewProps) => {
   const amount = formatTokenAmount(value, decimals, tokenSymbol);
   const iconLetter = (tokenSymbol ?? tokenName ?? "T").slice(0, 1).toUpperCase();
 
@@ -65,7 +65,7 @@ function PermitPreview({
       </dl>
     </div>
   );
-}
+};
 
 const permitTypedData = (owner: Hex, chainId: number) =>
   ({
@@ -94,7 +94,7 @@ const permitTypedData = (owner: Hex, chainId: number) =>
     },
   }) as const;
 
-export function Erc20PermitDemo() {
+export const Erc20PermitDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -174,4 +174,4 @@ export function Erc20PermitDemo() {
       />
     </DemoShell>
   );
-}
+};

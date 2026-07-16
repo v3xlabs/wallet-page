@@ -9,7 +9,7 @@ import { WalletActionPanel } from "../../wallet/preview/WalletActionPanel";
 import { useWallet } from "../../wallet/WalletProvider";
 import { AccountsPreview } from "./preview";
 
-export function EthRequestAccountsDemo() {
+export const EthRequestAccountsDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [accounts, setAccounts] = useState<string[]>();
@@ -61,4 +61,4 @@ export function EthRequestAccountsDemo() {
       />
     </DemoBlock>
   );
-}
+};

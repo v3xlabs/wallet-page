@@ -9,12 +9,12 @@ type ProviderListProps = {
   emptyMessage?: string;
 };
 
-export function ProviderList({
+export const ProviderList = ({
   providers,
   connecting,
   onSelect,
   emptyMessage = "No wallets announced yet. Install an extension and try again.",
-}: ProviderListProps) {
+}: ProviderListProps) => {
   if (providers.length === 0) {
     return <p className="text-sm text-secondary">{emptyMessage}</p>;
   }
@@ -39,4 +39,4 @@ export function ProviderList({
       ))}
     </ul>
   );
-}
+};

@@ -7,6 +7,7 @@ import { erc20Abi, getAddress, isAddress } from "viem";
 import { mainnetClient } from "./client";
 import type { DemoToken } from "./data";
 import { fiatValue, formatTokenAmount, formatUsd, TOKENS } from "./data";
+import { useDemoLocale } from "./locale";
 import { ListRow, Spinner, TokenIcon } from "./ui";
 
 /**
@@ -36,6 +37,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
   selected?: string;
   onPick: (token: PickedToken) => void;
 }) => {
+  const locale = useDemoLocale();
   const [query, setQuery] = useState("");
   const trimmed = query.trim();
 
@@ -117,8 +119,8 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
           key={token.symbol}
           icon={<TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={36} />}
           title={token.name}
-          subtitle={`${formatTokenAmount(token.balance, token)} ${token.symbol}`}
-          value={formatUsd(fiatValue(token, token.balance))}
+          subtitle={`${formatTokenAmount(token.balance, token, locale)} ${token.symbol}`}
+          value={formatUsd(fiatValue(token, token.balance), locale)}
           selected={token.symbol === selected}
           onClick={() => onPick(token)}
         />

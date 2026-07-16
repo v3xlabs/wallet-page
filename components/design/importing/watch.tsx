@@ -86,9 +86,6 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
           </span>
         )}
       </div>
-      <p className="rounded-xl bg-info-tint px-3 py-2.5 text-xs leading-relaxed text-info">
-        Watch-only — this wallet can see activity but cannot sign.
-      </p>
       {checksumFailed && (
         <p className="rounded-lg bg-destructive-tint px-3 py-2 text-xs text-destructive">
           This address fails its checksum — it was likely corrupted in transit. Refusing it.
@@ -104,7 +101,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
       )}
       {trimmed === "" && (
         <p className="text-[11px] text-muted">
-          Try a known name like
+          Try an ENS name like
           {" "}
           <button
             type="button"

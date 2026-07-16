@@ -28,7 +28,7 @@ const DEFAULT_TOKEN
 
 const TRANSFER_AMOUNT = "0.0001";
 
-export function Erc20Demo() {
+export const Erc20Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [token, setToken] = useState(DEFAULT_TOKEN);
@@ -209,4 +209,4 @@ export function Erc20Demo() {
       />
     </DemoShell>
   );
-}
+};

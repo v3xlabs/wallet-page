@@ -20,7 +20,7 @@ type MiniDemoProps = {
   source?: string;
 };
 
-function MiniDemoContent({
+const MiniDemoContent = ({
   title,
   description,
   inspector,
@@ -29,7 +29,7 @@ function MiniDemoContent({
   response,
   error,
   pending,
-}: Omit<MiniDemoProps, "source">) {
+}: Omit<MiniDemoProps, "source">) => {
   const { requireSession } = useWallet();
   const [localPending, setLocalPending] = useState(false);
 
@@ -68,13 +68,11 @@ function MiniDemoContent({
       </div>
     </>
   );
-}
+};
 
 /** Compact RPC demo: Preview / Request / Response tabs + primary action. */
-export function MiniDemo({ source, ...props }: MiniDemoProps) {
-  return (
-    <DemoFrame variant="mini" source={source}>
-      <MiniDemoContent {...props} />
-    </DemoFrame>
-  );
-}
+export const MiniDemo = ({ source, ...props }: MiniDemoProps) => (
+  <DemoFrame variant="mini" source={source}>
+    <MiniDemoContent {...props} />
+  </DemoFrame>
+);

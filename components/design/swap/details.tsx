@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount, formatUsd } from "../data";
+import { useDemoLocale } from "../locale";
 import { Segmented } from "../ui";
 import type { Quote, Slippage } from "./shared";
 import {
@@ -49,6 +50,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
   slippage: Slippage;
   onSlippage: (slippage: Slippage) => void;
 }) => {
+  const locale = useDemoLocale();
   const [open, setOpen] = useState(false);
   const [inverted, setInverted] = useState(false);
   const [from, to] = inverted ? [receive, pay] : [pay, receive];
@@ -62,11 +64,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
         aria-expanded={open}
         className="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-left"
       >
-        <span className="text-[13px] font-medium text-primary tabular-nums">{formatRate(from, to)}</span>
+        <span className="text-[13px] font-medium text-primary tabular-nums">{formatRate(from, to, locale)}</span>
         <span className="flex items-center gap-2">
           {!open && quote.impactPct > IMPACT_WARN_PCT && (
             <span className={classNames("text-xs font-medium tabular-nums", impactTone(quote.impactPct))}>
-              −
+              -
               {quote.impactPct.toFixed(2)}
               %
             </span>
@@ -91,7 +93,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
                 title="Invert rate"
                 className="flex cursor-pointer items-center gap-1 tabular-nums transition-colors hover:text-accent"
               >
-                {formatRate(from, to)}
+                {formatRate(from, to, locale)}
                 <svg viewBox="0 0 16 16" fill="none" className="size-3 text-muted">
                   <path d="M11 2.5l2.5 2.5L11 7.5M13.5 5h-11M5 13.5L2.5 11 5 8.5M2.5 11h11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -100,7 +102,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Price impact"
-            value={`−${quote.impactPct.toFixed(2)}% · ${formatUsd(quote.impactUsd)}`}
+            value={`-${quote.impactPct.toFixed(2)}% · ${formatUsd(quote.impactUsd, locale)}`}
             tone={impactTone(quote.impactPct)}
           />
           <DetailRow
@@ -110,11 +112,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Network fee"
-            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH)} ETH · ${formatUsd(networkFeeUsd)}`}
+            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${formatUsd(networkFeeUsd, locale)}`}
           />
           <DetailRow
             label="App fee"
-            value={`0.25% · ${formatUsd(quote.appFeeUsd)}`}
+            value={`0.25% · ${formatUsd(quote.appFeeUsd, locale)}`}
             caption="shown, never hidden"
           />
           <div className="flex flex-col gap-2 px-4 py-2.5">
@@ -130,7 +132,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
             <div className="flex items-center justify-between gap-3">
               <span className="text-[13px] text-secondary">Minimum received</span>
               <span className="text-[13px] font-medium text-primary tabular-nums">
-                {formatAmount(minReceived(quote, slippage))}
+                {formatAmount(minReceived(quote, slippage), locale)}
                 {" "}
                 {receive.symbol}
               </span>

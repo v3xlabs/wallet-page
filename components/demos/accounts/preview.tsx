@@ -8,10 +8,10 @@ type AccountsPreviewProps = {
   firstAccountHint?: string;
 };
 
-export function AccountsPreview({
+export const AccountsPreview = ({
   accounts,
   firstAccountHint = "Many dapps and wallets only use this entry",
-}: AccountsPreviewProps) {
+}: AccountsPreviewProps) => {
   if (accounts.length === 0) {
     return <p className="text-sm text-secondary">Wallet returned an empty list.</p>;
   }
@@ -65,4 +65,4 @@ export function AccountsPreview({
       )}
     </div>
   );
-}
+};

@@ -10,7 +10,7 @@ import { useWallet } from "../wallet/WalletProvider";
 
 const ZERO_HASH = `0x${"00".repeat(32)}`;
 
-export function EthSignDemo() {
+export const EthSignDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -66,4 +66,4 @@ export function EthSignDemo() {
       />
     </DemoBlock>
   );
-}
+};

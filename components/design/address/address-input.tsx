@@ -6,6 +6,7 @@ import { type Address, getAddress } from "viem";
 import { normalize } from "viem/ens";
 
 import { mainnetClient } from "../client";
+import { CONTACTS } from "../data";
 import { DemoShell } from "../shell";
 import { Field } from "../ui";
 
@@ -63,15 +64,17 @@ type Resolution =
   | { status: "not-found"; name: string; }
   | { status: "error"; name: string; message: string; };
 
+const VITALIK = CONTACTS.find(contact => contact.name === "vitalik.eth") ?? CONTACTS[0];
+
 const EXAMPLES: { label: string; value: string; }[] = [
-  { label: "ENS name", value: "vitalik.eth" },
-  { label: "Lowercase", value: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045" },
-  { label: "Checksummed", value: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" },
+  { label: "ENS name", value: VITALIK.name },
+  { label: "Lowercase", value: VITALIK.address.toLowerCase() },
+  { label: "Checksummed", value: VITALIK.address },
+  // VITALIK.address with one flipped-case letter, so EIP-55 validation fails.
   { label: "Bad checksum", value: "0xd8dA6bF26964aF9D7eEd9e03E53415D37aA96045" },
   {
     label: "EIP-681 URL",
-    value:
-      "ethereum:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045@1/?value=1000000000000000000",
+    value: `ethereum:${VITALIK.address}@1/?value=1000000000000000000`,
   },
 ];
 

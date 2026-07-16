@@ -10,23 +10,21 @@ type ChainSelectProps = {
   id?: string;
 };
 
-export function ChainSelect({ value, onChange, id }: ChainSelectProps) {
-  return (
-    <select
-      id={id}
-      className="demo-select mt-2 max-w-[22rem]"
-      value={value}
-      onChange={e => onChange(e.target.value as Hex)}
-    >
-      {DEMO_CHAINS.map(chain => (
-        <option key={chain.chainId} value={chain.chainId}>
-          {chain.name}
-          {" "}
-          (
-          {chain.chainId}
-          )
-        </option>
-      ))}
-    </select>
-  );
-}
+export const ChainSelect = ({ value, onChange, id }: ChainSelectProps) => (
+  <select
+    id={id}
+    className="demo-select mt-2 max-w-[22rem]"
+    value={value}
+    onChange={e => onChange(e.target.value as Hex)}
+  >
+    {DEMO_CHAINS.map(chain => (
+      <option key={chain.chainId} value={chain.chainId}>
+        {chain.name}
+        {" "}
+        (
+        {chain.chainId}
+        )
+      </option>
+    ))}
+  </select>
+);

@@ -24,14 +24,14 @@ type WalletActionPanelProps = {
 };
 
 /** Tabbed inspector, right-aligned actions. */
-export function WalletActionPanel({
+export const WalletActionPanel = ({
   inspector,
   response,
   error,
   actions,
   pending,
   children,
-}: WalletActionPanelProps) {
+}: WalletActionPanelProps) => {
   const merged = mergeInspector(inspector, response, error);
 
   return (
@@ -53,4 +53,4 @@ export function WalletActionPanel({
       {children}
     </div>
   );
-}
+};

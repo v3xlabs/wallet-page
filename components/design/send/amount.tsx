@@ -1,11 +1,12 @@
 "use client";
 
 import classNames from "classnames";
-import { formatUnits } from "viem";
 
+import { formatBaseUnits } from "../../../lib/amounts";
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount } from "../data";
 import { EnsAvatar } from "../ens-avatar";
+import { useDemoLocale } from "../locale";
 import { PrimaryButton, TokenIcon } from "../ui";
 import type { DisplayCurrency, Recipient } from "./shared";
 import { currencyFor, FEE_WEI, formatDisplayCurrency, parseAmount, truncate } from "./shared";
@@ -42,8 +43,9 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
   onPickAsset: () => void;
   onContinue: () => void;
 }) => {
+  const locale = useDemoLocale();
   const fx = currencyFor(currency);
-  const amount = parseAmount(amountText, token, unit, fx.rate);
+  const amount = parseAmount(amountText, token, unit, locale, fx.rate);
   const insufficient = amount !== undefined && amount > token.balance;
   // Tokens resolved from a pasted contract carry no price feed.
   const priceless = token.priceUsd === 0;
@@ -51,18 +53,18 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
     = amount === undefined
       ? undefined
       : (unit === "token"
-          ? formatDisplayCurrency(fiatValue(token, amount), currency)
-          : `${formatTokenAmount(amount, token)} ${token.symbol}`);
+          ? formatDisplayCurrency(fiatValue(token, amount), currency, locale)
+          : `${formatTokenAmount(amount, token, locale)} ${token.symbol}`);
 
   const setFraction = (fraction: number) => {
     // Max on the gas token leaves room for the network fee.
     const max = token.symbol === "ETH" && fraction === 1
       ? token.balance - FEE_WEI
       : (token.balance * BigInt(Math.round(fraction * 100))) / 100n;
-    const inToken = formatUnits(max, token.decimals);
 
     onUnit("token");
-    onAmount(formatTokenAmount(max, token) === "<0.0001" ? inToken : Number(inToken).toString());
+    // Exact and localized, so what lands in the field always parses back.
+    onAmount(formatBaseUnits(max, locale, token.decimals) ?? "");
   };
 
   return (
@@ -122,7 +124,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
                     <svg viewBox="0 0 16 16" fill="none" className="size-3.5">
                       <path d="M11 2.5l2.5 2.5L11 7.5M13.5 5h-11M5 13.5L2.5 11 5 8.5M2.5 11h11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    {converted ?? (unit === "token" ? formatDisplayCurrency(0, currency) : `0 ${token.symbol}`)}
+                    {converted ?? (unit === "token" ? formatDisplayCurrency(0, currency, locale) : `0 ${token.symbol}`)}
                   </button>
                 )}
             <button
@@ -131,7 +133,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
               title="Use full balance"
               className="cursor-pointer text-xs text-muted transition-colors tabular-nums hover:text-primary"
             >
-              {formatTokenAmount(token.balance, token)}
+              {formatTokenAmount(token.balance, token, locale)}
               {" "}
               {token.symbol}
             </button>
@@ -141,7 +143,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
           <p className="text-xs font-medium text-destructive">
             Exceeds your
             {" "}
-            {formatTokenAmount(token.balance, token)}
+            {formatTokenAmount(token.balance, token, locale)}
             {" "}
             {token.symbol}
             {" "}

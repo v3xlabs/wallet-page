@@ -1,6 +1,7 @@
 import type { Address } from "viem";
 import { parseUnits } from "viem";
 
+import { parseLocalizedDecimal, toBaseUnits } from "../../../lib/amounts";
 import type { DemoToken } from "../data";
 import { TOKENS } from "../data";
 
@@ -25,29 +26,31 @@ export const currencyFor = (currency: DisplayCurrency) =>
   CURRENCIES.find(entry => entry.value === currency) ?? CURRENCIES[0];
 
 /** Format a USD value in the selected display currency. */
-export const formatDisplayCurrency = (usd: number, currency: DisplayCurrency) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(
+export const formatDisplayCurrency = (usd: number, currency: DisplayCurrency, locale: string) =>
+  new Intl.NumberFormat(locale, { style: "currency", currency }).format(
     usd * currencyFor(currency).rate,
   );
 
 /**
- * Forgiving amount parser: tolerates both decimal separators, returns base
- * units, and converts from the display currency when that is the entry unit.
+ * Localized amount parser (see /design/amounts): token amounts convert
+ * digit-exactly into base units; fiat entry is a quote, so it may pass
+ * through a float on its way to the FX rate and token price.
  */
 export const parseAmount = (
   text: string,
   token: DemoToken,
   unit: "token" | "fiat",
+  locale: string,
   rate = 1,
 ): bigint | undefined => {
-  const normalized = text.replace(",", ".");
+  const parsed = parseLocalizedDecimal(text, locale);
 
-  if (!/^\d*\.?\d*$/.test(normalized) || normalized === "" || normalized === ".") return;
+  if (parsed === undefined) return;
+
+  if (unit === "token") return toBaseUnits(parsed, token.decimals);
 
   try {
-    const inToken = unit === "fiat"
-      ? Number(normalized) / rate / token.priceUsd
-      : Number(normalized);
+    const inToken = Number(parsed.coefficient) / 10 ** parsed.scale / rate / token.priceUsd;
 
     return parseUnits(inToken.toFixed(token.decimals), token.decimals);
   }

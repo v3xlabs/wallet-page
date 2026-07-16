@@ -14,11 +14,11 @@ type WalletAssetSearchProps = {
 };
 
 /** Filterable asset list (Kobalte Search–style UX for React). */
-export function WalletAssetSearch({
+export const WalletAssetSearch = ({
   assets,
   loading,
   placeholder = "Search tokens by name, symbol, or address…",
-}: WalletAssetSearchProps) {
+}: WalletAssetSearchProps) => {
   const listId = useId();
   const [query, setQuery] = useState("");
   const filtered = useMemo(
@@ -99,4 +99,4 @@ export function WalletAssetSearch({
       </div>
     </div>
   );
-}
+};

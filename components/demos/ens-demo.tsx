@@ -15,7 +15,7 @@ const ensClient = createPublicClient({
   transport: http("https://ethereum.publicnode.com"),
 });
 
-export function EnsDemo() {
+export const EnsDemo = () => {
   const { session } = useWallet();
 
   const [forwardName, setForwardName] = useState("vitalik.eth");
@@ -174,4 +174,4 @@ export function EnsDemo() {
       </div>
     </DemoShell>
   );
-}
+};

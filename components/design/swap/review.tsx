@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount, formatUsd } from "../data";
+import { useDemoLocale } from "../locale";
 import { PrimaryButton, Spinner, TokenIcon } from "../ui";
 import type { Quote, Slippage } from "./shared";
 import { ETH, formatAmount, minReceived, NETWORK_FEE_WEI } from "./shared";
@@ -30,6 +31,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
   slippage: Slippage;
   onConfirm: () => void;
 }) => {
+  const locale = useDemoLocale();
   const [swapping, setSwapping] = useState(false);
 
   const confirm = () => {
@@ -48,36 +50,36 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
           <TokenIcon symbol={receive.symbol} color={receive.color} address={receive.address} size={40} />
         </span>
         <span className="text-xl font-semibold text-primary tabular-nums">
-          {formatAmount(quote.payAmount)}
+          {formatAmount(quote.payAmount, locale)}
           {" "}
           {pay.symbol}
           {" → "}
-          {formatAmount(quote.receiveAmount)}
+          {formatAmount(quote.receiveAmount, locale)}
           {" "}
           {receive.symbol}
         </span>
-        <span className="text-sm text-muted tabular-nums">{formatUsd(quote.payUsd)}</span>
+        <span className="text-sm text-muted tabular-nums">{formatUsd(quote.payUsd, locale)}</span>
       </div>
       <div className="mx-4 mb-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
         <ReviewRow
           label="You pay"
-          value={`${formatAmount(quote.payAmount)} ${pay.symbol}`}
-          subvalue={formatUsd(quote.payUsd)}
+          value={`${formatAmount(quote.payAmount, locale)} ${pay.symbol}`}
+          subvalue={formatUsd(quote.payUsd, locale)}
         />
         <ReviewRow
           label="You receive"
-          value={`${formatAmount(quote.receiveAmount)} ${receive.symbol}`}
-          subvalue={formatUsd(quote.receiveUsd)}
+          value={`${formatAmount(quote.receiveAmount, locale)} ${receive.symbol}`}
+          subvalue={formatUsd(quote.receiveUsd, locale)}
         />
         <ReviewRow
           label="Minimum received"
-          value={`${formatAmount(minReceived(quote, slippage))} ${receive.symbol}`}
+          value={`${formatAmount(minReceived(quote, slippage), locale)} ${receive.symbol}`}
           subvalue={`${slippage}% slippage`}
         />
         <ReviewRow
           label="Total fees"
-          value={formatUsd(totalFeesUsd)}
-          subvalue={`${formatTokenAmount(NETWORK_FEE_WEI, ETH)} ETH network + ${formatUsd(quote.appFeeUsd)} app`}
+          value={formatUsd(totalFeesUsd, locale)}
+          subvalue={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH network + ${formatUsd(quote.appFeeUsd, locale)} app`}
         />
       </div>
       <div className="mt-auto px-4 pb-4">

@@ -4,7 +4,7 @@ export type RpcCall = {
 };
 
 /** Pretty-print for demo RPC tab (bigint-safe). */
-export function formatRpcCall({ method, params = [] }: RpcCall): string {
+export const formatRpcCall = ({ method, params = [] }: RpcCall): string => {
   const payload = { method, params };
 
   return JSON.stringify(
@@ -12,4 +12,4 @@ export function formatRpcCall({ method, params = [] }: RpcCall): string {
     (_key, value) => (typeof value === "bigint" ? value.toString() : value),
     2,
   );
-}
+};

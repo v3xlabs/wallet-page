@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 
+import { useLocaleControl } from "../locale";
 import { DemoShell } from "../shell";
 import { WalletFrame, WalletHeader } from "../ui";
 import type { EntryKind } from "./entries";
-import { confirmPending, ENTRIES, GROUPS } from "./entries";
+import { confirmPending, GROUPS, historyEntries } from "./entries";
 import { EntryRow } from "./row";
 
 type Filter = "all" | "sent" | "received" | "approvals";
@@ -24,6 +25,7 @@ const FILTER_KIND: Record<Exclude<Filter, "all">, EntryKind> = {
 };
 
 export const HistoryDemo = () => {
+  const [locale, localeControl] = useLocaleControl();
   const [filter, setFilter] = useState<Filter>("all");
   const [expandedId, setExpandedId] = useState<string>();
   const [speedUp, setSpeedUp] = useState<"idle" | "speeding" | "confirmed">("idle");
@@ -33,7 +35,7 @@ export const HistoryDemo = () => {
     setTimeout(() => setSpeedUp("confirmed"), 800);
   };
 
-  const entries = ENTRIES.map(entry =>
+  const entries = historyEntries(locale).map(entry =>
     (entry.status === "pending" && speedUp === "confirmed" ? confirmPending(entry) : entry),
   );
 
@@ -44,6 +46,7 @@ export const HistoryDemo = () => {
   return (
     <DemoShell
       source="components/design/history/history.tsx"
+      locale={locale}
       controls={{
         Filter: {
           type: "tabs",
@@ -51,9 +54,10 @@ export const HistoryDemo = () => {
           value: filter,
           onChange: value => setFilter(value as Filter),
         },
+        locale: localeControl,
       }}
     >
-      <WalletFrame className="min-h-[480px]">
+      <WalletFrame>
         <WalletHeader title="Activity" />
         <div className="flex flex-col pt-1 pb-3">
           {GROUPS.map((group) => {

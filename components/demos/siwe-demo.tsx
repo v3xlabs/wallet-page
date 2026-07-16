@@ -11,7 +11,7 @@ import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-function SiwePreview({ message }: { message: string; }) {
+const SiwePreview = ({ message }: { message: string; }) => {
   const parsed = message ? parseSiweMessage(message) : null;
 
   if (!parsed?.address || !parsed.domain) {
@@ -49,9 +49,9 @@ function SiwePreview({ message }: { message: string; }) {
       </dl>
     </div>
   );
-}
+};
 
-export function SiweDemo() {
+export const SiweDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [nonce, setNonce] = useState(() => generateSiweNonce());
@@ -128,4 +128,4 @@ export function SiweDemo() {
       />
     </DemoShell>
   );
-}
+};

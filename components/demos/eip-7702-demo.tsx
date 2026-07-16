@@ -19,11 +19,11 @@ type ProbeRow = {
   detail: string;
 };
 
-async function tryRpc(
+const tryRpc = async (
   provider: Parameters<typeof rpc>[0],
   method: string,
   params: unknown[],
-): Promise<ProbeRow> {
+): Promise<ProbeRow> => {
   try {
     const result = await rpc(provider, method, params);
 
@@ -39,9 +39,9 @@ async function tryRpc(
   catch (error) {
     return { method, ok: false, detail: formatError(error) };
   }
-}
+};
 
-export function Eip7702Demo() {
+export const Eip7702Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [delegator, setDelegator] = useState(DEFAULT_DELEGATOR);
@@ -243,4 +243,4 @@ export function Eip7702Demo() {
       />
     </DemoShell>
   );
-}
+};

@@ -39,7 +39,7 @@ export const Segmented = <T extends string>({ options, value, onChange, fit }: {
         className={classNames(
           "cursor-pointer rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
           option.value === value
-            ? "bg-surface text-primary shadow-sm"
+            ? "bg-surface text-primary"
             : "text-secondary hover:text-primary",
         )}
       >
@@ -115,7 +115,7 @@ export const AddressAvatar: FC<{ address: string; size?: number; }> = ({ address
 export const WalletFrame: FC<PropsWithChildren<{ className?: string; }>> = ({ children, className }) => (
   <div
     className={classNames(
-      "mx-auto flex w-full max-w-[360px] flex-col overflow-hidden rounded-3xl border border-primary bg-surface shadow-[0_24px_48px_-24px_rgb(0_0_0/0.35)]",
+      "mx-auto flex w-full max-w-[360px] flex-col overflow-hidden rounded-3xl border border-primary bg-surface",
       className,
     )}
   >

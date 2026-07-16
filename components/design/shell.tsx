@@ -3,6 +3,7 @@ import type { PropsWithChildren, ReactNode } from "react";
 import { FiCode } from "react-icons/fi";
 
 import { sourceUrl } from "../../lib/repo";
+import { DemoLocaleProvider } from "./locale";
 
 /**
  * A footer control for a demo. Scenario switching reads best as `tabs`;
@@ -82,9 +83,12 @@ export const DemoShell = ({
   children,
   source,
   controls,
+  locale,
 }: PropsWithChildren<{
   source?: string;
   controls?: Record<string, ShellControl>;
+  /** Locale chosen by a footer control — provided to children via `useDemoLocale`. */
+  locale?: string;
 }>) => {
   const entries = Object.entries(controls ?? {});
   const tabs = entries.filter(entry => entry[1].type === "tabs");
@@ -105,7 +109,9 @@ export const DemoShell = ({
         </a>
       )}
       <div className="bg-code-block px-5 py-4">
-        {children}
+        {locale === undefined
+          ? children
+          : <DemoLocaleProvider value={locale}>{children}</DemoLocaleProvider>}
       </div>
       {entries.length > 0 && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-primary bg-surface px-4 py-2">

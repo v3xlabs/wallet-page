@@ -174,7 +174,7 @@ const AddNetworkScreen = () => {
 
 export const AddNetworkDemo = () => (
   <DemoShell source="components/design/networks/add.tsx">
-    <WalletFrame className="min-h-[480px]">
+    <WalletFrame>
       <WalletHeader title="Add network" />
       <AddNetworkScreen />
     </WalletFrame>

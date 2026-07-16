@@ -10,7 +10,7 @@ import { useWallet } from "../../wallet/WalletProvider";
 const SOURCE = "components/demos/connect/connect-wallet-demo.tsx";
 
 /** Connect + EIP-6963 discovery on one panel — wallet list is always visible. */
-export function ConnectWalletDemo() {
+export const ConnectWalletDemo = () => {
   const {
     providers,
     connecting,
@@ -83,4 +83,4 @@ export function ConnectWalletDemo() {
       </div>
     </div>
   );
-}
+};

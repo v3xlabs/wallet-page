@@ -7,7 +7,7 @@ import { WalletBadge } from "./WalletBadge";
 import { useWallet } from "./WalletProvider";
 
 /** Top-right demo chrome: source link + connected session badge or connect control. */
-export function WalletDemoChrome({ source }: { source?: string; }) {
+export const WalletDemoChrome = ({ source }: { source?: string; }) => {
   const { session, openConnect, connecting } = useWallet();
 
   return (
@@ -40,4 +40,4 @@ export function WalletDemoChrome({ source }: { source?: string; }) {
           )}
     </div>
   );
-}
+};

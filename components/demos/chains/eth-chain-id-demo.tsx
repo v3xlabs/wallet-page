@@ -6,7 +6,7 @@ import { formatError, getChainId } from "../../../lib/ethereum";
 import { MiniDemo } from "../../wallet/MiniDemo";
 import { useWallet } from "../../wallet/WalletProvider";
 
-export function EthChainIdDemo() {
+export const EthChainIdDemo = () => {
   const { session } = useWallet();
   const [response, setResponse] = useState<string>();
   const [error, setError] = useState<string>();
@@ -39,4 +39,4 @@ export function EthChainIdDemo() {
       }}
     />
   );
-}
+};

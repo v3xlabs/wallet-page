@@ -74,7 +74,7 @@ export const ReceiveDemo = () => {
         },
       }}
     >
-      <WalletFrame className="min-h-[480px]">
+      <WalletFrame>
         <WalletHeader title="Receive" />
         <div className="flex grow flex-col items-center gap-3 px-4 pt-2 pb-4">
           <div className="rounded-2xl border border-primary bg-white p-3">

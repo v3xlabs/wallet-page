@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount } from "../data";
 import { EnsAvatar } from "../ens-avatar";
+import { useDemoLocale, useLocaleControl } from "../locale";
 import { DemoShell } from "../shell";
 import { TokenPicker } from "../token-picker";
 import {
@@ -52,6 +53,7 @@ const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
   currency: DisplayCurrency;
   onConfirm: () => void;
 }) => {
+  const locale = useDemoLocale();
   const [sending, setSending] = useState(false);
 
   const confirm = () => {
@@ -69,13 +71,13 @@ const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
       <div className="flex flex-col items-center gap-2 px-4 pt-5 pb-4">
         <TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={44} />
         <span className="text-3xl font-semibold text-primary tabular-nums">
-          {formatTokenAmount(amount, token)}
+          {formatTokenAmount(amount, token, locale)}
           {" "}
           {token.symbol}
         </span>
         {!priceless && (
           <span className="text-sm text-muted tabular-nums">
-            {formatDisplayCurrency(fiatValue(token, amount), currency)}
+            {formatDisplayCurrency(fiatValue(token, amount), currency, locale)}
           </span>
         )}
       </div>
@@ -93,11 +95,11 @@ const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
         <ReviewRow label="Network" value="Ethereum" />
         <ReviewRow
           label="Network fee"
-          value={`${formatTokenAmount(FEE_WEI, ETH)} ETH`}
-          subvalue={formatDisplayCurrency(feeUsd, currency)}
+          value={`${formatTokenAmount(FEE_WEI, ETH, locale)} ETH`}
+          subvalue={formatDisplayCurrency(feeUsd, currency, locale)}
         />
         {!priceless && (
-          <ReviewRow label="Total" value={formatDisplayCurrency(totalUsd, currency)} />
+          <ReviewRow label="Total" value={formatDisplayCurrency(totalUsd, currency, locale)} />
         )}
       </div>
       <div className="px-4 pb-4">
@@ -133,6 +135,7 @@ const BACK: Partial<Record<Step, Step>> = {
 const CURRENCY_VARIANTS = CURRENCIES.map(entry => ({ value: entry.value, label: entry.value }));
 
 export const SendDemo = () => {
+  const [locale, localeControl] = useLocaleControl();
   const [step, setStep] = useState<Step>("recipient");
   const [recipient, setRecipient] = useState<Recipient>();
   const [token, setToken] = useState<DemoToken>(ETH);
@@ -140,7 +143,7 @@ export const SendDemo = () => {
   const [unit, setUnit] = useState<"token" | "fiat">("token");
   const [currency, setCurrency] = useState<DisplayCurrency>("USD");
 
-  const amount = parseAmount(amountText, token, unit, currencyFor(currency).rate) ?? 0n;
+  const amount = parseAmount(amountText, token, unit, locale, currencyFor(currency).rate) ?? 0n;
 
   const reset = () => {
     setStep("recipient");
@@ -155,6 +158,7 @@ export const SendDemo = () => {
   return (
     <DemoShell
       source="components/design/send/send.tsx"
+      locale={locale}
       controls={{
         currency: {
           type: "select",
@@ -163,9 +167,10 @@ export const SendDemo = () => {
           value: currency,
           onChange: value => setCurrency(value as DisplayCurrency),
         },
+        locale: localeControl,
       }}
     >
-      <WalletFrame className="min-h-[420px]">
+      <WalletFrame>
         <WalletHeader
           title={TITLES[step]}
           onBack={back ? () => setStep(back) : undefined}
@@ -223,7 +228,7 @@ export const SendDemo = () => {
               <span className="text-lg font-semibold text-primary tabular-nums">
                 Sent
                 {" "}
-                {formatTokenAmount(amount, token)}
+                {formatTokenAmount(amount, token, locale)}
                 {" "}
                 {token.symbol}
               </span>
