@@ -145,7 +145,7 @@ export const RecoveryDemo = () => {
 
   return (
     <DemoShell source="components/design/recovery/recovery.tsx">
-      <WalletFrame className="min-h-[440px]">
+      <WalletFrame>
         <WalletHeader title="Security checkup" />
         <div className="flex items-center gap-4 px-5 pt-2 pb-4">
           <ScoreRing active={active} total={3} />

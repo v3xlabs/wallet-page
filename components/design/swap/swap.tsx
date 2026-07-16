@@ -124,7 +124,7 @@ export const SwapDemo = () => {
 
   return (
     <DemoShell source="components/design/swap/swap.tsx" i18n>
-      <WalletFrame className="min-h-[440px]">
+      <WalletFrame>
         <WalletHeader
           title={TITLES[step]}
           onBack={back ? () => setStep(back) : undefined}

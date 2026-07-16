@@ -122,7 +122,7 @@ export const OnboardingDemo = () => {
 
   return (
     <DemoShell source="components/design/onboarding/onboarding.tsx">
-      <WalletFrame className="min-h-[440px]">
+      <WalletFrame>
         <WalletHeader
           title={TITLES[step]}
           onBack={back ? () => setStep(back) : undefined}
