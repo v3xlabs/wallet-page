@@ -1,19 +1,12 @@
-export type Currency = "USD" | "EUR";
+import type { DisplayCurrency } from "../data";
+import { toDisplayCurrency } from "../data";
 
-/** Fixed mock FX rate — a real wallet sources this next to its token prices. */
-export const EUR_PER_USD = 0.92;
-
-export const CURRENCIES: { value: Currency; label: string; }[] = [
-  { value: "USD", label: "USD" },
-  { value: "EUR", label: "EUR" },
-];
-
-export const toCurrency = (usd: number, currency: Currency) =>
-  (currency === "USD" ? usd : usd * EUR_PER_USD);
-
-/** At or above 1 unit: two fixed decimals. Below: four significant digits. */
-export const formatPrice = (usd: number, currency: Currency, locale: string) => {
-  const value = toCurrency(usd, currency);
+/**
+ * Price display rule (see the sub-dollar demo): at or above 1 unit, two
+ * fixed decimals; below, four significant digits so micro-prices stay honest.
+ */
+export const formatPrice = (usd: number, currency: DisplayCurrency, locale: string) => {
+  const value = toDisplayCurrency(usd, currency);
 
   return new Intl.NumberFormat(locale, {
     style: "currency",
@@ -24,6 +17,8 @@ export const formatPrice = (usd: number, currency: Currency, locale: string) => 
   }).format(value);
 };
 
-/** Naive two-fixed-decimals formatter — kept only to show what it gets wrong. */
-export const formatPriceNaive = (usd: number, currency: Currency, locale: string) =>
-  new Intl.NumberFormat(locale, { style: "currency", currency }).format(toCurrency(usd, currency));
+/** Naive two-fixed-decimals formatter - kept only to show what it gets wrong. */
+export const formatPriceNaive = (usd: number, currency: DisplayCurrency, locale: string) =>
+  new Intl.NumberFormat(locale, { style: "currency", currency }).format(
+    toDisplayCurrency(usd, currency),
+  );

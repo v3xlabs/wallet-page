@@ -115,7 +115,7 @@ export const PermissionsDemo = () => {
 
       setError(
         message.includes("-32601") || message.includes("not found")
-          ? `${message}\n\nwallet_revokePermissions is recommended for revocable grants — some wallets are still adding support.`
+          ? `${message}\n\nwallet_revokePermissions is recommended for revocable grants - some wallets are still adding support.`
           : message,
       );
     }

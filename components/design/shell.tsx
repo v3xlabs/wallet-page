@@ -1,9 +1,11 @@
+"use client";
+
 import classNames from "classnames";
 import type { PropsWithChildren, ReactNode } from "react";
 import { FiCode } from "react-icons/fi";
 
 import { sourceUrl } from "../../lib/repo";
-import { DemoLocaleProvider } from "./locale";
+import { I18nControls } from "./locale";
 
 /**
  * A footer control for a demo. Scenario switching reads best as `tabs`;
@@ -75,20 +77,20 @@ const SelectControl = ({ control }: { control: ShellControl & { type: "select"; 
 );
 
 /**
- * Frame around every design demo. Pass `controls` — a named map of footer
- * controls — to give a demo scenario tabs, setting dropdowns, and whatever
+ * Frame around every design demo. Pass `controls` - a named map of footer
+ * controls - to give a demo scenario tabs, setting dropdowns, and whatever
  * comes next, all in the footer of the box: tabs sit left, selects right.
  */
 export const DemoShell = ({
   children,
   source,
   controls,
-  locale,
+  i18n,
 }: PropsWithChildren<{
   source?: string;
   controls?: Record<string, ShellControl>;
-  /** Locale chosen by a footer control — provided to children via `useDemoLocale`. */
-  locale?: string;
+  /** Show the shared locale/display-currency cluster in the footer. */
+  i18n?: boolean;
 }>) => {
   const entries = Object.entries(controls ?? {});
   const tabs = entries.filter(entry => entry[1].type === "tabs");
@@ -109,20 +111,19 @@ export const DemoShell = ({
         </a>
       )}
       <div className="bg-code-block px-5 py-4">
-        {locale === undefined
-          ? children
-          : <DemoLocaleProvider value={locale}>{children}</DemoLocaleProvider>}
+        {children}
       </div>
-      {entries.length > 0 && (
+      {(entries.length > 0 || i18n) && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-primary bg-surface px-4 py-2">
           {tabs.map(([name, control]) => (
             control.type === "tabs" && <TabsControl key={name} name={name} control={control} />
           ))}
-          {selects.length > 0 && (
+          {(selects.length > 0 || i18n) && (
             <div className="ml-auto flex flex-wrap items-center gap-3">
               {selects.map(([name, control]) => (
                 control.type === "select" && <SelectControl key={name} control={control} />
               ))}
+              {i18n && <I18nControls />}
             </div>
           )}
         </div>

@@ -88,7 +88,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
       </div>
       {checksumFailed && (
         <p className="rounded-lg bg-destructive-tint px-3 py-2 text-xs text-destructive">
-          This address fails its checksum — it was likely corrupted in transit. Refusing it.
+          This address fails its checksum - it was likely corrupted in transit. Refusing it.
         </p>
       )}
       {nameShaped && !resolving && !resolved && (

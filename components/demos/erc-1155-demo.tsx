@@ -12,7 +12,7 @@ export const Erc1155Demo = () => (
         <code>safeBatchTransferFrom</code>
         {" "}
         tests need a deployed
-        ERC-1155 on your chain — planned on the roadmap.
+        ERC-1155 on your chain
       </p>
     </section>
   </DemoShell>

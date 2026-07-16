@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount, formatUsd } from "../data";
-import { useDemoLocale } from "../locale";
+import { fiatValue, formatTokenAmount } from "../data";
+import { useDemoLocale, useFiat } from "../locale";
 import { PrimaryButton, Spinner, TokenIcon } from "../ui";
 import type { Quote, Slippage } from "./shared";
 import { ETH, formatAmount, minReceived, NETWORK_FEE_WEI } from "./shared";
@@ -32,6 +32,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
   onConfirm: () => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const [swapping, setSwapping] = useState(false);
 
   const confirm = () => {
@@ -58,18 +59,18 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
           {" "}
           {receive.symbol}
         </span>
-        <span className="text-sm text-muted tabular-nums">{formatUsd(quote.payUsd, locale)}</span>
+        <span className="text-sm text-muted tabular-nums">{fiat(quote.payUsd)}</span>
       </div>
       <div className="mx-4 mb-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
         <ReviewRow
           label="You pay"
           value={`${formatAmount(quote.payAmount, locale)} ${pay.symbol}`}
-          subvalue={formatUsd(quote.payUsd, locale)}
+          subvalue={fiat(quote.payUsd)}
         />
         <ReviewRow
           label="You receive"
           value={`${formatAmount(quote.receiveAmount, locale)} ${receive.symbol}`}
-          subvalue={formatUsd(quote.receiveUsd, locale)}
+          subvalue={fiat(quote.receiveUsd)}
         />
         <ReviewRow
           label="Minimum received"
@@ -78,8 +79,8 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
         />
         <ReviewRow
           label="Total fees"
-          value={formatUsd(totalFeesUsd, locale)}
-          subvalue={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH network + ${formatUsd(quote.appFeeUsd, locale)} app`}
+          value={fiat(totalFeesUsd)}
+          subvalue={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH network + ${fiat(quote.appFeeUsd)} app`}
         />
       </div>
       <div className="mt-auto px-4 pb-4">

@@ -3,29 +3,22 @@
 import { useState } from "react";
 import { mainnet } from "viem/chains";
 
-import { useLocaleControl } from "../locale";
-import { KNOWN_NETWORKS, NetworkSelect } from "../network-select";
+import { NetworkSelect } from "../network-select";
 import { DemoShell } from "../shell";
 import { SecondaryButton, TokenIcon, WalletFrame, WalletHeader } from "../ui";
 import { AccountRow, ACCOUNTS, RowGroup, SectionLabel } from "./shared";
 
 const HOST = "app.exampleswap.org";
 
-const networkName = (id: number) =>
-  KNOWN_NETWORKS.find(network => network.id === id)?.name ?? `Chain ${id}`;
-
 /**
- * A connection is one account on one chain at a time — and both stay
+ * A connection is one account on one chain at a time - and both stay
  * adjustable for as long as the connection lives. No disconnect/reconnect
  * dance to switch either.
  */
 export const ManageConnectionDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
   const [accountIndex, setAccountIndex] = useState(0);
   const [chainId, setChainId] = useState<number>(mainnet.id);
   const [connected, setConnected] = useState(true);
-
-  const account = ACCOUNTS[accountIndex];
 
   const reset = () => {
     setConnected(true);
@@ -34,11 +27,7 @@ export const ManageConnectionDemo = () => {
   };
 
   return (
-    <DemoShell
-      source="components/design/connect/manage.tsx"
-      locale={locale}
-      controls={{ locale: localeControl }}
-    >
+    <DemoShell source="components/design/connect/manage.tsx" i18n>
       <WalletFrame>
         <WalletHeader title="Example Swap" />
         {connected
@@ -69,17 +58,6 @@ export const ManageConnectionDemo = () => {
                   <SectionLabel>Network</SectionLabel>
                   <NetworkSelect value={chainId} onChange={setChainId} />
                 </div>
-                <p className="text-center text-xs leading-relaxed text-muted">
-                  The app currently sees
-                  {" "}
-                  {account.name}
-                  {" "}
-                  on
-                  {" "}
-                  {networkName(chainId)}
-                  . Changing either
-                  applies immediately — no reconnect needed.
-                </p>
                 <div className="mt-auto pt-1">
                   <SecondaryButton onClick={() => setConnected(false)}>Disconnect</SecondaryButton>
                 </div>

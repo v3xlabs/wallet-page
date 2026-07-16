@@ -178,7 +178,7 @@ export const WethDemo = () => {
                       {" "}
                       <code>{session.chainId}</code>
                       {" "}
-                      — switch to
+                      - switch to
                       mainnet, Sepolia, Base, Optimism, or Arbitrum.
                     </>
                   )

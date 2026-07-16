@@ -4,9 +4,9 @@ import classNames from "classnames";
 import type { FC, PropsWithChildren } from "react";
 import type { Address } from "viem";
 
-import { ACCOUNT_2, fiatValue, formatUsd, SELF, TOKENS } from "../data";
+import { ACCOUNT_2, fiatValue, SELF, TOKENS } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useDemoLocale } from "../locale";
+import { useFiat } from "../locale";
 
 export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
 
@@ -43,7 +43,7 @@ export const AccountRow = ({ account, selected, onSelect }: {
   selected: boolean;
   onSelect: () => void;
 }) => {
-  const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <button
@@ -63,7 +63,7 @@ export const AccountRow = ({ account, selected, onSelect }: {
         <span className="truncate text-sm font-medium text-primary">{account.name}</span>
         <span className="font-mono text-[11px] text-muted">{truncate(account.address)}</span>
       </span>
-      <span className="text-xs text-secondary tabular-nums">{formatUsd(account.balanceUsd, locale)}</span>
+      <span className="text-xs text-secondary tabular-nums">{fiat(account.balanceUsd)}</span>
       <span
         className={classNames(
           "flex size-4 shrink-0 items-center justify-center rounded-full border",

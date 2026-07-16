@@ -8,7 +8,6 @@ import { FiAlertTriangle, FiEdit3, FiEye, FiLayers, FiPlusCircle, FiSend } from 
 import { mainnet } from "viem/chains";
 
 import { EnsAvatar } from "../ens-avatar";
-import { useLocaleControl } from "../locale";
 import { KNOWN_NETWORKS, NetworkSelect } from "../network-select";
 import { DemoShell } from "../shell";
 import {
@@ -22,18 +21,18 @@ import {
 import { AccountRow, ACCOUNTS, RowGroup, SectionLabel, truncate } from "./shared";
 
 /**
- * Baseline grant behind `eth_accounts` — what every connection means,
+ * Baseline grant behind `eth_accounts` - what every connection means,
  * spelled out, never implied.
  */
 const BASE_PERMISSIONS: { icon: IconType; label: string; caption: string; }[] = [
-  { icon: FiEye, label: "See your address & balances", caption: "Read-only — it cannot move funds" },
+  { icon: FiEye, label: "See your address & balances", caption: "Read-only - it cannot move funds" },
   { icon: FiSend, label: "Propose transactions", caption: "Always with your confirmation" },
   { icon: FiEdit3, label: "Request signatures", caption: "Always with your confirmation" },
 ];
 
 /**
  * Extra capabilities this app explicitly asked for (EIP-2255
- * wallet_requestPermissions). Each is granted individually — the user can
+ * wallet_requestPermissions). Each is granted individually - the user can
  * decline any of them and still connect.
  */
 const REQUESTED_PERMISSIONS: { capability: string; icon: IconType; label: string; caption: string; }[] = [
@@ -41,13 +40,13 @@ const REQUESTED_PERMISSIONS: { capability: string; icon: IconType; label: string
     capability: "wallet_sendCalls",
     icon: FiLayers,
     label: "Batch transactions",
-    caption: "Submit several actions as one — each batch still needs your confirmation",
+    caption: "Submit several actions as one - each batch still needs your confirmation",
   },
   {
     capability: "wallet_watchAsset",
     icon: FiPlusCircle,
     label: "Suggest tokens",
-    caption: "Propose tokens for your asset list — you approve each one",
+    caption: "Propose tokens for your asset list - you approve each one",
   },
 ];
 
@@ -159,7 +158,6 @@ const grantAll = () =>
   Object.fromEntries(REQUESTED_PERMISSIONS.map(permission => [permission.capability, true]));
 
 export const ConnectDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
   const [scenario, setScenario] = useState<Scenario>("first");
   const [phase, setPhase] = useState<Phase>("account");
   const [accountIndex, setAccountIndex] = useState(0);
@@ -193,7 +191,7 @@ export const ConnectDemo = () => {
   return (
     <DemoShell
       source="components/design/connect/connect.tsx"
-      locale={locale}
+      i18n
       controls={{
         Scenario: {
           type: "tabs",
@@ -201,7 +199,6 @@ export const ConnectDemo = () => {
           value: scenario,
           onChange: value => switchScenario(value as Scenario),
         },
-        locale: localeControl,
       }}
     >
       <WalletFrame>

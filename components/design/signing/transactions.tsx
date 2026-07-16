@@ -8,12 +8,11 @@ import {
   CONTACTS,
   fiatValue,
   formatTokenAmount,
-  formatUsd,
   PERMIT2_ADDRESS,
   TOKENS,
   UNKNOWN_CONTRACT_ADDRESS,
 } from "../data";
-import { useDemoLocale } from "../locale";
+import { useDemoLocale, useFiat } from "../locale";
 import { DemoShell } from "../shell";
 import type { Tone } from "../ui";
 import { WalletFrame, WalletHeader } from "../ui";
@@ -41,7 +40,7 @@ const SEND_VALUE = parseUnits("0.1", 18);
 /** 250 USDC transfer, decoded out of the calldata. */
 const TRANSFER_VALUE = parseUnits("250", 6);
 
-/** Calldata the wallet has no ABI for — the transaction analog of a blind hash. */
+/** Calldata the wallet has no ABI for - the transaction analog of a blind hash. */
 const OPAQUE_CALLDATA
   = "0xef5b3d40000000000000000000000000225f137127d9067788314bc7fcc1f36746a3c3b500000000000000000000000000000000000000000000000000000000000f4240";
 
@@ -56,6 +55,7 @@ const FEES = {
 /** Every transaction shows its cost before asking for a decision. */
 const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const rows = [
     { label: "network fee", amount: fee },
     ...(total === undefined ? [] : [{ label: "total", amount: total }]),
@@ -67,7 +67,7 @@ const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
         <TreeRow
           key={row.label}
           label={row.label}
-          value={formatUsd(fiatValue(ETH, row.amount), locale)}
+          value={fiat(fiatValue(ETH, row.amount))}
           sub={`${formatTokenAmount(row.amount, ETH, locale)} ETH`}
         />
       ))}
@@ -78,6 +78,7 @@ const CostSection: FC<{ fee: bigint; total?: bigint; }> = ({ fee, total }) => {
 /** Native transfer: value moves, no calldata to decode. The baseline. */
 const SendEthSheet = () => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <>
@@ -87,13 +88,13 @@ const SendEthSheet = () => {
           <TreeRow
             label="amount"
             value={`${formatTokenAmount(SEND_VALUE, ETH, locale)} ETH`}
-            sub={formatUsd(fiatValue(ETH, SEND_VALUE), locale)}
+            sub={fiat(fiatValue(ETH, SEND_VALUE))}
           />
         </TreeSection>
         <CostSection fee={FEES.send} total={SEND_VALUE + FEES.send} />
       </Panel>
       <SheetNote>
-        Amount and fee are shown together — the total is what actually leaves the account.
+        Amount and fee are shown together - the total is what actually leaves the account.
       </SheetNote>
     </>
   );
@@ -102,6 +103,7 @@ const SendEthSheet = () => {
 /** ERC-20 transfer: the tx's `to` is the token contract, not the recipient. */
 const TokenTransferSheet = () => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <>
@@ -115,7 +117,7 @@ const TokenTransferSheet = () => {
           <TreeRow
             label="amount"
             value={`${formatTokenAmount(TRANSFER_VALUE, USDC, locale)} ${USDC.symbol}`}
-            sub={formatUsd(fiatValue(USDC, TRANSFER_VALUE), locale)}
+            sub={fiat(fiatValue(USDC, TRANSFER_VALUE))}
           />
         </TreeSection>
         <CostSection fee={FEES.transfer} />
@@ -143,7 +145,7 @@ const ApproveSheet = () => (
       <CostSection fee={FEES.approve} />
     </Panel>
     <SheetBanner tone="warning">
-      This grants an UNLIMITED spend allowance over your USDC — the same authority as the signed
+      This grants an UNLIMITED spend allowance over your USDC - the same authority as the signed
       permit, granted on-chain. The spender can move your full balance at any time.
     </SheetBanner>
   </>
@@ -168,7 +170,7 @@ const UnknownCallSheet = () => (
       <CostSection fee={FEES.unknown} />
     </Panel>
     <SheetBanner tone="destructive">
-      The wallet cannot decode this call. It can do anything the contract allows — including moving
+      The wallet cannot decode this call. It can do anything the contract allows - including moving
       assets the account has approved.
     </SheetBanner>
   </>
@@ -262,6 +264,7 @@ export const TransactionDemo = () => {
   return (
     <DemoShell
       source="components/design/signing/transactions.tsx"
+      i18n
       controls={{
         Scenario: {
           type: "tabs",

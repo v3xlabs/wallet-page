@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount, formatUsd } from "../data";
-import { useDemoLocale } from "../locale";
+import { fiatValue, formatTokenAmount } from "../data";
+import { useDemoLocale, useFiat } from "../locale";
 import { Segmented } from "../ui";
 import type { Quote, Slippage } from "./shared";
 import {
@@ -51,6 +51,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
   onSlippage: (slippage: Slippage) => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const [open, setOpen] = useState(false);
   const [inverted, setInverted] = useState(false);
   const [from, to] = inverted ? [receive, pay] : [pay, receive];
@@ -102,7 +103,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Price impact"
-            value={`-${quote.impactPct.toFixed(2)}% · ${formatUsd(quote.impactUsd, locale)}`}
+            value={`-${quote.impactPct.toFixed(2)}% · ${fiat(quote.impactUsd)}`}
             tone={impactTone(quote.impactPct)}
           />
           <DetailRow
@@ -112,11 +113,11 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <DetailRow
             label="Network fee"
-            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${formatUsd(networkFeeUsd, locale)}`}
+            value={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH · ${fiat(networkFeeUsd)}`}
           />
           <DetailRow
             label="App fee"
-            value={`0.25% · ${formatUsd(quote.appFeeUsd, locale)}`}
+            value={`0.25% · ${fiat(quote.appFeeUsd)}`}
             caption="shown, never hidden"
           />
           <div className="flex flex-col gap-2 px-4 py-2.5">

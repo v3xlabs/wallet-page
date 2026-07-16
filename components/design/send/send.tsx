@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount } from "../data";
+import { CURRENCY_INFO, fiatValue, formatTokenAmount } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useDemoLocale, useLocaleControl } from "../locale";
+import { useDemoCurrency, useDemoLocale, useFiat } from "../locale";
 import { DemoShell } from "../shell";
 import { TokenPicker } from "../token-picker";
 import {
@@ -19,16 +19,8 @@ import {
 } from "../ui";
 import { AmountScreen } from "./amount";
 import { RecipientScreen } from "./recipient";
-import type { DisplayCurrency, Recipient } from "./shared";
-import {
-  CURRENCIES,
-  currencyFor,
-  ETH,
-  FEE_WEI,
-  formatDisplayCurrency,
-  parseAmount,
-  truncate,
-} from "./shared";
+import type { Recipient } from "./shared";
+import { ETH, FEE_WEI, parseAmount, truncate } from "./shared";
 
 type Step = "recipient" | "amount" | "asset" | "review" | "success";
 
@@ -46,14 +38,14 @@ const ReviewRow = ({ label, value, subvalue }: {
   </div>
 );
 
-const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
+const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
   token: DemoToken;
   recipient: Recipient;
   amount: bigint;
-  currency: DisplayCurrency;
   onConfirm: () => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const [sending, setSending] = useState(false);
 
   const confirm = () => {
@@ -77,7 +69,7 @@ const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
         </span>
         {!priceless && (
           <span className="text-sm text-muted tabular-nums">
-            {formatDisplayCurrency(fiatValue(token, amount), currency, locale)}
+            {fiat(fiatValue(token, amount))}
           </span>
         )}
       </div>
@@ -96,10 +88,10 @@ const ReviewScreen = ({ token, recipient, amount, currency, onConfirm }: {
         <ReviewRow
           label="Network fee"
           value={`${formatTokenAmount(FEE_WEI, ETH, locale)} ETH`}
-          subvalue={formatDisplayCurrency(feeUsd, currency, locale)}
+          subvalue={fiat(feeUsd)}
         />
         {!priceless && (
-          <ReviewRow label="Total" value={formatDisplayCurrency(totalUsd, currency, locale)} />
+          <ReviewRow label="Total" value={fiat(totalUsd)} />
         )}
       </div>
       <div className="px-4 pb-4">
@@ -132,18 +124,16 @@ const BACK: Partial<Record<Step, Step>> = {
   review: "amount",
 };
 
-const CURRENCY_VARIANTS = CURRENCIES.map(entry => ({ value: entry.value, label: entry.value }));
-
 export const SendDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const locale = useDemoLocale();
+  const currency = useDemoCurrency();
   const [step, setStep] = useState<Step>("recipient");
   const [recipient, setRecipient] = useState<Recipient>();
   const [token, setToken] = useState<DemoToken>(ETH);
   const [amountText, setAmountText] = useState("");
   const [unit, setUnit] = useState<"token" | "fiat">("token");
-  const [currency, setCurrency] = useState<DisplayCurrency>("USD");
 
-  const amount = parseAmount(amountText, token, unit, locale, currencyFor(currency).rate) ?? 0n;
+  const amount = parseAmount(amountText, token, unit, locale, CURRENCY_INFO[currency].rate) ?? 0n;
 
   const reset = () => {
     setStep("recipient");
@@ -156,20 +146,7 @@ export const SendDemo = () => {
   const back = BACK[step];
 
   return (
-    <DemoShell
-      source="components/design/send/send.tsx"
-      locale={locale}
-      controls={{
-        currency: {
-          type: "select",
-          label: "Display currency",
-          options: CURRENCY_VARIANTS,
-          value: currency,
-          onChange: value => setCurrency(value as DisplayCurrency),
-        },
-        locale: localeControl,
-      }}
-    >
+    <DemoShell source="components/design/send/send.tsx" i18n>
       <WalletFrame>
         <WalletHeader
           title={TITLES[step]}
@@ -189,7 +166,6 @@ export const SendDemo = () => {
             recipient={recipient}
             amountText={amountText}
             unit={unit}
-            currency={currency}
             onAmount={setAmountText}
             onUnit={setUnit}
             onPickAsset={() => setStep("asset")}
@@ -217,7 +193,6 @@ export const SendDemo = () => {
             token={token}
             recipient={recipient}
             amount={amount}
-            currency={currency}
             onConfirm={() => setStep("success")}
           />
         )}

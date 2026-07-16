@@ -4,7 +4,7 @@ export default defineConfig({
   title: "wallet.page",
   titleTemplate: "%s · wallet.page",
   description:
-    "Interactive docs at wallet.page — test whether your browser wallet supports common EIPs and RPC methods.",
+    "Interactive docs at wallet.page - test whether your browser wallet supports common EIPs and RPC methods.",
   rootDir: ".",
   srcDir: ".",
   renderStrategy: "full-static",
@@ -35,12 +35,12 @@ export default defineConfig({
       {
         text: "Actions",
         items: [
+          { text: "Connect", link: "/design/connect" },
           { text: "Send", link: "/design/send" },
           { text: "Receive", link: "/design/receive" },
           { text: "Swap", link: "/design/swap" },
           { text: "History", link: "/design/history" },
           { text: "Signing", link: "/design/signing" },
-          { text: "Connect", link: "/design/connect" },
         ],
       },
       {
@@ -53,7 +53,7 @@ export default defineConfig({
           { text: "Amounts", items: [
             { text: "Overview", link: "/design/amounts" },
             { text: "Implementation", link: "/design/amounts/implementation" },
-          ] },
+          ], collapsed: true },
         ],
       },
     ],

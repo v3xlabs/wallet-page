@@ -9,10 +9,10 @@ import type { Tone } from "../ui";
 import { PrimaryButton, SecondaryButton, Spinner, StatusPill, SuccessCheck } from "../ui";
 
 /**
- * Shared chrome for every confirmation sheet — signatures and transactions
+ * Shared chrome for every confirmation sheet - signatures and transactions
  * alike: who is asking, how the payload is laid out, how loud the risk
  * callout is, and the reject/confirm action row. Scenario bodies only
- * supply what varies — the payload rendering.
+ * supply what varies - the payload rendering.
  */
 
 export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
@@ -67,7 +67,7 @@ export const OriginBar: FC<{ host: string; verdict: string; tone: Tone; }> = ({
   </div>
 );
 
-/** Neutral explainer under the payload — context, not a warning. */
+/** Neutral explainer under the payload - context, not a warning. */
 export const SheetNote: FC<PropsWithChildren> = ({ children }) => (
   <p className="flex items-start gap-1.5 px-5 text-xs leading-relaxed text-muted">
     <FiInfo className="mt-0.5 size-3.5 shrink-0" aria-hidden />
@@ -80,7 +80,7 @@ const BANNER_TONES = {
   destructive: "bg-destructive-tint text-destructive",
 } as const;
 
-/** Tinted risk callout — the one thing a confirmation sheet must never bury. */
+/** Tinted risk callout - the one thing a confirmation sheet must never bury. */
 export const SheetBanner: FC<PropsWithChildren<{ tone: keyof typeof BANNER_TONES; }>> = ({
   tone,
   children,
@@ -108,7 +108,7 @@ export const RiskCheckbox: FC<{ checked: boolean; onChange: (checked: boolean) =
   </label>
 );
 
-/** Reject / sign pair. Reject is never disabled — bailing out is always free. */
+/** Reject / sign pair. Reject is never disabled - bailing out is always free. */
 export const SheetActions: FC<{
   onReject: () => void;
   onSign: () => void;

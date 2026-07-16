@@ -32,7 +32,7 @@ const CheckDot: FC<{ checked: boolean; muted?: boolean; }> = ({ checked, muted }
 /**
  * The wallet-wide token list: everything the user holds or added on any
  * account, ticked when shown on this one. Accounts themselves are never
- * listed — one catalog, per-account visibility.
+ * listed - one catalog, per-account visibility.
  */
 export const ManageScreen: FC<{
   catalog: DemoToken[];
@@ -133,7 +133,7 @@ export const ManageScreen: FC<{
             Discovered on-chain
           </span>
           <span className="text-xs text-muted">
-            Contracts that sent tokens to your address land here — the one route spam can take.
+            Contracts that sent tokens to your address land here - the one route spam can take.
             Nothing shows on the account until you add it.
           </span>
         </div>

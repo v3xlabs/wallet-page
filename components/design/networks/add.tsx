@@ -148,7 +148,7 @@ const AddNetworkScreen = () => {
           value={PROPOSED.rpcUrl}
           mono
           warn
-          caption="Unrecognized RPC host — requests reveal your address to this server."
+          caption="Unrecognized RPC host - requests reveal your address to this server."
         />
         <FieldRow label="Currency" value={chain.nativeCurrency.symbol} />
         <FieldRow label="Explorer" value={PROPOSED.explorerUrl} mono />

@@ -9,7 +9,7 @@ import { useDemoFrame } from "../wallet/DemoFrame";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-const MESSAGE = "wallet.page — personal_sign test";
+const MESSAGE = "wallet.page - personal_sign test";
 const MESSAGE_HASH = eip191MessageHash(MESSAGE);
 
 export const PersonalSignDemo = () => {
@@ -52,7 +52,7 @@ export const PersonalSignDemo = () => {
             params: [MESSAGE, session?.accounts[0] ?? "0x…"],
           },
           hash: MESSAGE_HASH,
-          hashNote: "EIP-191 — wallets hash the prefixed message before secp256k1.",
+          hashNote: "EIP-191 - wallets hash the prefixed message before secp256k1.",
         }}
         response={signature}
         error={error}

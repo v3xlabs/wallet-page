@@ -51,7 +51,7 @@ export const Segmented = <T extends string>({ options, value, onChange, fit }: {
 
 /**
  * Circular token mark. With a contract address it loads the local artwork
- * (`/assets/<address>.svg`); otherwise — or when no artwork exists — it
+ * (`/assets/<address>.svg`); otherwise - or when no artwork exists - it
  * falls back to a brand-colored disc with the ticker's first letter.
  */
 export const TokenIcon: FC<{ symbol: string; color: string; size?: number; address?: string; }> = ({
@@ -69,7 +69,7 @@ export const TokenIcon: FC<{ symbol: string; color: string; size?: number; addre
         alt=""
         aria-hidden
         onError={() => setFailed(true)}
-        // A 404 can finish before hydration attaches onError — catch it here.
+        // A 404 can finish before hydration attaches onError - catch it here.
         ref={(node) => {
           if (node?.complete && node.naturalWidth === 0) setFailed(true);
         }}
@@ -97,7 +97,7 @@ export const TokenIcon: FC<{ symbol: string; color: string; size?: number; addre
   );
 };
 
-/** Deterministic blockie for an address — same address, same face. */
+/** Deterministic blockie for an address - same address, same face. */
 export const AddressAvatar: FC<{ address: string; size?: number; }> = ({ address, size = 32 }) => (
   <img
     src={blo(address as `0x${string}`)}
@@ -196,7 +196,7 @@ const PILL_TONES: Record<Tone, string> = {
   info: "bg-info-tint text-info",
 };
 
-/** Small status badge: `pending`, `failed`, `verified`, … */
+/** Small status badge: `pending`, `failed`, `verified`, ... */
 export const StatusPill: FC<PropsWithChildren<{ tone: Tone; }>> = ({ tone, children }) => (
   <span
     className={classNames(
@@ -270,7 +270,7 @@ export const ListRow: FC<{
   );
 };
 
-/** Success checkmark that draws itself in — the payoff frame of a flow. */
+/** Success checkmark that draws itself in - the payoff frame of a flow. */
 export const SuccessCheck: FC<{ size?: number; }> = ({ size = 72 }) => (
   <span
     className="flex items-center justify-center rounded-full bg-success-tint"

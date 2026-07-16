@@ -106,7 +106,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
         </div>
         {checksumFailed && (
           <p className="rounded-lg bg-destructive-tint px-3 py-2 text-xs text-destructive">
-            This address fails its checksum — it was likely corrupted in transit. Refusing it.
+            This address fails its checksum - it was likely corrupted in transit. Refusing it.
           </p>
         )}
         {current?.status === "not-found" && (
@@ -119,7 +119,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
         )}
         {current?.status === "error" && (
           <p className="rounded-lg bg-warning-tint px-3 py-2 text-xs text-warning">
-            Name lookup failed — check the connection and try again.
+            Name lookup failed - check the connection and try again.
           </p>
         )}
       </div>
@@ -128,7 +128,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
           <ListRow
             icon={<EnsAvatar address={pasted} size={36} />}
             title={truncate(pasted)}
-            subtitle="Checksum valid — new recipient"
+            subtitle="Checksum valid - new recipient"
             onClick={() => onPick({ address: pasted })}
           />
         )}

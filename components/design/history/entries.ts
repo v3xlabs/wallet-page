@@ -2,12 +2,12 @@ import type { Address } from "viem";
 import { parseUnits } from "viem";
 
 import type { DemoToken } from "../data";
-import { CONTACTS, formatTokenAmount, formatUsd, SELF, TOKENS } from "../data";
+import { CONTACTS, formatTokenAmount, SELF, TOKENS } from "../data";
 
 /**
  * Fixed, deterministic activity feed for the history demo. Every entry kind a
  * wallet actually produces is represented: sends, receives, swaps, approvals,
- * and plain contract interactions — pending, confirmed, and failed alike.
+ * and plain contract interactions - pending, confirmed, and failed alike.
  */
 
 export type EntryKind = "send" | "receive" | "swap" | "approve" | "interact";
@@ -46,7 +46,7 @@ export type HistoryEntry = {
   detail?: EntryDetail;
 };
 
-// TOKENS is ordered ETH, WETH, USDC, DAI, … — skip WETH.
+// TOKENS is ordered ETH, WETH, USDC, DAI, … - skip WETH.
 const [ETH, , USDC, DAI] = TOKENS;
 const [VITALIK, LUC, KASSANDRA] = CONTACTS;
 
@@ -56,7 +56,7 @@ export const truncateHash = (hash: string) => `${hash.slice(0, 10)}…${hash.sli
 const rowAmount = (sign: "+" | "-", quantity: string, token: DemoToken, locale: string) =>
   `${sign}${formatTokenAmount(parseUnits(quantity, token.decimals), token, locale)} ${token.symbol}`;
 
-export const historyEntries = (locale: string): HistoryEntry[] => [
+export const historyEntries = (locale: string, fiat: (usd: number) => string): HistoryEntry[] => [
   {
     id: "send-eth-pending",
     group: "Today",
@@ -66,13 +66,13 @@ export const historyEntries = (locale: string): HistoryEntry[] => [
     subtitle: "To vitalik.eth",
     icon: { type: "address", address: VITALIK.address },
     amount: rowAmount("-", "0.25", ETH, locale),
-    fiat: formatUsd(0.25 * ETH.priceUsd, locale),
+    fiat: fiat(0.25 * ETH.priceUsd),
     // Shown once the speed-up replacement lands.
     detail: {
       hash: "0x7d4e2f8a91c3b6d05e4f7a2c8b1d9e3f6a0c5b8d2e7f4a1c9b3d6e0f5a8c2b47",
       fee: "0.00058 ETH · $2.26",
       blockTime: "Today · 9:42 AM",
-      association: "Submitted by this wallet — replaced a slower transaction",
+      association: "Submitted by this wallet - replaced a slower transaction",
     },
   },
   {
@@ -85,7 +85,7 @@ export const historyEntries = (locale: string): HistoryEntry[] => [
     icon: { type: "address", address: LUC.address },
     amount: rowAmount("+", "500", USDC, locale),
     incoming: true,
-    fiat: formatUsd(500 * USDC.priceUsd, locale),
+    fiat: fiat(500 * USDC.priceUsd),
     detail: {
       hash: "0x9b2f6c1e84a7d3f05c8e2b9d4a6f1c7e3b0d8f5a2c9e6b4d1f7a3c0e5b8d2f61",
       fee: "Paid by sender",
@@ -118,7 +118,7 @@ export const historyEntries = (locale: string): HistoryEntry[] => [
     subtitle: `To ${KASSANDRA.name}`,
     icon: { type: "address", address: KASSANDRA.address },
     amount: rowAmount("-", "120", DAI, locale),
-    fiat: formatUsd(120 * DAI.priceUsd, locale),
+    fiat: fiat(120 * DAI.priceUsd),
     detail: {
       hash: "0x5e1b9f4c72a8d6e30f5c2a9b7d4e1f8c6a3b0d7e4f1c8a5b2d9e6f3a0c7b4d18",
       fee: "0.00048 ETH · $1.87",
@@ -138,7 +138,7 @@ export const historyEntries = (locale: string): HistoryEntry[] => [
       hash: "0x2c7f4a1d85e9b3c60a2d7f4e1b8c5a9d3e6f0b7c4a1d8e5f2b9c6a3d0e7f4b25",
       fee: "0.00092 ETH · $3.58",
       blockTime: "May 2 · 2:31 PM",
-      association: "Part of a batch — 2 actions",
+      association: "Part of a batch - 2 actions",
     },
   },
   {
@@ -150,10 +150,10 @@ export const historyEntries = (locale: string): HistoryEntry[] => [
     subtitle: "ENS Registrar · 1 yr extension",
     icon: { type: "address", address: SELF.address },
     amount: rowAmount("-", "0.0042", ETH, locale),
-    fiat: formatUsd(0.0042 * ETH.priceUsd, locale),
+    fiat: fiat(0.0042 * ETH.priceUsd),
     detail: {
       hash: "0x6d3a8e5f21c7b4d90e6a3f8c5b2d9e4f1a7c0b6d3e8f5a2c9b4d1e7f0a5c8b34",
-      fee: "Sponsored — paid by relayer",
+      fee: "Sponsored - paid by relayer",
       blockTime: "May 2 · 9:04 AM",
       association: "Relayed via Gelato",
     },

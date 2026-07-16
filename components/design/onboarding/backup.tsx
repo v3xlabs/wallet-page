@@ -8,7 +8,7 @@ import { WORDS } from "./shared";
 
 /**
  * Backup step: the phrase stays blurred until the user actively holds a
- * button — secrets get ceremony, never a casual glance.
+ * button - secrets get ceremony, never a casual glance.
  */
 export const BackupScreen = ({ onContinue }: { onContinue: () => void; }) => {
   const [revealed, setRevealed] = useState(false);
@@ -24,7 +24,7 @@ export const BackupScreen = ({ onContinue }: { onContinue: () => void; }) => {
   return (
     <div className="flex grow flex-col gap-3 px-4 pt-2 pb-4">
       <p className="rounded-xl bg-warning-tint px-3 py-2.5 text-xs leading-relaxed text-warning">
-        Anyone with these words controls the wallet. Write them down on paper — no screenshots.
+        Anyone with these words controls the wallet. Write them down on paper - no screenshots.
       </p>
       <div
         aria-hidden={!revealed}
@@ -68,7 +68,7 @@ export const BackupScreen = ({ onContinue }: { onContinue: () => void; }) => {
         {revealed ? "Release to hide" : "Hold to reveal"}
       </button>
       <p className="text-center text-[11px] text-muted">
-        This is the standard demo phrase — never reuse it for real funds.
+        This is the standard demo phrase - never reuse it for real funds.
       </p>
       <div className="mt-auto">
         <PrimaryButton onClick={onContinue} disabled={!everRevealed}>

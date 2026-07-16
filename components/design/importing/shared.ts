@@ -8,10 +8,10 @@ export type ImportResult = {
   watchOnly?: boolean;
 };
 
-/** The canonical well-known test mnemonic — a demo value, never reuse it. */
+/** The canonical well-known test mnemonic - a demo value, never reuse it. */
 export const DEMO_MNEMONIC = "test test test test test test test test test test test junk";
 
-/** The well-known junk private key — a demo value, never reuse it. */
+/** The well-known junk private key - a demo value, never reuse it. */
 export const DEMO_PRIVATE_KEY
   = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 

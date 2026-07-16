@@ -83,7 +83,7 @@ const DetailRow: FC<{ label: string; children: ReactNode; }> = ({ label, childre
   </div>
 );
 
-/** Right column: signed amount over fiat — or a loud pill when it failed. */
+/** Right column: signed amount over fiat - or a loud pill when it failed. */
 const TrailingValue: FC<{ entry: HistoryEntry; }> = ({ entry }) => {
   if (entry.status === "failed") {
     return (

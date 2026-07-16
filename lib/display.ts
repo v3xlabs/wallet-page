@@ -18,6 +18,10 @@ export const formatTokenAmount = (
   return symbol ? `${trimmed} ${symbol}` : trimmed;
 };
 
+/** Localized currency display for fiat quantities. */
+export const formatFiat = (value: number, currency: string, locale: string) =>
+  new Intl.NumberFormat(locale, { style: "currency", currency }).format(value);
+
 export const formatDeadline = (unixSeconds: bigint) => {
   const date = new Date(Number(unixSeconds) * 1000);
 

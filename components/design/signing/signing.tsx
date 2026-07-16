@@ -28,10 +28,10 @@ const USDC = TOKENS.find(token => token.symbol === "USDC") ?? TOKENS[0];
 /** The app prefilled the permit with an unlimited allowance. */
 const PERMIT_VALUE = maxUint256;
 
-/** Permit deadline of uint 9999999999 — centuries away, effectively forever. */
+/** Permit deadline of uint 9999999999 - centuries away, effectively forever. */
 const PERMIT_DEADLINE = "Nov 20, 2286";
 
-/** The bytes32 an eth_sign request asks to sign — meaningless to a human. */
+/** The bytes32 an eth_sign request asks to sign - meaningless to a human. */
 const OPAQUE_HASH = "0x9c1885a8e33a29ff4c15ff9dcf2f4b3f0a67d1e84be25c0c6a7f43d9d0b7215e";
 
 /**
@@ -50,7 +50,7 @@ const MessageSheet = () => (
       </p>
     </Panel>
     <SheetNote>
-      This text is shown exactly as it will be signed — nothing hidden, nothing reformatted.
+      This text is shown exactly as it will be signed - nothing hidden, nothing reformatted.
     </SheetNote>
   </>
 );
@@ -91,7 +91,7 @@ const BlindSheet = () => (
       <p className="font-mono text-xs leading-relaxed break-all text-primary">{OPAQUE_HASH}</p>
     </Panel>
     <SheetBanner tone="destructive">
-      This request is not readable. Signing opaque data can authorize anything — a careful wallet
+      This request is not readable. Signing opaque data can authorize anything - a careful wallet
       refuses or heavily warns.
     </SheetBanner>
   </>
@@ -208,6 +208,7 @@ export const SigningDemo = () => {
   return (
     <DemoShell
       source="components/design/signing/signing.tsx"
+      i18n
       controls={{
         Scenario: {
           type: "tabs",

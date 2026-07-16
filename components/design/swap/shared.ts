@@ -8,7 +8,7 @@ import { TOKENS } from "../data";
 export const ETH = TOKENS.find(token => token.symbol === "ETH") ?? TOKENS[0];
 export const USDC = TOKENS.find(token => token.symbol === "USDC") ?? TOKENS[0];
 
-/** Flat mock gas for a routed swap — costlier than a bare transfer. */
+/** Flat mock gas for a routed swap - costlier than a bare transfer. */
 export const NETWORK_FEE_WEI = parseUnits("0.0009", 18);
 
 /** The wallet's cut of every swap: 0.25%, always shown to the user. */

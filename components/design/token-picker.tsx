@@ -6,13 +6,13 @@ import { erc20Abi, getAddress, isAddress } from "viem";
 
 import { mainnetClient } from "./client";
 import type { DemoToken } from "./data";
-import { fiatValue, formatTokenAmount, formatUsd, TOKENS } from "./data";
-import { useDemoLocale } from "./locale";
+import { fiatValue, formatTokenAmount, TOKENS } from "./data";
+import { useDemoLocale, useFiat } from "./locale";
 import { ListRow, Spinner, TokenIcon } from "./ui";
 
 /**
  * A token picked from the list. Tokens resolved from a pasted contract
- * address carry no balance or price — the wallet knows the metadata, not
+ * address carry no balance or price - the wallet knows the metadata, not
  * the market.
  */
 export type PickedToken = DemoToken & { address?: Address; resolved?: boolean; };
@@ -30,7 +30,7 @@ const derivedColor = (address: Address) => {
 
 /**
  * Shared token selector: the wallet's own list, searchable, and any ERC-20
- * by contract address — name, symbol and decimals are read from the chain.
+ * by contract address - name, symbol and decimals are read from the chain.
  */
 export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
   tokens?: DemoToken[];
@@ -38,6 +38,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
   onPick: (token: PickedToken) => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const [query, setQuery] = useState("");
   const trimmed = query.trim();
 
@@ -120,14 +121,14 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
           icon={<TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={36} />}
           title={token.name}
           subtitle={`${formatTokenAmount(token.balance, token, locale)} ${token.symbol}`}
-          value={formatUsd(fiatValue(token, token.balance), locale)}
+          value={fiat(fiatValue(token, token.balance))}
           selected={token.symbol === selected}
           onClick={() => onPick(token)}
         />
       ))}
       {!pastedAddress && filtered.length === 0 && (
         <p className="px-4 py-3 text-xs text-muted">
-          No matches in your list — paste a token&rsquo;s contract address to use it directly.
+          No matches in your list - paste a token&rsquo;s contract address to use it directly.
         </p>
       )}
       {pastedAddress && current === undefined && (
@@ -153,7 +154,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
       )}
       {current?.status === "failed" && (
         <p className="px-4 py-3 text-xs text-destructive">
-          No ERC-20 metadata at this address — it may not be a token contract.
+          No ERC-20 metadata at this address - it may not be a token contract.
         </p>
       )}
     </div>

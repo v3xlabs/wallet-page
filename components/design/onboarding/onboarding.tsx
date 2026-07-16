@@ -82,8 +82,8 @@ const ExistingScreen = ({ onBack }: { onBack: () => void; }) => (
   <div className="flex grow flex-col px-5 pb-5">
     <div className="flex grow flex-col items-center justify-center py-8">
       <p className="text-center text-[13px] leading-relaxed text-muted">
-        Existing wallets come in through a dedicated import flow — recovery phrase, private key,
-        or watch-only address — not through onboarding.
+        Existing wallets come in through a dedicated import flow - recovery phrase, private key,
+        or watch-only address - not through onboarding.
       </p>
     </div>
     <SecondaryButton onClick={onBack}>Back</SecondaryButton>
@@ -109,7 +109,7 @@ const DoneScreen = ({ onOpen }: { onOpen: () => void; }) => (
     <div className="flex w-full flex-col gap-2 pt-2">
       <PrimaryButton onClick={onOpen}>Open wallet</PrimaryButton>
       <p className="text-center text-[11px] text-muted">
-        Derived from the demo phrase — never reuse it.
+        Derived from the demo phrase - never reuse it.
       </p>
     </div>
   </div>

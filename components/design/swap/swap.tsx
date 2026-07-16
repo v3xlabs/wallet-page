@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { formatUsd } from "../data";
-import { useLocaleControl } from "../locale";
+import { useDemoLocale, useFiat } from "../locale";
 import { DemoShell } from "../shell";
 import type { PickedToken } from "../token-picker";
 import { TokenPicker } from "../token-picker";
@@ -38,7 +37,8 @@ const BACK: Partial<Record<Step, Step>> = {
 };
 
 export const SwapDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const locale = useDemoLocale();
+  const fiat = useFiat();
   const [step, setStep] = useState<Step>("swap");
   const [selectSide, setSelectSide] = useState<"pay" | "receive">("pay");
   const [pay, setPay] = useState<PickedToken>(ETH);
@@ -123,11 +123,7 @@ export const SwapDemo = () => {
   const back = BACK[step];
 
   return (
-    <DemoShell
-      source="components/design/swap/swap.tsx"
-      locale={locale}
-      controls={{ locale: localeControl }}
-    >
+    <DemoShell source="components/design/swap/swap.tsx" i18n>
       <WalletFrame className="min-h-[440px]">
         <WalletHeader
           title={TITLES[step]}
@@ -176,9 +172,9 @@ export const SwapDemo = () => {
                   <span className="text-xs text-destructive">
                     <span className="font-semibold">High price impact</span>
                     {" "}
-                    — this trade is large for the route's depth; you lose
+                    - this trade is large for the route's depth; you lose
                     {" "}
-                    <span className="font-semibold tabular-nums">{formatUsd(quote.impactUsd, locale)}</span>
+                    <span className="font-semibold tabular-nums">{fiat(quote.impactUsd)}</span>
                     {" "}
                     to it. Swap anyway.
                   </span>

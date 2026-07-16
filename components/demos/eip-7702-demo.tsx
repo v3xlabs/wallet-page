@@ -156,7 +156,7 @@ export const Eip7702Demo = () => {
         || message.includes("-32601")
         || message.includes("invalid")
         || message.includes("Invalid")
-          ? `${message}\n\nGuarding type-4 / authorizationList is recommended — this outcome often means the wallet is protecting users until EIP-7702 RPCs are fully exposed.`
+          ? `${message}\n\nGuarding type-4 / authorizationList is recommended - this outcome often means the wallet is protecting users until EIP-7702 RPCs are fully exposed.`
           : message,
       );
     }

@@ -59,7 +59,7 @@ export const AccountsPreview = ({
         <p className="mt-2 text-[13px] leading-snug text-secondary">
           {firstAccountHint}
           {" "}
-          — the rest are easy to miss in UI even though the
+          - the rest are easy to miss in UI even though the
           RPC returns them.
         </p>
       )}

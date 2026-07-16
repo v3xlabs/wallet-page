@@ -162,7 +162,7 @@ export const Erc20PermitDemo = () => {
             params: [session?.accounts[0] ?? "0x…", stringifyRpcData(typed)],
           },
           hash: digest,
-          hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",
+          hashNote: "EIP-712 digest - second param to eth_signTypedData_v4 is the typed JSON.",
         }}
         response={signature}
         error={error}

@@ -77,7 +77,7 @@ export const VerifyScreen = ({ onDone }: { onDone: () => void; }) => {
   return (
     <div className="flex grow flex-col gap-4 px-4 pt-2 pb-4">
       <p className="text-[13px] leading-relaxed text-secondary">
-        Pick the right words from your backup — this catches a bad copy now, not at recovery time.
+        Pick the right words from your backup - this catches a bad copy now, not at recovery time.
       </p>
       {CHALLENGES.map(challenge => (
         <ChoiceRow

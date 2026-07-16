@@ -10,7 +10,7 @@ export type DemoToken = {
   symbol: string;
   name: string;
   decimals: number;
-  /** Mainnet contract (zero address for native ETH) — keys the icon artwork. */
+  /** Mainnet contract (zero address for native ETH) - keys the icon artwork. */
   address: Address;
   /** Fallback brand color when no icon artwork exists. */
   color: string;
@@ -101,7 +101,7 @@ export const ACCOUNT_2 = {
  * same addresses and they stay maintainable.
  */
 
-/** Canonical Permit2 — the spender granted allowances in demos. */
+/** Canonical Permit2 - the spender granted allowances in demos. */
 export const PERMIT2_ADDRESS: Address = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
 
 /** Contract an EIP-7702 authorization would delegate the account to. */
@@ -121,12 +121,26 @@ export const CONTACTS: { name: string; address: Address; }[] = [
 export const fiatValue = (token: DemoToken, amount: bigint) =>
   Number(formatUnits(amount, token.decimals)) * token.priceUsd;
 
-export const formatUsd = (value: number, locale: string) =>
-  new Intl.NumberFormat(locale, { style: "currency", currency: "USD" }).format(value);
+export type DisplayCurrency = "USD" | "EUR";
+
+/**
+ * Display currencies with fixed demo FX rates (units per USD) - a real
+ * wallet sources rates next to its token prices.
+ */
+export const CURRENCY_INFO: Record<DisplayCurrency, { symbol: string; rate: number; }> = {
+  USD: { symbol: "$", rate: 1 },
+  EUR: { symbol: "€", rate: 0.92 },
+};
+
+export const DISPLAY_CURRENCIES: readonly DisplayCurrency[] = ["USD", "EUR"];
+
+/** A USD amount converted into the selected display currency. */
+export const toDisplayCurrency = (usd: number, currency: DisplayCurrency) =>
+  usd * CURRENCY_INFO[currency].rate;
 
 /**
  * Human-friendly token quantity: enough precision to be honest, few enough
- * digits to be readable. Display only — never round what gets signed. The
+ * digits to be readable. Display only - never round what gets signed. The
  * float only picks the precision tier; Intl formats the exact base units
  * (see /design/amounts/implementation).
  */

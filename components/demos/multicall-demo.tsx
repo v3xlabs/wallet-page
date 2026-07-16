@@ -165,7 +165,7 @@ export const MulticallDemo = () => {
         {calls.map(c => (
           <span key={c.label}>
             {" "}
-            —
+            -
             <code>{c.label}</code>
           </span>
         ))}

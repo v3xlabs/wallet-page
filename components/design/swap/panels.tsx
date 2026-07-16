@@ -4,8 +4,8 @@ import classNames from "classnames";
 import type { PropsWithChildren } from "react";
 
 import type { DemoToken } from "../data";
-import { formatTokenAmount, formatUsd } from "../data";
-import { useDemoLocale } from "../locale";
+import { formatTokenAmount } from "../data";
+import { useDemoLocale, useFiat } from "../locale";
 import { Spinner, TokenIcon } from "../ui";
 import type { Quote } from "./shared";
 import { formatAmount } from "./shared";
@@ -44,6 +44,7 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
   onPickToken: () => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <Panel label="You pay">
@@ -81,7 +82,7 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
           </button>
         </span>
         <span className="text-xs text-muted tabular-nums">
-          {priceless ? "" : formatUsd(payUsd ?? 0, locale)}
+          {priceless ? "" : fiat(payUsd ?? 0)}
         </span>
       </div>
     </Panel>
@@ -97,6 +98,7 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
   onPickToken: () => void;
 }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <Panel label="You receive">
@@ -111,7 +113,7 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
                   quote ? "text-primary" : "text-muted",
                 )}
               >
-                {quote ? formatAmount(quote.receiveAmount, locale) : (unavailable ? "—" : "0")}
+                {quote ? formatAmount(quote.receiveAmount, locale) : (unavailable ? "-" : "0")}
               </span>
             )}
       </div>
@@ -126,12 +128,12 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
           : (
               <span className="text-xs text-muted">
                 {unavailable
-                  ? "No price feed for this token — quote unavailable"
+                  ? "No price feed for this token - quote unavailable"
                   : (quote ? "Best of 4 quoted venues" : "")}
               </span>
             )}
         <span className="text-xs text-muted tabular-nums">
-          {quoting || unavailable || token.priceUsd === 0 ? "" : formatUsd(quote?.receiveUsd ?? 0, locale)}
+          {quoting || unavailable || token.priceUsd === 0 ? "" : fiat(quote?.receiveUsd ?? 0)}
         </span>
       </div>
     </Panel>

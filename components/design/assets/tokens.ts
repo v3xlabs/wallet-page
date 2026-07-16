@@ -4,7 +4,7 @@ import type { DemoToken } from "../data";
 
 /**
  * Local extras for the assets demo: dust positions worth under a dollar, and
- * two on-chain discoveries the user has not opted into — one legitimate, one
+ * two on-chain discoveries the user has not opted into - one legitimate, one
  * obvious airdrop spam.
  */
 

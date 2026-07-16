@@ -5,8 +5,8 @@ import type { FC } from "react";
 import { FiChevronDown, FiEyeOff, FiMoreHorizontal } from "react-icons/fi";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount, formatUsd } from "../data";
-import { useDemoLocale } from "../locale";
+import { fiatValue, formatTokenAmount } from "../data";
+import { useDemoLocale, useFiat } from "../locale";
 import { TokenIcon } from "../ui";
 
 /** 24h move, quietly toned: green up, red down, muted flat. */
@@ -32,10 +32,11 @@ export const TokenRow: FC<{
   menuOpen: boolean;
   onToggleMenu: () => void;
   onHide: () => void;
-  /** Freshly promoted from Discovered — slides in once. */
+  /** Freshly promoted from Discovered - slides in once. */
   justAdded?: boolean;
 }> = ({ token, menuOpen, onToggleMenu, onHide, justAdded }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
 
   return (
     <div style={justAdded ? { animation: "design-token-in 0.4s ease-out" } : undefined}>
@@ -51,7 +52,7 @@ export const TokenRow: FC<{
         </span>
         <span className="flex shrink-0 flex-col items-end gap-px">
           <span className="text-sm font-medium text-primary tabular-nums">
-            {formatUsd(fiatValue(token, token.balance), locale)}
+            {fiat(fiatValue(token, token.balance))}
           </span>
           <Change token={token} />
         </span>
@@ -92,6 +93,7 @@ export const HiddenShelf: FC<{
   onShow: (symbol: string) => void;
 }> = ({ dust, userHidden, open, onToggle, onShow }) => {
   const locale = useDemoLocale();
+  const fiat = useFiat();
   const count = dust.length + userHidden.length;
   const label = userHidden.length === 0
     ? `${count} low-value token${count === 1 ? "" : "s"} hidden`
@@ -124,7 +126,7 @@ export const HiddenShelf: FC<{
             </span>
           </span>
           <span className="text-xs text-muted tabular-nums">
-            {formatUsd(fiatValue(token, token.balance), locale)}
+            {fiat(fiatValue(token, token.balance))}
           </span>
           {userHidden.includes(token) && (
             <button

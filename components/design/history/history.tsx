@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useLocaleControl } from "../locale";
+import { useDemoLocale, useFiat } from "../locale";
 import { DemoShell } from "../shell";
 import { WalletFrame, WalletHeader } from "../ui";
 import type { EntryKind } from "./entries";
@@ -25,7 +25,8 @@ const FILTER_KIND: Record<Exclude<Filter, "all">, EntryKind> = {
 };
 
 export const HistoryDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const locale = useDemoLocale();
+  const fiat = useFiat();
   const [filter, setFilter] = useState<Filter>("all");
   const [expandedId, setExpandedId] = useState<string>();
   const [speedUp, setSpeedUp] = useState<"idle" | "speeding" | "confirmed">("idle");
@@ -35,7 +36,7 @@ export const HistoryDemo = () => {
     setTimeout(() => setSpeedUp("confirmed"), 800);
   };
 
-  const entries = historyEntries(locale).map(entry =>
+  const entries = historyEntries(locale, fiat).map(entry =>
     (entry.status === "pending" && speedUp === "confirmed" ? confirmPending(entry) : entry),
   );
 
@@ -46,7 +47,7 @@ export const HistoryDemo = () => {
   return (
     <DemoShell
       source="components/design/history/history.tsx"
-      locale={locale}
+      i18n
       controls={{
         Filter: {
           type: "tabs",
@@ -54,7 +55,6 @@ export const HistoryDemo = () => {
           value: filter,
           onChange: value => setFilter(value as Filter),
         },
-        locale: localeControl,
       }}
     >
       <WalletFrame>

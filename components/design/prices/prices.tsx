@@ -6,11 +6,10 @@ import { FiClock } from "react-icons/fi";
 
 import type { DemoToken } from "../data";
 import { fiatValue, formatTokenAmount, TOKENS } from "../data";
-import { useDemoLocale, useLocaleControl } from "../locale";
+import { useDemoCurrency, useDemoLocale } from "../locale";
 import { DemoShell } from "../shell";
 import { Field, StatusPill, TokenIcon } from "../ui";
-import type { Currency } from "./shared";
-import { CURRENCIES, formatPrice } from "./shared";
+import { formatPrice } from "./shared";
 
 type Freshness = "live" | "stale" | "unavailable";
 
@@ -137,12 +136,12 @@ const ChangeChip: FC<{ change: number; }> = ({ change }) => (
   </StatusPill>
 );
 
-const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness; }> = ({
+const PriceTile: FC<{ token: DemoToken; freshness: Freshness; }> = ({
   token,
-  currency,
   freshness,
 }) => {
   const locale = useDemoLocale();
+  const currency = useDemoCurrency();
   const trendTone
     = token.change24h > 0 ? "text-success" : (token.change24h < 0 ? "text-destructive" : "text-muted");
 
@@ -151,7 +150,7 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
       {freshness === "stale" && (
         <div className="flex items-center gap-1.5 bg-warning-tint px-4 py-1.5 text-[11px] font-medium text-warning">
           <FiClock className="size-3 shrink-0" aria-hidden />
-          As of 12 min ago — showing last known prices
+          As of 12 min ago
         </div>
       )}
       <div className="flex flex-col gap-3 p-4">
@@ -163,20 +162,20 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
           </span>
           <span className="ml-auto shrink-0">
             {freshness === "unavailable"
-              ? <StatusPill tone="muted">—</StatusPill>
+              ? <StatusPill tone="muted">-</StatusPill>
               : <ChangeChip change={token.change24h} />}
           </span>
         </div>
         <div className="flex flex-col gap-0.5">
           <span className="text-3xl font-semibold text-primary tabular-nums">
-            {freshness === "unavailable" ? "—" : formatPrice(token.priceUsd, currency, locale)}
+            {freshness === "unavailable" ? "-" : formatPrice(token.priceUsd, currency, locale)}
           </span>
           {freshness === "live" && <span className="text-[11px] text-muted">Updated just now</span>}
         </div>
         {freshness === "unavailable"
           ? (
               <p className="rounded-lg bg-info-tint px-3 py-2 text-xs leading-relaxed text-info">
-                Balances stay visible even when price feeds fail — never block the wallet on a
+                Balances stay visible even when price feeds fail - never block the wallet on a
                 price API.
               </p>
             )
@@ -206,9 +205,7 @@ const PriceTile: FC<{ token: DemoToken; currency: Currency; freshness: Freshness
 };
 
 export const PricesDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
   const [symbol, setSymbol] = useState("ETH");
-  const [currency, setCurrency] = useState<Currency>("USD");
   const [freshness, setFreshness] = useState<Freshness>("live");
 
   const token = TOKENS.find(candidate => candidate.symbol === symbol) ?? TOKENS[0];
@@ -216,7 +213,7 @@ export const PricesDemo = () => {
   return (
     <DemoShell
       source="components/design/prices/prices.tsx"
-      locale={locale}
+      i18n
       controls={{
         "Price feed": {
           type: "tabs",
@@ -224,14 +221,6 @@ export const PricesDemo = () => {
           value: freshness,
           onChange: value => setFreshness(value as Freshness),
         },
-        "currency": {
-          type: "select",
-          label: "Display currency",
-          options: CURRENCIES,
-          value: currency,
-          onChange: value => setCurrency(value as Currency),
-        },
-        "locale": localeControl,
       }}
     >
       <div className="flex flex-col gap-4">
@@ -244,14 +233,14 @@ export const PricesDemo = () => {
             {TOKENS.map(candidate => (
               <option key={candidate.symbol} value={candidate.symbol}>
                 {candidate.symbol}
-                {" — "}
+                {" - "}
                 {candidate.name}
               </option>
             ))}
           </select>
         </Field>
         <hr className="border-t border-primary" />
-        <PriceTile token={token} currency={currency} freshness={freshness} />
+        <PriceTile token={token} freshness={freshness} />
       </div>
     </DemoShell>
   );

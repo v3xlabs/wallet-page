@@ -156,7 +156,7 @@ export const RecoveryDemo = () => {
                 active === 3 ? "text-success" : "text-warning",
               )}
             >
-              {active === 3 ? "Fully protected" : "Good — 1 step left"}
+              {active === 3 ? "Fully protected" : "Good - 1 step left"}
             </span>
             <span className="text-xs text-muted">
               {active}
@@ -176,7 +176,7 @@ export const RecoveryDemo = () => {
           >
             <p className="text-xs leading-relaxed text-secondary">
               Twelve words on paper are the root of this account. Re-check your copy now and
-              then — before you need it.
+              then - before you need it.
             </p>
             <SecondaryButton onClick={reverify} disabled={reverifying}>
               {reverifying
@@ -203,7 +203,7 @@ export const RecoveryDemo = () => {
             {passkey
               ? (
                   <p className="rounded-lg bg-success-tint px-3 py-2 text-xs text-success">
-                    Added — this device can now approve recovery.
+                    Added - this device can now approve recovery.
                   </p>
                 )
               : (
@@ -254,7 +254,7 @@ export const RecoveryDemo = () => {
           </ProtectionRow>
         </div>
         <p className="border-t border-primary px-5 py-3 text-center text-[11px] leading-relaxed text-muted">
-          Recovery must be legible — a user should always know exactly what protects their
+          Recovery must be legible - a user should always know exactly what protects their
           account.
         </p>
       </WalletFrame>

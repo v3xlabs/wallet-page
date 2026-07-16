@@ -4,15 +4,15 @@ import classNames from "classnames";
 
 import { formatBaseUnits } from "../../../lib/amounts";
 import type { DemoToken } from "../data";
-import { fiatValue, formatTokenAmount } from "../data";
+import { CURRENCY_INFO, fiatValue, formatTokenAmount } from "../data";
 import { EnsAvatar } from "../ens-avatar";
-import { useDemoLocale } from "../locale";
+import { useDemoCurrency, useDemoLocale, useFiat } from "../locale";
 import { PrimaryButton, TokenIcon } from "../ui";
-import type { DisplayCurrency, Recipient } from "./shared";
-import { currencyFor, FEE_WEI, formatDisplayCurrency, parseAmount, truncate } from "./shared";
+import type { Recipient } from "./shared";
+import { FEE_WEI, parseAmount, truncate } from "./shared";
 
 /**
- * The asset being sent — always the asset, even while the amount is being
+ * The asset being sent - always the asset, even while the amount is being
  * typed in fiat ("50 EUR worth of WETH" still sends WETH).
  */
 const AssetChip = ({ token, onPickAsset }: {
@@ -32,19 +32,20 @@ const AssetChip = ({ token, onPickAsset }: {
   </button>
 );
 
-export const AmountScreen = ({ token, recipient, amountText, unit, currency, onAmount, onUnit, onPickAsset, onContinue }: {
+export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onUnit, onPickAsset, onContinue }: {
   token: DemoToken;
   recipient: Recipient;
   amountText: string;
   unit: "token" | "fiat";
-  currency: DisplayCurrency;
   onAmount: (value: string) => void;
   onUnit: (unit: "token" | "fiat") => void;
   onPickAsset: () => void;
   onContinue: () => void;
 }) => {
   const locale = useDemoLocale();
-  const fx = currencyFor(currency);
+  const currency = useDemoCurrency();
+  const fiat = useFiat();
+  const fx = CURRENCY_INFO[currency];
   const amount = parseAmount(amountText, token, unit, locale, fx.rate);
   const insufficient = amount !== undefined && amount > token.balance;
   // Tokens resolved from a pasted contract carry no price feed.
@@ -53,7 +54,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
     = amount === undefined
       ? undefined
       : (unit === "token"
-          ? formatDisplayCurrency(fiatValue(token, amount), currency, locale)
+          ? fiat(fiatValue(token, amount))
           : `${formatTokenAmount(amount, token, locale)} ${token.symbol}`);
 
   const setFraction = (fraction: number) => {
@@ -124,7 +125,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, currency, onA
                     <svg viewBox="0 0 16 16" fill="none" className="size-3.5">
                       <path d="M11 2.5l2.5 2.5L11 7.5M13.5 5h-11M5 13.5L2.5 11 5 8.5M2.5 11h11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    {converted ?? (unit === "token" ? formatDisplayCurrency(0, currency, locale) : `0 ${token.symbol}`)}
+                    {converted ?? (unit === "token" ? fiat(0) : `0 ${token.symbol}`)}
                   </button>
                 )}
             <button

@@ -9,7 +9,7 @@ import { EnsAvatar } from "../ens-avatar";
 import { DemoShell } from "../shell";
 
 /**
- * The canonical well-known test mnemonic. Demo value only — it is public
+ * The canonical well-known test mnemonic. Demo value only - it is public
  * knowledge, so anything derived from it is permanently insecure.
  */
 const MNEMONIC = "test test test test test test test test test test test junk";
@@ -20,7 +20,7 @@ const MAX_INDEX = 9;
 
 /**
  * Derivation is deterministic, so the whole family of demo accounts is
- * computed once at module scope — never during render.
+ * computed once at module scope - never during render.
  */
 const ACCOUNTS: Address[] = Array.from(
   { length: MAX_INDEX + 1 },
@@ -35,10 +35,10 @@ const SectionLabel = ({ children }: { children: string; }) => (
 
 const PATH_SEGMENTS: { text: string; hint: string; }[] = [
   { text: "m", hint: "Master key, derived from the seed" },
-  { text: "44'", hint: "Purpose — BIP-44 multi-account layout (hardened)" },
-  { text: "60'", hint: "Coin type — 60 is Ethereum (hardened)" },
-  { text: "0'", hint: "Account — a hardened per-user grouping" },
-  { text: "0", hint: "Change — always 0 (external) on Ethereum" },
+  { text: "44'", hint: "Purpose - BIP-44 multi-account layout (hardened)" },
+  { text: "60'", hint: "Coin type - 60 is Ethereum (hardened)" },
+  { text: "0'", hint: "Account - a hardened per-user grouping" },
+  { text: "0", hint: "Change - always 0 (external) on Ethereum" },
 ];
 
 const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: number) => void; }) => (
@@ -56,7 +56,7 @@ const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: numbe
         </span>
       ))}
       <span
-        title="Address index — the only segment wallets usually change"
+        title="Address index - the only segment wallets usually change"
         className="flex items-center gap-0.5 rounded-md border border-primary bg-accenta2 py-0.5 pr-0.5 pl-2"
       >
         <span className="pr-1 font-semibold text-accent tabular-nums">{index}</span>
@@ -140,7 +140,7 @@ export const DerivationDemo = () => {
             ))}
           </div>
           <p className="text-xs text-muted">
-            The standard demo phrase — publicly known, never reuse it. These twelve words are the
+            The standard demo phrase - publicly known, never reuse it. These twelve words are the
             single seed behind every account below.
           </p>
         </div>
@@ -162,7 +162,7 @@ export const DerivationDemo = () => {
             )}
           </div>
           <p className="text-xs text-muted">
-            Same phrase, same path prefix — bumping only the final index yields a whole family of
+            Same phrase, same path prefix - bumping only the final index yields a whole family of
             independent accounts.
           </p>
         </div>
@@ -215,11 +215,11 @@ export const WordlistDemo = () => {
         )}
         {trimmed !== "" && matches.length === 0 && (
           <p className="text-xs text-destructive">
-            Not a seed word — every valid word comes from the fixed list.
+            Not a seed word - every valid word comes from the fixed list.
           </p>
         )}
         <p className="text-xs text-muted">
-          All phrases draw from the same fixed 2,048-word list — autocomplete makes typos nearly
+          All phrases draw from the same fixed 2,048-word list - autocomplete makes typos nearly
           impossible.
         </p>
       </div>

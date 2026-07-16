@@ -115,7 +115,7 @@ export const ApprovalsDemo = () => {
         : "tokens";
 
       if (val === 0n) {
-        setAllowance(`0 ${symbol} — no allowance set`);
+        setAllowance(`0 ${symbol} - no allowance set`);
       }
       else if (val >= 2n ** 256n - 1n / 2n) {
         setAllowance(`Unlimited ${symbol}`);
@@ -214,7 +214,7 @@ export const ApprovalsDemo = () => {
                 <TransactionPreview
                   from={revokeTx.from}
                   to={revokeTx.to}
-                  valueLabel="Revoke — set allowance to 0"
+                  valueLabel="Revoke - set allowance to 0"
                   data={revokeTx.data}
                 />
               ),

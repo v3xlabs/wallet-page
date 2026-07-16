@@ -114,7 +114,7 @@ export const EthSendCallsDemo = () => {
         message.includes("not found")
         || message.includes("Unsupported")
         || message.includes("-32601")
-          ? `${message}\n\nImplementing EIP-5792 (wallet_sendCalls / wallet_getCapabilities) is recommended — this response usually means those RPCs are not wired up yet.`
+          ? `${message}\n\nImplementing EIP-5792 (wallet_sendCalls / wallet_getCapabilities) is recommended - this response usually means those RPCs are not wired up yet.`
           : message,
       );
     }

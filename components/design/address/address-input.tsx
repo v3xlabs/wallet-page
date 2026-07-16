@@ -111,7 +111,7 @@ export const AddressInputDemo = () => {
           setResolution({
             status: "error",
             name: ensName,
-            message: "Lookup failed — not a resolvable name, or the RPC is unreachable.",
+            message: "Lookup failed - not a resolvable name, or the RPC is unreachable.",
           });
         }
       }
@@ -148,7 +148,7 @@ export const AddressInputDemo = () => {
         return { tone: "muted", text: "Paste an address or type an ENS name." };
       }
       case "partial": {
-        return { tone: "muted", text: "Keep typing — an address is 0x plus 40 hex characters." };
+        return { tone: "muted", text: "Keep typing - an address is 0x plus 40 hex characters." };
       }
       case "invalid": {
         return { tone: "destructive", text: "Not an address or ENS name." };
@@ -156,7 +156,7 @@ export const AddressInputDemo = () => {
       case "checksum-mismatch": {
         return {
           tone: "destructive",
-          text: "Mixed-case address fails the EIP-55 checksum — likely a corrupted copy. Refuse it.",
+          text: "Mixed-case address fails the EIP-55 checksum - likely a corrupted copy. Refuse it.",
         };
       }
       case "address": {
@@ -168,7 +168,7 @@ export const AddressInputDemo = () => {
         };
       }
       case "name": {
-        if (!current) return { tone: "muted", text: "Resolving name…" };
+        if (!current) return { tone: "muted", text: "Resolving name..." };
 
         switch (current.status) {
           case "resolved": {
@@ -252,11 +252,11 @@ export const AddressInputDemo = () => {
                 committed ? "text-secondary" : "text-muted",
               )}
             >
-              {committed?.address ?? "—"}
+              {committed?.address ?? "-"}
             </code>
           </pre>
           <span className="text-xs text-muted">
-            {committed ? committed.source : "Nothing yet — no committable address."}
+            {committed ? committed.source : "Nothing yet - no committable address."}
           </span>
         </div>
       </div>

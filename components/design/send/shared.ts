@@ -14,23 +14,6 @@ export const FEE_WEI = parseUnits("0.00042", 18);
 
 export const ETH = TOKENS[0];
 
-export type DisplayCurrency = "USD" | "EUR";
-
-/** Display currencies with fixed demo FX rates (units per USD). */
-export const CURRENCIES: readonly { value: DisplayCurrency; symbol: string; rate: number; }[] = [
-  { value: "USD", symbol: "$", rate: 1 },
-  { value: "EUR", symbol: "€", rate: 0.92 },
-];
-
-export const currencyFor = (currency: DisplayCurrency) =>
-  CURRENCIES.find(entry => entry.value === currency) ?? CURRENCIES[0];
-
-/** Format a USD value in the selected display currency. */
-export const formatDisplayCurrency = (usd: number, currency: DisplayCurrency, locale: string) =>
-  new Intl.NumberFormat(locale, { style: "currency", currency }).format(
-    usd * currencyFor(currency).rate,
-  );
-
 /**
  * Localized amount parser (see /design/amounts): token amounts convert
  * digit-exactly into base units; fiat entry is a quote, so it may pass

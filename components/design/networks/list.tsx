@@ -10,14 +10,14 @@ import { PrimaryButton, TokenIcon, WalletFrame, WalletHeader } from "../ui";
 import { HOODI_COLOR } from "./shared";
 
 /**
- * Networks are just… on. No health meters, no default radio — silence means
+ * Networks are just… on. No health meters, no default radio - silence means
  * working. The interesting surface is configuration: every network's RPCs
  * are the user's to edit, extend, and swap between.
  */
 
 type Rpc = {
   url: string;
-  /** The one state worth surfacing — everything else stays quiet. */
+  /** The one state worth surfacing - everything else stays quiet. */
   unreachable?: boolean;
 };
 

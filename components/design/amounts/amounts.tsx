@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { formatBaseUnits, parseLocalizedAmount } from "../../../lib/amounts";
-import { useLocaleControl } from "../locale";
+import { useDemoLocale } from "../locale";
 import { DemoShell } from "../shell";
 import { Field } from "../ui";
 
@@ -53,13 +53,13 @@ export const AmountInput = ({ value, locale, decimals, onChange }: {
 };
 
 export const AmountInputDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const locale = useDemoLocale();
   const [decimals, setDecimals] = useState(2);
   const [amount, setAmount] = useState(() => formatBaseUnits(123_456n, locale, 2) ?? "1234.56");
   const parsed = parseLocalizedAmount(amount, locale, decimals);
 
   return (
-    <DemoShell source={SOURCE} locale={locale} controls={{ locale: localeControl }}>
+    <DemoShell source={SOURCE} i18n>
       <div className="flex flex-col gap-4">
         <DecimalsField value={decimals} max={255} onChange={setDecimals} />
         <hr className="border-t border-primary" />
@@ -82,7 +82,7 @@ export const AmountInputDemo = () => {
 };
 
 export const AmountDisplayDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const locale = useDemoLocale();
   const [baseUnits, setBaseUnits] = useState("123456");
   const [decimals, setDecimals] = useState(2);
   const parsedBaseUnits = /^\d+$/u.test(baseUnits) ? BigInt(baseUnits) : undefined;
@@ -91,7 +91,7 @@ export const AmountDisplayDemo = () => {
     : formatBaseUnits(parsedBaseUnits, locale, decimals);
 
   return (
-    <DemoShell source={SOURCE} locale={locale} controls={{ locale: localeControl }}>
+    <DemoShell source={SOURCE} i18n>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-end gap-4">
           <Field label="Base units">
@@ -109,7 +109,7 @@ export const AmountDisplayDemo = () => {
         <div className="mx-auto w-full max-w-sm">
           <div className="rounded-xl border border-primary bg-surface p-3 text-right">
             <output className="text-3xl font-medium text-primary" aria-live="polite">
-              <bdi>{formatted ?? "—"}</bdi>
+              <bdi>{formatted ?? "-"}</bdi>
             </output>
           </div>
           <p className="m-0 mt-2 text-right text-xs text-secondary">

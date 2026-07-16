@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
-
-import { useLocaleControl } from "../locale";
+import { useDemoCurrency, useDemoLocale } from "../locale";
 import { DemoShell } from "../shell";
 import { TokenIcon } from "../ui";
-import type { Currency } from "./shared";
-import { CURRENCIES, formatPrice, formatPriceNaive } from "./shared";
+import { formatPrice, formatPriceNaive } from "./shared";
 
 /**
  * Mock prices across magnitudes where fixed decimals stop working and
@@ -19,24 +16,11 @@ const CASES: { symbol: string; name: string; color: string; priceUsd: number; }[
 ];
 
 export const SubDollarDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
-  const [currency, setCurrency] = useState<Currency>("USD");
+  const locale = useDemoLocale();
+  const currency = useDemoCurrency();
 
   return (
-    <DemoShell
-      source="components/design/prices/subdollar.tsx"
-      locale={locale}
-      controls={{
-        currency: {
-          type: "select",
-          label: "Display currency",
-          options: CURRENCIES,
-          value: currency,
-          onChange: value => setCurrency(value as Currency),
-        },
-        locale: localeControl,
-      }}
-    >
+    <DemoShell source="components/design/prices/subdollar.tsx" i18n>
       <div className="flex flex-col gap-1.5">
         <div className="flex flex-col divide-y divide-(--vocs-border-color-primary) rounded-lg border border-primary bg-surface">
           {CASES.map(token => (

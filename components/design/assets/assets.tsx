@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { Address } from "viem";
 
 import type { DemoToken } from "../data";
-import { fiatValue, formatUsd, TOKENS } from "../data";
-import { useLocaleControl } from "../locale";
+import { fiatValue, TOKENS } from "../data";
+import { useFiat } from "../locale";
 import { DemoShell } from "../shell";
 import { WalletFrame, WalletHeader } from "../ui";
 import { ManageScreen } from "./manage";
@@ -26,7 +26,7 @@ const INITIAL_ENABLED = INITIAL_CATALOG
 const DUST_SYMBOLS = new Set(DUST_TOKENS.map(token => token.symbol));
 
 export const AssetsDemo = () => {
-  const [locale, localeControl] = useLocaleControl();
+  const fiat = useFiat();
   const [screen, setScreen] = useState<"list" | "manage">("list");
   const [catalog, setCatalog] = useState<DemoToken[]>(INITIAL_CATALOG);
   const [enabledSymbols, setEnabledSymbols] = useState<string[]>(INITIAL_ENABLED);
@@ -87,8 +87,7 @@ export const AssetsDemo = () => {
   return (
     <DemoShell
       source="components/design/assets/assets.tsx"
-      locale={locale}
-      controls={{ locale: localeControl }}
+      i18n
     >
       <WalletFrame>
         {screen === "manage"
@@ -112,7 +111,7 @@ export const AssetsDemo = () => {
                 <WalletHeader title="Tokens" />
                 <div className="flex flex-col items-start gap-0.5 px-4 pt-2 pb-3">
                   <span className="text-3xl font-semibold text-primary tabular-nums">
-                    {formatUsd(total, locale)}
+                    {fiat(total)}
                   </span>
                   <div className="flex w-full items-center justify-between">
                     <span className="text-xs text-muted">

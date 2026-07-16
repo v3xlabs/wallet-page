@@ -51,7 +51,7 @@ export const Eip7811Demo = () => {
         message.includes("not found")
         || message.includes("Unsupported")
         || message.includes("-32601")
-          ? `${message}\n\nwallet_getAssets is not implemented yet — see ERC-7811 and wallet_getCapabilities (assetDiscovery).`
+          ? `${message}\n\nwallet_getAssets is not implemented yet - see ERC-7811 and wallet_getCapabilities (assetDiscovery).`
           : message,
       );
     }

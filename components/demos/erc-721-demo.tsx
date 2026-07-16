@@ -14,7 +14,7 @@ export const Erc721Demo = () => (
         {" "}
         <a href="/roadmap">roadmap</a>
         {" "}
-        — contributions welcome.
+        - contributions welcome.
       </p>
     </section>
   </DemoShell>

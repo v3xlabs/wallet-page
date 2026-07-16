@@ -2,7 +2,7 @@ import type { Address } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
 
 /**
- * The canonical well-known test mnemonic. Demo value only — it is public
+ * The canonical well-known test mnemonic. Demo value only - it is public
  * knowledge, so anything derived from it is permanently insecure.
  */
 export const MNEMONIC = "test test test test test test test test test test test junk";

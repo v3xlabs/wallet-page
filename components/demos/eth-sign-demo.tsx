@@ -47,7 +47,7 @@ export const EthSignDemo = () => {
           user: (
             <>
               <p className="mb-2 text-sm leading-snug text-warning">
-                Not human-readable — wallets should warn before signing a raw hash.
+                Not human-readable - wallets should warn before signing a raw hash.
               </p>
               <code className="block font-mono text-xs break-all whitespace-pre-wrap">{ZERO_HASH}</code>
             </>
@@ -57,7 +57,7 @@ export const EthSignDemo = () => {
             params: [session?.accounts[0] ?? "0x…", ZERO_HASH],
           },
           hash: ZERO_HASH,
-          hashNote: "eth_sign — wallet signs this 32-byte value (no EIP-191 prefix).",
+          hashNote: "eth_sign - wallet signs this 32-byte value (no EIP-191 prefix).",
         }}
         response={signature}
         error={error}

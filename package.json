@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "wallet.page — interactive docs to test EIP support in your browser wallet",
+  "description": "wallet.page - interactive docs to test EIP support in your browser wallet",
   "packageManager": "pnpm@10.15.0",
   "engines": {
     "node": ">=20"
