@@ -10,7 +10,7 @@ import { TransactionPreview } from "../wallet/preview/TransactionPreview";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-export function SendTransactionDemo() {
+export const SendTransactionDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [txHash, setTxHash] = useState<string>();
@@ -77,4 +77,4 @@ export function SendTransactionDemo() {
       />
     </DemoShell>
   );
-}
+};

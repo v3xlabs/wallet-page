@@ -11,16 +11,16 @@ import { DemoShell } from "../wallet/DemoShell";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-function SiwePreview({ message }: { message: string; }) {
+const SiwePreview = ({ message }: { message: string; }) => {
   const parsed = message ? parseSiweMessage(message) : null;
 
   if (!parsed?.address || !parsed.domain) {
-    return <pre className="wallet-preview-raw">{message}</pre>;
+    return <pre className="font-mono text-xs break-all whitespace-pre-wrap">{message}</pre>;
   }
 
   return (
-    <div className="wallet-preview-siwe">
-      <p className="wallet-preview-siwe-lead">
+    <div className="flex flex-col gap-2.5">
+      <p className="leading-normal">
         <strong>{parsed.domain}</strong>
         {" "}
         wants you to sign in with
@@ -28,30 +28,30 @@ function SiwePreview({ message }: { message: string; }) {
         <Address address={parsed.address} />
       </p>
       {parsed.statement && (
-        <blockquote className="wallet-preview-siwe-statement">
-          <span className="wallet-preview-siwe-statement-label">Statement</span>
+        <blockquote className="rounded-md border border-primary border-l-[3px] border-l-accent bg-accent/10 px-3 py-2.5 text-sm leading-normal whitespace-pre-wrap text-primary">
+          <span className="mb-1 block text-[11px] font-semibold tracking-[0.05em] uppercase text-accent">Statement</span>
           {parsed.statement}
         </blockquote>
       )}
-      <dl className="wallet-preview-rows">
-        <div>
-          <dt>URI</dt>
-          <dd>{parsed.uri}</dd>
+      <dl className="m-0 flex flex-col gap-1">
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] tracking-[0.04em] uppercase text-secondary">URI</dt>
+          <dd className="m-0 text-right break-all">{parsed.uri}</dd>
         </div>
-        <div>
-          <dt>Chain</dt>
-          <dd>{parsed.chainId}</dd>
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] tracking-[0.04em] uppercase text-secondary">Chain</dt>
+          <dd className="m-0 text-right break-all">{parsed.chainId}</dd>
         </div>
-        <div>
-          <dt>Nonce</dt>
-          <dd className="wallet-mono">{parsed.nonce}</dd>
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] tracking-[0.04em] uppercase text-secondary">Nonce</dt>
+          <dd className="m-0 text-right font-mono text-[0.85em] break-all text-secondary">{parsed.nonce}</dd>
         </div>
       </dl>
     </div>
   );
-}
+};
 
-export function SiweDemo() {
+export const SiweDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [nonce, setNonce] = useState(() => generateSiweNonce());
@@ -128,4 +128,4 @@ export function SiweDemo() {
       />
     </DemoShell>
   );
-}
+};

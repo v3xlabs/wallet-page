@@ -9,10 +9,10 @@ import { useDemoFrame } from "../wallet/DemoFrame";
 import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { useWallet } from "../wallet/WalletProvider";
 
-const MESSAGE = "wallet.page — personal_sign test";
+const MESSAGE = "wallet.page - personal_sign test";
 const MESSAGE_HASH = eip191MessageHash(MESSAGE);
 
-export function PersonalSignDemo() {
+export const PersonalSignDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -46,13 +46,13 @@ export function PersonalSignDemo() {
     <DemoBlock source="components/demos/personal-sign-demo.tsx">
       <WalletActionPanel
         inspector={{
-          user: <p className="wallet-preview-message">{MESSAGE}</p>,
+          user: <p className="text-sm leading-normal whitespace-pre-wrap wrap-break-word">{MESSAGE}</p>,
           request: {
             method: "personal_sign",
             params: [MESSAGE, session?.accounts[0] ?? "0x…"],
           },
           hash: MESSAGE_HASH,
-          hashNote: "EIP-191 — wallets hash the prefixed message before secp256k1.",
+          hashNote: "EIP-191 - wallets hash the prefixed message before secp256k1.",
         }}
         response={signature}
         error={error}
@@ -61,4 +61,4 @@ export function PersonalSignDemo() {
       />
     </DemoBlock>
   );
-}
+};

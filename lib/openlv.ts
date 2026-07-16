@@ -19,7 +19,7 @@ const OPENLV_INFO = {
 let openlvDetail: Eip6963ProviderDetail | undefined;
 
 /** Remove stray OpenLV overlays that block clicks on the wallet picker. */
-export function dismissOpenlvModal() {
+export const dismissOpenlvModal = () => {
   if (typeof document === "undefined") return;
 
   for (const el of document.querySelectorAll("openlv-modal")) {
@@ -29,9 +29,9 @@ export function dismissOpenlvModal() {
 
     el.remove();
   }
-}
+};
 
-async function openOpenlvModal(provider: OpenLVProvider) {
+const openOpenlvModal = async (provider: OpenLVProvider) => {
   dismissOpenlvModal();
 
   const { registerOpenLVModal, triggerOpenModal } = await import("@openlv/modal");
@@ -63,9 +63,9 @@ async function openOpenlvModal(provider: OpenLVProvider) {
       }
     });
   });
-}
+};
 
-function createOpenlvDetail(): Eip6963ProviderDetail {
+const createOpenlvDetail = (): Eip6963ProviderDetail => {
   const provider = createProvider({
     config: {
       signaling: {
@@ -83,26 +83,22 @@ function createOpenlvDetail(): Eip6963ProviderDetail {
     info: { ...OPENLV_INFO },
     provider: provider as unknown as EIP1193Provider,
   };
-}
+};
 
 /**
  * Register [openlv](https://openlv.sh) alongside EIP-6963 discoveries.
  * Call once on the client (e.g. `installOpenlv(mergeProvider)`).
  */
-export function installOpenlv(
+export const installOpenlv = (
   announce: (detail: Eip6963ProviderDetail) => void,
-): void {
+): void => {
   if (globalThis.window === undefined) return;
 
   if (!openlvDetail) openlvDetail = createOpenlvDetail();
 
   announce(openlvDetail);
-}
+};
 
-export function getOpenlvConnector(): Eip6963ProviderDetail | undefined {
-  return openlvDetail;
-}
+export const getOpenlvConnector = (): Eip6963ProviderDetail | undefined => openlvDetail;
 
-export function isOpenlvProvider(detail: Eip6963ProviderDetail) {
-  return detail.info.rdns === OPENLV_RDNS;
-}
+export const isOpenlvProvider = (detail: Eip6963ProviderDetail) => detail.info.rdns === OPENLV_RDNS;

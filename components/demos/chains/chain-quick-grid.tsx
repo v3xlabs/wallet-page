@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 import type { Hex } from "viem";
 
@@ -10,7 +11,7 @@ import { DemoShell } from "../../wallet/DemoShell";
 import { useWallet } from "../../wallet/WalletProvider";
 
 /** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
-export function ChainQuickGrid() {
+export const ChainQuickGrid = () => {
   const { session, refreshSession } = useWallet();
   const { requireSession } = useDemoFrame();
   const [error, setError] = useState<string>();
@@ -85,27 +86,30 @@ export function ChainQuickGrid() {
   return (
     <DemoShell source="components/demos/chains/chain-quick-grid.tsx">
       {session && (
-        <p className="wallet-demo-muted">
+        <p className="text-sm text-secondary">
           Active chain:
           {" "}
           <code>{session.chainId}</code>
         </p>
       )}
-      <div className="wallet-demo-chain-grid">
+      <div className="my-3 grid gap-3 sm:grid-cols-2">
         {DEMO_CHAINS.map((chain) => {
           const isActive = active && chain.chainId.toLowerCase() === active;
 
           return (
             <div
               key={chain.chainId}
-              className={`wallet-demo-chain-card${isActive ? " wallet-demo-chain-card-active" : ""}`}
+              className={classNames(
+                "flex flex-col gap-1.5 rounded-md border p-3",
+                isActive ? "border-accent bg-accent/10" : "border-primary bg-surfaceMuted",
+              )}
             >
               <span>{chain.name}</span>
-              <code>{chain.chainId}</code>
-              <div className="wallet-demo-actions">
+              <code className="font-mono text-[13px]">{chain.chainId}</code>
+              <div className="my-3 flex flex-wrap gap-2">
                 <button
                   type="button"
-                  className="wallet-demo-btn wallet-demo-btn-primary"
+                  className="demo-btn demo-btn-primary"
                   disabled={pending || isActive}
                   onClick={() => void switchChain(chain.chainId)}
                 >
@@ -113,7 +117,7 @@ export function ChainQuickGrid() {
                 </button>
                 <button
                   type="button"
-                  className="wallet-demo-btn"
+                  className="demo-btn"
                   disabled={pending}
                   onClick={() => void addChain(chain.chainId)}
                 >
@@ -125,10 +129,10 @@ export function ChainQuickGrid() {
         })}
       </div>
       {error && (
-        <p className="wallet-demo-error" role="alert">
+        <p className="mb-4 rounded-md bg-destructive-tint px-4 py-3 text-sm text-primary" role="alert">
           {error}
         </p>
       )}
     </DemoShell>
   );
-}
+};

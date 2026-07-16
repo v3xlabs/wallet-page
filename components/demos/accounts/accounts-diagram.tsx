@@ -4,15 +4,13 @@ const MOCK_ACCOUNTS = [
   { address: "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cB2", label: "Account 3" },
 ];
 
-function short(addr: string) {
-  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
-}
+const short = (addr: string) => `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 
-function avatarBg(addr: string) {
+const avatarBg = (addr: string) => {
   const hue = (Number.parseInt(addr.slice(2, 8), 16) % 360).toString();
 
   return `hsl(${hue}, 48%, 50%)`;
-}
+};
 
 const s = {
   root: {
@@ -210,7 +208,7 @@ const s = {
   } as React.CSSProperties,
 } as const;
 
-export function AccountsDiagram() {
+export const AccountsDiagram = () => {
   const first = MOCK_ACCOUNTS[0];
 
   return (
@@ -266,4 +264,4 @@ export function AccountsDiagram() {
       </div>
     </div>
   );
-}
+};

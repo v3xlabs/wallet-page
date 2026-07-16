@@ -19,11 +19,11 @@ type ProbeRow = {
   detail: string;
 };
 
-async function tryRpc(
+const tryRpc = async (
   provider: Parameters<typeof rpc>[0],
   method: string,
   params: unknown[],
-): Promise<ProbeRow> {
+): Promise<ProbeRow> => {
   try {
     const result = await rpc(provider, method, params);
 
@@ -39,9 +39,9 @@ async function tryRpc(
   catch (error) {
     return { method, ok: false, detail: formatError(error) };
   }
-}
+};
 
-export function Eip7702Demo() {
+export const Eip7702Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [delegator, setDelegator] = useState(DEFAULT_DELEGATOR);
@@ -156,7 +156,7 @@ export function Eip7702Demo() {
         || message.includes("-32601")
         || message.includes("invalid")
         || message.includes("Invalid")
-          ? `${message}\n\nGuarding type-4 / authorizationList is recommended — this outcome often means the wallet is protecting users until EIP-7702 RPCs are fully exposed.`
+          ? `${message}\n\nGuarding type-4 / authorizationList is recommended - this outcome often means the wallet is protecting users until EIP-7702 RPCs are fully exposed.`
           : message,
       );
     }
@@ -167,7 +167,7 @@ export function Eip7702Demo() {
 
   return (
     <DemoShell source="components/demos/eip-7702-demo.tsx">
-      <p className="wallet-demo-muted">
+      <p className="text-sm text-secondary">
         Wallet teams are standardizing RPC names for authorizations and type-4
         transactions. This page probes common method names and
         {" "}
@@ -175,11 +175,11 @@ export function Eip7702Demo() {
         {" "}
         handling.
       </p>
-      <label className="wallet-demo-field">
-        <span className="wallet-demo-muted">Delegator contract (probe only)</span>
+      <label className="my-3 flex flex-col gap-1.5">
+        <span className="text-sm text-secondary">Delegator contract (probe only)</span>
         <input
           type="text"
-          className="wallet-demo-input"
+          className="demo-input font-mono"
           value={delegator}
           onChange={e => setDelegator(e.target.value as Address)}
           spellCheck={false}
@@ -243,4 +243,4 @@ export function Eip7702Demo() {
       />
     </DemoShell>
   );
-}
+};

@@ -28,41 +28,44 @@ type PermitPreviewProps = {
   deadline: bigint;
 };
 
-function PermitPreview({
+const PermitPreview = ({
   tokenName,
   tokenSymbol,
   decimals = 6,
   value,
   spender,
   deadline,
-}: PermitPreviewProps) {
+}: PermitPreviewProps) => {
   const amount = formatTokenAmount(value, decimals, tokenSymbol);
   const iconLetter = (tokenSymbol ?? tokenName ?? "T").slice(0, 1).toUpperCase();
 
   return (
-    <div className="wallet-preview-permit">
-      <div className="wallet-preview-permit-hero">
-        <span className="wallet-preview-token-icon" aria-hidden>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[1.1rem] font-bold"
+          aria-hidden
+        >
           {iconLetter}
         </span>
         <div>
-          <p className="wallet-preview-permit-amount">{amount}</p>
-          <p className="wallet-preview-permit-token">{tokenName}</p>
+          <p className="text-[1.05rem] font-semibold">{amount}</p>
+          <p className="mt-0.5 text-sm text-secondary">{tokenName}</p>
         </div>
       </div>
-      <dl className="wallet-preview-rows">
-        <div>
-          <dt>Spender</dt>
-          <dd><Address address={spender} /></dd>
+      <dl className="m-0 flex flex-col gap-1">
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Spender</dt>
+          <dd className="m-0 break-all text-right"><Address address={spender} /></dd>
         </div>
-        <div>
-          <dt>Expires</dt>
-          <dd>{formatDeadline(deadline)}</dd>
+        <div className="flex items-baseline justify-between gap-4">
+          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Expires</dt>
+          <dd className="m-0 break-all text-right">{formatDeadline(deadline)}</dd>
         </div>
       </dl>
     </div>
   );
-}
+};
 
 const permitTypedData = (owner: Hex, chainId: number) =>
   ({
@@ -91,7 +94,7 @@ const permitTypedData = (owner: Hex, chainId: number) =>
     },
   }) as const;
 
-export function Erc20PermitDemo() {
+export const Erc20PermitDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -159,7 +162,7 @@ export function Erc20PermitDemo() {
             params: [session?.accounts[0] ?? "0x…", stringifyRpcData(typed)],
           },
           hash: digest,
-          hashNote: "EIP-712 digest — second param to eth_signTypedData_v4 is the typed JSON.",
+          hashNote: "EIP-712 digest - second param to eth_signTypedData_v4 is the typed JSON.",
         }}
         response={signature}
         error={error}
@@ -171,4 +174,4 @@ export function Erc20PermitDemo() {
       />
     </DemoShell>
   );
-}
+};

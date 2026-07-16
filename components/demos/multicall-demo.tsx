@@ -41,7 +41,7 @@ const WETH_BY_CHAIN: Record<string, EvmAddress> = {
 
 type BatchResult = { label: string; value: string; success: boolean; };
 
-export function MulticallDemo() {
+export const MulticallDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [response, setResponse] = useState<string>();
@@ -144,12 +144,12 @@ export function MulticallDemo() {
 
   return (
     <DemoShell source="components/demos/multicall-demo.tsx">
-      <p className="wallet-demo-muted">
+      <p className="text-sm text-secondary">
         Multicall3:
         {" "}
         <Address address={MULTICALL3_ADDRESS} />
       </p>
-      <p className="wallet-demo-muted" style={{ marginTop: "0.35rem" }}>
+      <p className="mt-1.5 text-sm text-secondary">
         Batching
         {" "}
         <strong>
@@ -165,7 +165,7 @@ export function MulticallDemo() {
         {calls.map(c => (
           <span key={c.label}>
             {" "}
-            —
+            -
             <code>{c.label}</code>
           </span>
         ))}
@@ -177,11 +177,11 @@ export function MulticallDemo() {
             ? {
                 user: preview
                   ? (
-                      <ul className="wallet-multicall-results">
+                      <ul className="m-0 list-none p-0">
                         {preview.map(r => (
-                          <li key={r.label}>
-                            <span>{r.label}</span>
-                            <code className={r.success ? "" : "wallet-multicall-fail"}>
+                          <li key={r.label} className="mt-1.5 flex items-baseline gap-3">
+                            <span className="min-w-32 text-[13px] text-secondary">{r.label}</span>
+                            <code className={r.success ? "" : "text-destructive"}>
                               {r.value}
                             </code>
                           </li>
@@ -189,7 +189,7 @@ export function MulticallDemo() {
                       </ul>
                     )
                   : (
-                      <p className="wallet-demo-muted">Run the batch to see decoded balances here.</p>
+                      <p className="text-sm text-secondary">Run the batch to see decoded balances here.</p>
                     ),
                 request: { method: "eth_call", params: [requestCall, "latest"] },
               }
@@ -209,4 +209,4 @@ export function MulticallDemo() {
       />
     </DemoShell>
   );
-}
+};

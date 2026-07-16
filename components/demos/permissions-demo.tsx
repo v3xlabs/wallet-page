@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { formatError, rpc } from "../../lib/ethereum";
@@ -13,29 +14,30 @@ import { useDemoFrame } from "../wallet/DemoFrame";
 import { DemoShell } from "../wallet/DemoShell";
 import { useWallet } from "../wallet/WalletProvider";
 
-function CapabilityChecklist({ groups }: { groups: CapabilityGroup[]; }) {
-  return (
-    <div className="wallet-perm-checklist">
-      {groups.map(group => (
-        <ul key={group.prefix} className="wallet-perm-opcode-list">
-          {group.items.map(item => (
-            <li key={item.id}>
-              <span
-                className={`wallet-perm-mark${item.granted ? " wallet-perm-mark-yes" : ""}`}
-                aria-label={item.granted ? "granted" : "not granted"}
-              >
-                {item.granted ? "✓" : "−"}
-              </span>
-              <code>{item.id}</code>
-            </li>
-          ))}
-        </ul>
-      ))}
-    </div>
-  );
-}
+const CapabilityChecklist = ({ groups }: { groups: CapabilityGroup[]; }) => (
+  <div className="grid grid-cols-[repeat(auto-fill,minmax(11.5rem,1fr))] items-start gap-x-5 gap-y-2">
+    {groups.map(group => (
+      <ul key={group.prefix} className="flex min-w-0 list-none flex-col gap-0.5 p-0">
+        {group.items.map(item => (
+          <li key={item.id} className="flex items-baseline gap-2 text-[13px] leading-snug">
+            <span
+              className={classNames(
+                "flex-none basis-4 text-center font-semibold select-none",
+                item.granted ? "text-success" : "text-secondary",
+              )}
+              aria-label={item.granted ? "granted" : "not granted"}
+            >
+              {item.granted ? "✓" : "-"}
+            </span>
+            <code className="font-mono text-[13px]">{item.id}</code>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+);
 
-export function PermissionsDemo() {
+export const PermissionsDemo = () => {
   const baseId = useId();
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
@@ -113,7 +115,7 @@ export function PermissionsDemo() {
 
       setError(
         message.includes("-32601") || message.includes("not found")
-          ? `${message}\n\nwallet_revokePermissions is recommended for revocable grants — some wallets are still adding support.`
+          ? `${message}\n\nwallet_revokePermissions is recommended for revocable grants - some wallets are still adding support.`
           : message,
       );
     }
@@ -128,11 +130,11 @@ export function PermissionsDemo() {
 
   return (
     <DemoShell source="components/demos/permissions-demo.tsx">
-      <div className="wallet-perm-demo">
-        <div className="wallet-demo-actions wallet-perm-demo-toolbar">
+      <div className="flex flex-col gap-2.5">
+        <div className="mb-1.5 flex flex-wrap justify-end gap-2">
           <button
             type="button"
-            className="wallet-demo-btn"
+            className="demo-btn"
             disabled={pending}
             onClick={() => void getPermissions()}
           >
@@ -140,7 +142,7 @@ export function PermissionsDemo() {
           </button>
           <button
             type="button"
-            className="wallet-demo-btn wallet-demo-btn-primary"
+            className="demo-btn demo-btn-primary"
             disabled={pending}
             onClick={() => void requestPermissions()}
           >
@@ -148,7 +150,7 @@ export function PermissionsDemo() {
           </button>
           <button
             type="button"
-            className="wallet-demo-btn"
+            className="demo-btn"
             disabled={pending}
             onClick={() => void revokePermissions()}
           >
@@ -156,15 +158,20 @@ export function PermissionsDemo() {
           </button>
         </div>
 
-        <div className="wallet-demo-tabs">
-          <div className="wallet-demo-tab-list" role="tablist" aria-label="Permission views">
+        <div className="overflow-hidden rounded-md border border-primary bg-surfaceMuted">
+          <div className="flex border-b border-primary bg-code-block" role="tablist" aria-label="Permission views">
             <button
               type="button"
               role="tab"
               id={`${baseId}-capabilities`}
               aria-selected={tab === "capabilities"}
               aria-controls={`${baseId}-panel-capabilities`}
-              className={`wallet-demo-tab${tab === "capabilities" ? " wallet-demo-tab-active" : ""}`}
+              className={classNames(
+                "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
+                tab === "capabilities"
+                  ? "text-primary"
+                  : "text-secondary hover:text-primary",
+              )}
               onClick={() => setTab("capabilities")}
             >
               Capabilities
@@ -175,7 +182,12 @@ export function PermissionsDemo() {
               id={`${baseId}-raw`}
               aria-selected={tab === "raw"}
               aria-controls={`${baseId}-panel-raw`}
-              className={`wallet-demo-tab${tab === "raw" ? " wallet-demo-tab-active" : ""}`}
+              className={classNames(
+                "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
+                tab === "raw"
+                  ? "text-primary"
+                  : "text-secondary hover:text-primary",
+              )}
               onClick={() => setTab("raw")}
             >
               Response
@@ -187,17 +199,17 @@ export function PermissionsDemo() {
               id={`${baseId}-panel-capabilities`}
               role="tabpanel"
               aria-labelledby={`${baseId}-capabilities`}
-              className="wallet-demo-tab-panel wallet-perm-tab-panel"
+              className="min-h-14 px-3.5 py-2"
             >
               {pending && granted.size === 0 && !error
                 ? (
-                    <p className="wallet-demo-muted">Loading…</p>
+                    <p className="text-sm text-secondary">Loading…</p>
                   )
                 : (
                     <CapabilityChecklist groups={groups} />
                   )}
               {error && (
-                <pre className="wallet-perm-error">{error}</pre>
+                <pre className="mt-2.5 font-mono text-[13px] whitespace-pre-wrap text-destructive wrap-break-word">{error}</pre>
               )}
             </div>
           )}
@@ -207,18 +219,18 @@ export function PermissionsDemo() {
               id={`${baseId}-panel-raw`}
               role="tabpanel"
               aria-labelledby={`${baseId}-raw`}
-              className="wallet-demo-tab-panel wallet-demo-rpc"
+              className="min-h-14 px-3.5 py-3"
             >
               {error
                 ? (
-                    <pre className="wallet-perm-error">{error}</pre>
+                    <pre className="mt-2.5 font-mono text-[13px] whitespace-pre-wrap text-destructive wrap-break-word">{error}</pre>
                   )
                 : (raw
                     ? (
-                        <pre>{raw}</pre>
+                        <pre className="font-mono text-[13px] leading-normal whitespace-pre-wrap wrap-break-word">{raw}</pre>
                       )
                     : (
-                        <p className="wallet-demo-muted">
+                        <p className="text-sm text-secondary">
                           {pending ? "Loading…" : "No response yet."}
                         </p>
                       ))}
@@ -228,4 +240,4 @@ export function PermissionsDemo() {
       </div>
     </DemoShell>
   );
-}
+};

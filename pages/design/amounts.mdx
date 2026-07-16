@@ -1,0 +1,40 @@
+import { AmountDisplayDemo, AmountInputDemo } from "../../components/design/amounts/amounts";
+
+# Input and display of amounts
+
+`1,000` can mean one thousand or one. An amount entered as text has no unambiguous meaning without a locale.
+
+Wallets should use the user's preferred locale for both displaying and entering amounts. Default to the device locale and let the user override it in settings whilst getting asset decimals from the asset metadata.
+
+
+:::note
+Never guess what a separator means, and never pass an asset amount through a floating-point number.
+:::
+
+### Input
+
+<AmountInputDemo />
+Read the amount as text using one explicit locale. Accept that locale's digits, separators, and grouping pattern; reject misplaced grouping, unknown separators, and fractions longer than the asset supports. For locales whose grouping separator is whitespace, treating other Unicode whitespace characters as equivalent makes pasted values more reliable. Unicode formatting controls used for bidirectional text can be ignored safely.
+
+An interface should retain an incomplete value while the user is typing, but an invalid value must not reach confirmation or signing.
+
+### Display
+
+<AmountDisplayDemo />
+
+Start with integer base units, insert the decimal point using the asset's decimals, then format the exact value using the user's locale. Avoid intermediate floating-point numbers if possible.
+
+## Test cases
+
+| Input | Locale | Decimals | Result |
+| --- | --- | ---: | ---: |
+| `1.000` | `en-US` | 3 | `1000` |
+| `1,000` | `de-DE` | 3 | `1000` |
+| `1.000` | `de-DE` | 3 | `1000000` |
+| `١٬٢٣٤٫٥٦` | `ar-EG` | 2 | `123456` |
+| `1,23,456.78` | `hi-IN` | 2 | `12345678` |
+| `1,00` | `en-US` | 2 | Keep typing: incomplete grouping |
+| `1,0000` | `en-US` | 2 | Reject: invalid grouping |
+| `1.0001` | `en-US` | 3 | Reject: too many decimals |
+
+See [Implementing localized amounts](/design/amounts/implementation) for more details on parsing and formatting.

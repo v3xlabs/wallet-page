@@ -9,7 +9,7 @@ import { MiniDemo } from "../../wallet/MiniDemo";
 import { useWallet } from "../../wallet/WalletProvider";
 import { ChainSelect } from "./chain-select";
 
-export function SwitchChainMiniDemo() {
+export const SwitchChainMiniDemo = () => {
   const { session, refreshSession } = useWallet();
   const [chainId, setChainId] = useState<Hex>("0xaa36a7");
   const [response, setResponse] = useState<string>();
@@ -69,4 +69,4 @@ export function SwitchChainMiniDemo() {
       }}
     />
   );
-}
+};

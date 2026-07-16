@@ -34,6 +34,5 @@ export const DEMO_CHAINS: DemoChain[] = [
   },
 ];
 
-export function getDemoChain(chainId: Hex) {
-  return DEMO_CHAINS.find(c => c.chainId.toLowerCase() === chainId.toLowerCase());
-}
+export const getDemoChain = (chainId: Hex) =>
+  DEMO_CHAINS.find(c => c.chainId.toLowerCase() === chainId.toLowerCase());

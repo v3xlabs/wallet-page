@@ -9,17 +9,26 @@ importers:
   .:
     dependencies:
       '@openlv/connector':
-        specifier: 0.0.1-beta.13
-        version: 0.0.1-beta.13(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+        specifier: 0.0.3
+        version: 0.0.3(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
       '@openlv/core':
-        specifier: 0.0.1-beta.10
-        version: 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+        specifier: 0.0.2
+        version: 0.0.2
       '@openlv/modal':
-        specifier: 0.0.1-beta.12
-        version: 0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+        specifier: 0.0.3
+        version: 0.0.3(tailwindcss@4.3.0)(typescript@6.0.3)(zod@4.4.3)
       '@openlv/provider':
-        specifier: 0.0.1-beta.12
-        version: 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+        specifier: 0.0.3
+        version: 0.0.3(typescript@6.0.3)(zod@4.4.3)
+      blo:
+        specifier: ^2.0.0
+        version: 2.0.0
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
+      qr:
+        specifier: ^0.6.0
+        version: 0.6.0
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -583,48 +592,29 @@ packages:
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
 
-  '@openlv/connector@0.0.1-beta.13':
-    resolution: {integrity: sha512-VyODHtm6xKnNe82zcwkdTRdnmMuiin/YtexLSE3lPS9noGt1G3wdcIm1dA0DimcZaeEJJtXL6hzH3Z6E/dAc/A==}
+  '@openlv/connector@0.0.3':
+    resolution: {integrity: sha512-V1EhBRbyueEkyvJ4ncigI4fFTOxDg24pkcFI7u5fnjsOReTPuCzX7XXPlPfpjAA7b5fEJywUnEHxhbjE1IO0lQ==}
     peerDependencies:
-      '@wagmi/core': '2'
+      '@wagmi/core': '3'
       viem: '2'
 
-  '@openlv/core@0.0.1-beta.10':
-    resolution: {integrity: sha512-AO3BGSoL4kvOzsXyC2JshOVTZq0m9iSYUbGg3jxh4Qcikw74h/et/QT0naD57D/djjC/fBSfwNX+L5CArjI9Xg==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-      wagmi: '2'
+  '@openlv/core@0.0.2':
+    resolution: {integrity: sha512-Q7ISpgQX8YkKw25hs76SgDjsIosFkiA/28P/p9b+MvpnN8cymCJDauWA31SSNSyMOrsOS/iMK4I5VHCcwwC5RA==}
 
-  '@openlv/modal@0.0.1-beta.12':
-    resolution: {integrity: sha512-f56JE0P1/SuCk3xjMtj065JuxvEaYMOImK3a3wmfWHZeNnVWrSvsp/OO+SsBX+Bb44b/Sa2fZuNmyAKhVehQDw==}
+  '@openlv/modal@0.0.3':
+    resolution: {integrity: sha512-4LH3OfFsjQe3dNUSroqvgoffyPVO6arHe+1uUht+C/210w5Bqak0QFHVRXfenkYx1yzcEpwDXfYiGx2G96f19A==}
 
-  '@openlv/provider@0.0.1-beta.12':
-    resolution: {integrity: sha512-yCZKkppuHyHMd2c82L9owi2vYIVDkZd38LWpq2sOlWiQamyDrtCznyCn4uQpgeuqBlOcW5j8+KftB86a+J1rNg==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
+  '@openlv/provider@0.0.3':
+    resolution: {integrity: sha512-Ma1/sJr/g+hWt3fEt6ESl5G4v72za9dCq7QQk4EesD9gfw6QSvvgpvQjZs3v/BFwNYK+i9hzaGQy8yZ36zIlSg==}
 
-  '@openlv/session@0.0.1-beta.12':
-    resolution: {integrity: sha512-s6vnOWX6Fd8fiy1ZG6uNVNCfVQoqBQ9Soz3Ji/BNnukU47gfEBGSZakWapeopSoDlcuFtd0T8TUkW6xAGNPXNQ==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-      wagmi: '2'
+  '@openlv/session@0.0.3':
+    resolution: {integrity: sha512-s5Q6BIYAXEnmGuOIW3IQYbY1qW9YS5R5ytgwEjSYWJHiJCOVBu8gcNCQ9NIZ9wI6XLlprKFSdHkw6pzP7pAx4g==}
 
-  '@openlv/signaling@0.0.1-beta.9':
-    resolution: {integrity: sha512-Jfn47nu0mpDxeUKYEtgRBMOFKAoQLzQyA6A8jTHfS8mwpwa8Z8oBhMWy0QZCM19Q/kbVkzQHMr41jOxeVwSgtQ==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-      wagmi: '2'
+  '@openlv/signaling@0.0.3':
+    resolution: {integrity: sha512-U2WBRN05DjC6keeTWG7p2WAcm71XDkHjqC8GMpU6LeCcmoqAHIO/rfLcRZxpr3E+BImSblLVe6nwuImAN/v5tg==}
 
-  '@openlv/transport@0.0.1-beta.9':
-    resolution: {integrity: sha512-qhXhN4OTwlAnmL9Q4V6TxMbqdatxIlFsrU1aoBIJFbqrlhRDrTrQs7c9TDixQe3RBWhdN9D7hy+DB6fl4i0RGQ==}
-    peerDependencies:
-      '@wagmi/core': '2'
-      viem: '2'
-      wagmi: '2'
+  '@openlv/transport@0.0.3':
+    resolution: {integrity: sha512-nqQnYk/jATPx25zIHFG409sVlNRrDYjxrqXFkmr+zmSlbBSq29Blk/XzwK/7xCcaiDf4tZu+hnf2V0b2YU2IuQ==}
 
   '@oxc-project/types@0.132.0':
     resolution: {integrity: sha512-FESMOxil5Se014ui/Eq8fT5uHJo6nIRwH0PfJrZJXs6Gek3ZVFOrpUv3YIZT20m+extU98Hg1Ym72U58rlsxUQ==}
@@ -1285,6 +1275,9 @@ packages:
     resolution: {integrity: sha512-wbPvpyjJPC0zdfdKXxqEL3Ea+bOMD/87X4lftiJkkaBiuG6ALQy1SLmEd7BSmVCuwCQsBrCamgBoLyfFDD1EPg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+
+  blo@2.0.0:
+    resolution: {integrity: sha512-VUUr1+vWisNSaHVswkbPbk1+GhygClKILkGchae7nsyuJ4ZVz5l1hEW4eR5F/ly/asM5vzigYGXjPnvrd//CVg==}
 
   body-parser@2.2.2:
     resolution: {integrity: sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA==}
@@ -2883,8 +2876,9 @@ packages:
     resolution: {integrity: sha512-KTqnxsgGiQ6ZAzZCVlJH5eOjSnvlyEgx1m8bkRJfOhmGRqfo5KLvmAlACQkrjEtOQ4B7wF9TdSLIs9O90MX9xA==}
     engines: {node: '>=16.0.0'}
 
-  qrcode-generator@1.5.2:
-    resolution: {integrity: sha512-pItrW0Z9HnDBnFmgiNrY1uxRdri32Uh9EjNYLPVC2zZ3ZRIIEqBoDgm4DkvDwNNDHTK7FNkmr8zAa77BYc9xNw==}
+  qr@0.6.0:
+    resolution: {integrity: sha512-P23VoX7SipHALdiIYG+D+LT/6n22dNKwV92FAb3d+Nlki/5WisSsfLt0UDFz2XEBtuwrECTznvu+chKKFCSYhA==}
+    engines: {node: '>= 20.19.0'}
 
   qs@6.15.2:
     resolution: {integrity: sha512-Rzq0KEyX/w/tEybncDgdkZrJgVUsUMk3xjh3t5bv3S1HTAtg+uOYt72+ZfwiQwKdysThkTBdL/rTi6HDmX9Ddw==}
@@ -4301,11 +4295,11 @@ snapshots:
 
   '@open-draft/deferred-promise@2.2.0': {}
 
-  '@openlv/connector@0.0.1-beta.13(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
+  '@openlv/connector@0.0.3(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/modal': 0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
-      '@openlv/provider': 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
+      '@openlv/core': 0.0.2
+      '@openlv/modal': 0.0.3(tailwindcss@4.3.0)(typescript@6.0.3)(zod@4.4.3)
+      '@openlv/provider': 0.0.3(typescript@6.0.3)(zod@4.4.3)
       eventemitter3: 5.0.1
       viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
     transitivePeerDependencies:
@@ -4314,92 +4308,82 @@ snapshots:
       - tailwindcss
       - typescript
       - utf-8-validate
-      - wagmi
       - zod
 
-  '@openlv/core@0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/core@0.0.2':
     dependencies:
       '@noble/ciphers': 1.3.0
       '@noble/curves': 1.9.7
       eventemitter3: 5.0.1
-      viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
 
-  '@openlv/modal@0.0.1-beta.12(tailwindcss@4.3.0)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
+  '@openlv/modal@0.0.3(tailwindcss@4.3.0)(typescript@6.0.3)(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/provider': 0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)
-      '@openlv/session': 0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.2
+      '@openlv/provider': 0.0.3(typescript@6.0.3)(zod@4.4.3)
+      '@openlv/session': 0.0.3
+      '@openlv/signaling': 0.0.3
       classnames: 2.5.1
       eventemitter3: 5.0.1
       lucide-solid: 0.574.0(solid-js@1.9.13)
       ox: 0.9.17(typescript@6.0.3)(zod@4.4.3)
-      qrcode-generator: 1.5.2
+      qr: 0.6.0
       solid-element: 1.9.1(solid-js@1.9.13)
       solid-icons: 1.2.0(solid-js@1.9.13)
       solid-js: 1.9.13
       tailwind-variants: 3.2.2(tailwindcss@4.3.0)
     transitivePeerDependencies:
-      - '@wagmi/core'
       - bufferutil
       - tailwind-merge
       - tailwindcss
       - typescript
       - utf-8-validate
-      - viem
-      - wagmi
       - zod
 
-  '@openlv/provider@0.0.1-beta.12(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))(zod@4.4.3)':
+  '@openlv/provider@0.0.3(typescript@6.0.3)(zod@4.4.3)':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/session': 0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/transport': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.2
+      '@openlv/session': 0.0.3
+      '@openlv/signaling': 0.0.3
+      '@openlv/transport': 0.0.3
       eventemitter3: 5.0.1
       ox: 0.9.17(typescript@6.0.3)(zod@4.4.3)
       ts-pattern: 5.9.0
-      viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
-      - wagmi
       - zod
 
-  '@openlv/session@0.0.1-beta.12(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/session@0.0.3':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/signaling': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
-      '@openlv/transport': 0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.2
+      '@openlv/signaling': 0.0.3
+      '@openlv/transport': 0.0.3
       eventemitter3: 5.0.1
       globals: 16.5.0
       ts-pattern: 5.9.0
-      viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/signaling@0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/signaling@0.0.3':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.2
       eventemitter3: 5.0.1
       globals: 16.5.0
       gun: 0.2020.1241
       ts-pattern: 5.9.0
-      viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
       websocket-mqtt: 0.0.7
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/transport@0.0.1-beta.9(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))':
+  '@openlv/transport@0.0.3':
     dependencies:
-      '@openlv/core': 0.0.1-beta.10(viem@2.51.3(typescript@6.0.3)(zod@4.4.3))
+      '@openlv/core': 0.0.2
       eventemitter3: 5.0.1
       globals: 16.5.0
       ts-pattern: 5.9.0
-      viem: 2.51.3(typescript@6.0.3)(zod@4.4.3)
 
   '@oxc-project/types@0.132.0': {}
 
@@ -5060,6 +5044,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   baseline-browser-mapping@2.10.32: {}
+
+  blo@2.0.0: {}
 
   body-parser@2.2.2:
     dependencies:
@@ -7123,7 +7109,7 @@ snapshots:
   pvutils@1.1.5:
     optional: true
 
-  qrcode-generator@1.5.2: {}
+  qr@0.6.0: {}
 
   qs@6.15.2:
     dependencies:

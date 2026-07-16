@@ -10,7 +10,7 @@ import { WalletActionPanel } from "../wallet/preview/WalletActionPanel";
 import { WalletAssetSearch } from "../wallet/WalletAssetSearch";
 import { useWallet } from "../wallet/WalletProvider";
 
-export function Eip7811Demo() {
+export const Eip7811Demo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [assets, setAssets] = useState<ReturnType<typeof parseWalletGetAssetsResponse>>(
@@ -51,7 +51,7 @@ export function Eip7811Demo() {
         message.includes("not found")
         || message.includes("Unsupported")
         || message.includes("-32601")
-          ? `${message}\n\nwallet_getAssets is not implemented yet — see ERC-7811 and wallet_getCapabilities (assetDiscovery).`
+          ? `${message}\n\nwallet_getAssets is not implemented yet - see ERC-7811 and wallet_getCapabilities (assetDiscovery).`
           : message,
       );
     }
@@ -92,7 +92,7 @@ export function Eip7811Demo() {
         inspector={{
           user: (
             <>
-              {error && <pre className="wallet-asset-search-error">{error}</pre>}
+              {error && <pre className="mt-3 font-mono text-[13px] text-destructive whitespace-pre-wrap wrap-break-word">{error}</pre>}
               <WalletAssetSearch
                 assets={assets}
                 loading={pending && assets.length === 0}
@@ -119,4 +119,4 @@ export function Eip7811Demo() {
       />
     </DemoShell>
   );
-}
+};

@@ -28,31 +28,29 @@ const UNWRAP_ETH = {
   value: "0x0" as const,
 };
 
-function CallsBatchPreview({
+const CallsBatchPreview = ({
   chainId,
   calls,
 }: {
   chainId: string;
   calls: { to: string; value?: string; }[];
-}) {
-  return (
-    <ul className="wallet-preview-batch-list">
-      {calls.map((call, i) => (
-        <li key={`${call.to}-${i}`}>
-          <span className="wallet-preview-batch-index">{i + 1}</span>
-          <Address address={call.to} />
-          <span className="wallet-demo-muted">
-            chain
-            {" "}
-            <code>{chainId}</code>
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+}) => (
+  <ul className="flex list-none flex-col gap-1.5 p-0">
+    {calls.map((call, i) => (
+      <li key={`${call.to}-${i}`} className="flex items-center gap-2 text-[13px]">
+        <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-code-block text-xs font-semibold">{i + 1}</span>
+        <Address address={call.to} />
+        <span className="text-sm text-secondary">
+          chain
+          {" "}
+          <code className="font-mono text-[13px] break-all">{chainId}</code>
+        </span>
+      </li>
+    ))}
+  </ul>
+);
 
-export function EthSendCallsDemo() {
+export const EthSendCallsDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [response, setResponse] = useState<string>();
@@ -116,7 +114,7 @@ export function EthSendCallsDemo() {
         message.includes("not found")
         || message.includes("Unsupported")
         || message.includes("-32601")
-          ? `${message}\n\nImplementing EIP-5792 (wallet_sendCalls / wallet_getCapabilities) is recommended — this response usually means those RPCs are not wired up yet.`
+          ? `${message}\n\nImplementing EIP-5792 (wallet_sendCalls / wallet_getCapabilities) is recommended - this response usually means those RPCs are not wired up yet.`
           : message,
       );
     }
@@ -169,4 +167,4 @@ export function EthSendCallsDemo() {
       />
     </DemoShell>
   );
-}
+};

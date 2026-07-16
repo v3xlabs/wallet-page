@@ -10,7 +10,7 @@ import { useWallet } from "../wallet/WalletProvider";
 
 const ZERO_HASH = `0x${"00".repeat(32)}`;
 
-export function EthSignDemo() {
+export const EthSignDemo = () => {
   const { session } = useWallet();
   const { requireSession } = useDemoFrame();
   const [signature, setSignature] = useState<string>();
@@ -46,10 +46,10 @@ export function EthSignDemo() {
         inspector={{
           user: (
             <>
-              <p className="wallet-preview-warning">
-                Not human-readable — wallets should warn before signing a raw hash.
+              <p className="mb-2 text-sm leading-snug text-warning">
+                Not human-readable - wallets should warn before signing a raw hash.
               </p>
-              <code className="wallet-preview-hash">{ZERO_HASH}</code>
+              <code className="block font-mono text-xs break-all whitespace-pre-wrap">{ZERO_HASH}</code>
             </>
           ),
           request: {
@@ -57,7 +57,7 @@ export function EthSignDemo() {
             params: [session?.accounts[0] ?? "0x…", ZERO_HASH],
           },
           hash: ZERO_HASH,
-          hashNote: "eth_sign — wallet signs this 32-byte value (no EIP-191 prefix).",
+          hashNote: "eth_sign - wallet signs this 32-byte value (no EIP-191 prefix).",
         }}
         response={signature}
         error={error}
@@ -66,4 +66,4 @@ export function EthSignDemo() {
       />
     </DemoBlock>
   );
-}
+};

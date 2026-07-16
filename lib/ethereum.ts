@@ -8,62 +8,54 @@ export type EthereumWindow = Window & {
   ethereum?: EIP1193Provider;
 };
 
-export function getInjectedProvider(): EIP1193Provider | undefined {
+export const getInjectedProvider = (): EIP1193Provider | undefined => {
   if (globalThis.window === undefined) return undefined;
 
   return (globalThis as EthereumWindow).ethereum;
-}
+};
 
-export async function requestAccounts(
+export const requestAccounts = async (
   provider: EIP1193Provider,
-): Promise<Address[]> {
-  return provider.request({
-    method: "eth_requestAccounts",
-    params: [],
-  }) as Promise<Address[]>;
-}
+): Promise<Address[]> => provider.request({
+  method: "eth_requestAccounts",
+  params: [],
+}) as Promise<Address[]>;
 
-export async function getAccounts(
+export const getAccounts = async (
   provider: EIP1193Provider,
-): Promise<Address[]> {
-  return provider.request({
-    method: "eth_accounts",
-    params: [],
-  }) as Promise<Address[]>;
-}
+): Promise<Address[]> => provider.request({
+  method: "eth_accounts",
+  params: [],
+}) as Promise<Address[]>;
 
-export async function getChainId(provider: EIP1193Provider): Promise<Hex> {
-  return provider.request({
+export const getChainId = async (provider: EIP1193Provider): Promise<Hex> =>
+  provider.request({
     method: "eth_chainId",
     params: [],
   }) as Promise<Hex>;
-}
 
 export type RpcResult = unknown;
 
-export async function rpc(
+export const rpc = async (
   provider: EIP1193Provider,
   method: string,
   params: unknown[] = [],
-): Promise<RpcResult> {
-  return provider.request({ method, params } as never);
-}
+): Promise<RpcResult> => provider.request({ method, params } as never);
 
 /** JSON.stringify for RPC payloads — bigint fields must not be bigint literals. */
-export function stringifyRpcData(data: unknown): string {
-  return JSON.stringify(data, (_key, value) =>
+export const stringifyRpcData = (data: unknown): string =>
+  JSON.stringify(data, (_key, value) =>
     (typeof value === "bigint" ? value.toString() : value),
   );
-}
 
-function demoJsonReplacer(_key: string, value: unknown) {
+const demoJsonReplacer = (_key: string, value: unknown) => {
   if (typeof value === "bigint") return value.toString();
 
   return value;
-}
+};
 
 /** Pretty-print any RPC result or error for demo Response tabs. */
-export function formatDemoOutput(value: unknown): string {
+export const formatDemoOutput = (value: unknown): string => {
   if (value === undefined) return "";
 
   if (value === null) return "null";
@@ -101,11 +93,9 @@ export function formatDemoOutput(value: unknown): string {
   }
 
   return String(value);
-}
+};
 
-export function formatError(error: unknown): string {
-  return formatDemoOutput(error);
-}
+export const formatError = (error: unknown): string => formatDemoOutput(error);
 
 /** EIP-6963 provider detail from `eip6963:announceProvider`. */
 export type Eip6963ProviderDetail = {
@@ -118,14 +108,14 @@ export type Eip6963ProviderDetail = {
   provider: EIP1193Provider;
 };
 
-export function requestEip6963Providers() {
+export const requestEip6963Providers = () => {
   globalThis.dispatchEvent(new Event("eip6963:requestProvider"));
-}
+};
 
-export function listenEip6963Providers(
+export const listenEip6963Providers = (
   onProvider: (detail: Eip6963ProviderDetail) => void,
   options?: { requestOnMount?: boolean; },
-): () => void {
+): (() => void) => {
   const handler = (event: Event) => {
     const detail = (event as CustomEvent<Eip6963ProviderDetail>).detail;
 
@@ -147,4 +137,4 @@ export function listenEip6963Providers(
       handler as EventListener,
     );
   };
-}
+};

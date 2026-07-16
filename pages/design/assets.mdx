@@ -1,0 +1,27 @@
+import { AssetsDemo } from "../../components/design/assets/assets";
+
+# Assets
+
+:::note
+This page is under construction.
+:::
+
+<AssetsDemo />
+
+- assets should be added to the wallet as a whole
+- assets should be user enabled per account
+
+## Metadata
+
+You can fetch from contract directly:
+- name
+- symbol
+- decimals
+- totalSupply
+
+## Discovery
+
+- discovering assets is difficult, generally server offloaded, requires indexing
+- newly discovered tokens should NOT be auto-added, unless user interaction explicitly caused them or the user opted in
+- newly discovered tokens should be listed in a discoverable secondary list
+- the primary token list should be reserved for user opted-in tokens

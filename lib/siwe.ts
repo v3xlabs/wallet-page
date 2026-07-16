@@ -8,11 +8,11 @@ export type { SiweMessage } from "viem/siwe";
 
 export const SIWE_DEMO_STATEMENT = "Sign in to wallet.page demos.";
 
-export function buildSiweMessage(
+export const buildSiweMessage = (
   address: Address,
   chainId: number,
   nonce = generateSiweNonce(),
-) {
+) => {
   const domain
     = globalThis.window === undefined ? "wallet.page" : globalThis.location.host;
   const uri
@@ -29,6 +29,6 @@ export function buildSiweMessage(
     version: "1",
     statement: SIWE_DEMO_STATEMENT,
   });
-}
+};
 
 export { generateSiweNonce, parseSiweMessage } from "viem/siwe";

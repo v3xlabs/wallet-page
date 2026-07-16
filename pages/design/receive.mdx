@@ -1,0 +1,38 @@
+import { ReceiveDemo } from "../../components/design/receive/receive";
+
+# Receive Assets
+
+To receive assets in ethereum all one really needs to share is their ethereum address.
+Sharing an ethereum address can easily be done via QR, text, or even a link.
+
+<ReceiveDemo />
+
+## Example URLs
+
+There are a couple variations of the URL format you can leverage to provide a nice interface for users.
+[EIP-681](https://eips.ethereum.org/EIPS/eip-681) is a URL standard that allows for specifying a preferred network, asset, and even amount.
+
+**Just the address**, this will open a common [Send Flow](/design/send) and allow for choosing an asset and amount.
+
+```
+ethereum:0x1234567890123456789012345678901234567890
+```
+
+**ERC-20 Transfer with amount**, this will open a common [Send Flow](/design/send) and prefills recipient, asset, and amount.
+In this case 1 USDC on Ethereum Mainnet.
+
+```go
+ethereum:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48@1/transfer?uint256=1000000&address=0x1234567890123456789012345678901234567890
+│        │                                         │ │        │               └─ recipient
+│        │                                         │ │        └─ amount in base units (1 USDC)
+│        │                                         │ └─ function to call
+│        │                                         └─ chain id (Ethereum Mainnet)
+│        └─ token contract (USDC)
+└─ URI scheme
+```
+
+**Raw ethereum address**, some apps might only support this format, therefore its recommended to display this as an option and parse accordingly.
+
+```
+0x1234567890123456789012345678901234567890
+```

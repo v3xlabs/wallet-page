@@ -17,6 +17,8 @@
       };
     in {
       devShells.default = pkgs.mkShell {
+        npm_config_auto_install_peers = "false";
+
         packages = with pkgs; [
           nodejs_24
           pnpm_11
