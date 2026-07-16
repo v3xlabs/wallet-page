@@ -3,14 +3,21 @@ import { NetworkListDemo } from "../../components/design/networks/list";
 
 # RPC & networks
 
-:::note
-This page is under construction.
-:::
+Networks and Remote Procedure Call (RPC) is the core source of ethereum information.
+All data displayed in the wallet can generally be derived from RPC requests.
+
+Users should be able to configure their networks, deciding exactly where their information is sourced from and how its loaded, be this via JSON-RPC, a lightclient, or other methods.
 
 <NetworkListDemo />
 
-- all data where possible should be directly sourced from the network's rpc
-- networks should be configured by user
-- adding networks from a dapp via [network discovery](/networks#wallet_addethereumchain-eip-3085)
+## Adding a new network
+
+In addition to the user configuring the network settings themselves, dApps may surface buttons to "add a network to wallet".
+You can read more about this on the [network discovery](/networks#wallet_addethereumchain-eip-3085) section.
+
+Here is an example of what a wallet would show when a dApp requests a new network to be added.
 
 <AddNetworkDemo />
+
+An important note when accepting requests from dApps is that the "RPC URL" is the ultimate source of truth of the data.
+Meaning if a user already had a network configured, we should be careful.

@@ -138,14 +138,19 @@ export const AssetsDemo = () => {
                       justAdded={justAdded === token.symbol}
                     />
                   ))}
-                  <HiddenShelf
-                    dust={dust}
-                    userHidden={userHidden}
-                    open={shelfOpen}
-                    onToggle={() => setShelfOpen(open => !open)}
-                    onShow={symbol =>
-                      setHiddenSymbols(current => current.filter(hidden => hidden !== symbol))}
-                  />
+                  {
+                    dust.length + userHidden.length != 0
+                    && (
+                      <HiddenShelf
+                        dust={dust}
+                        userHidden={userHidden}
+                        open={shelfOpen}
+                        onToggle={() => setShelfOpen(open => !open)}
+                        onShow={symbol =>
+                          setHiddenSymbols(current => current.filter(hidden => hidden !== symbol))}
+                      />
+                    )
+                  }
                 </div>
                 <style>
                   {"@keyframes design-token-in { from { opacity: 0; transform: translateY(6px); } }"}

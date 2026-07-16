@@ -2,26 +2,24 @@ import { AssetsDemo } from "../../components/design/assets/assets";
 
 # Assets
 
-:::note
-This page is under construction.
-:::
-
 <AssetsDemo />
 
-- assets should be added to the wallet as a whole
-- assets should be user enabled per account
+Assets are kept track of wallet-wide, and can be opted-in to on an account by account basis.
+Wallets generally show balance, the amount the user has, and value, the worth of said value in the preferred display currency.
 
 ## Metadata
 
-You can fetch from contract directly:
-- name
-- symbol
-- decimals
-- totalSupply
+When a new asset is introduced the wallet can use the RPC to retrieve the name, symbol & decimals.
+For the native asset on a network this is generally configured network wide.
+
+You can read more about [read more about erc20]() on the ERC20 page.
+
+## Formatting
+
+It is important to get formatting right, refer to the [amounts](/design/amounts) page.
 
 ## Discovery
 
-- discovering assets is difficult, generally server offloaded, requires indexing
-- newly discovered tokens should NOT be auto-added, unless user interaction explicitly caused them or the user opted in
-- newly discovered tokens should be listed in a discoverable secondary list
-- the primary token list should be reserved for user opted-in tokens
+A wallet may come across assets that the user has not explicitly defined themselves beforehand.
+Perhaps because the user just received them, transacted, or interacted in any way.
+Newly discovered assets should not be auto-added, but rather surfaced in the account asset management flow.
