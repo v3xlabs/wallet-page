@@ -132,10 +132,6 @@ export const ManageScreen: FC<{
           <span className="text-[11px] font-medium tracking-wide text-warning uppercase">
             Discovered on-chain
           </span>
-          <span className="text-xs text-muted">
-            Contracts that sent tokens to your address land here - the one route spam can take.
-            Nothing shows on the account until you add it.
-          </span>
         </div>
         {discovered.map(item => (
           <div key={item.token.address} className="flex items-center gap-3 px-4 py-2.5">

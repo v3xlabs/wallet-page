@@ -58,7 +58,7 @@ export const ImportingDemo = () => {
 
   return (
     <DemoShell source="components/design/importing/importing.tsx">
-      <WalletFrame className="min-h-[440px]">
+      <WalletFrame>
         <WalletHeader title="Import account" />
         {imported
           ? <SuccessScreen result={imported} onDone={() => setImported(undefined)} />
