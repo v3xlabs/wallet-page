@@ -108,7 +108,7 @@ export const PhraseScreen = ({ onImport }: { onImport: (result: ImportResult) =>
               ? (
                   <span className="flex items-center justify-center gap-2">
                     <Spinner />
-                    Importing…
+                    Importing...
                   </span>
                 )
               : "Import wallet"}

@@ -114,17 +114,17 @@ export const MulticallDemo = () => {
         raw,
       ) as [Array<{ success: boolean; returnData: Hex; }>];
 
-      const decoded: BatchResult[] = returnValues.map((r, i) => {
-        const label = calls[i]?.label ?? `Call ${i}`;
+      const decoded: BatchResult[] = returnValues.map((r, index) => {
+        const label = calls[index]?.label ?? `Call ${index}`;
 
         if (!r.success || r.returnData === "0x") {
           return { label, value: "call failed", success: false };
         }
 
         try {
-          const [val] = decodeAbiParameters(parseAbiParameters("uint256"), r.returnData);
+          const [value] = decodeAbiParameters(parseAbiParameters("uint256"), r.returnData);
 
-          return { label, value: `${formatEther(val as bigint)} ETH`, success: true };
+          return { label, value: `${formatEther(value as bigint)} ETH`, success: true };
         }
         catch {
           return { label, value: r.returnData, success: true };
@@ -200,7 +200,7 @@ export const MulticallDemo = () => {
         pending={pending}
         actions={[
           {
-            label: pending ? "Fetching…" : "Run batch",
+            label: pending ? "Fetching..." : "Run batch",
             onClick: runBatch,
             primary: true,
             disabled: calls.length === 0,

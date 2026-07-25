@@ -40,13 +40,13 @@ export const ReceiveDemo = () => {
   const [amountText, setAmountText] = useState("1");
 
   const token = TOKENS.find(entry => entry.symbol === symbol) ?? ETH;
-  const native = token.symbol === "ETH";
+  const isNative = token.symbol === "ETH";
   const amount = parseAmount(amountText, token.decimals) ?? 0n;
 
   const url
     = mode === "raw"
       ? SELF.address
-      : (native
+      : (isNative
           ? `ethereum:${SELF.address}@${networkId}/?value=${amount}`
           : `ethereum:${token.address}@${networkId}/transfer?uint256=${amount}&address=${SELF.address}`);
 

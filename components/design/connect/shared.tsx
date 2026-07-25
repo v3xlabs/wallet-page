@@ -8,7 +8,7 @@ import { ACCOUNT_2, SELF, TOKENS, usdValue } from "../data";
 import { EnsAvatar } from "../ens-avatar";
 import { useDisplayValue } from "../locale";
 
-export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 export type Account = { name: string; address: Address; balanceUsd: number; };
 

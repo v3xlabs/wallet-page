@@ -16,8 +16,8 @@ export const NetworkSelect = ({ value, onChange }: {
   value: number;
   onChange: (id: number) => void;
 }) => {
-  const known = KNOWN_NETWORKS.some(network => network.id === value);
-  const [custom, setCustom] = useState(!known);
+  const isKnown = KNOWN_NETWORKS.some(network => network.id === value);
+  const [custom, setCustom] = useState(!isKnown);
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -41,7 +41,7 @@ export const NetworkSelect = ({ value, onChange }: {
               {network.name}
             </option>
           ))}
-          <option value={CUSTOM}>Custom network id…</option>
+          <option value={CUSTOM}>Custom network id...</option>
         </select>
         <svg
           aria-hidden

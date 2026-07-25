@@ -22,10 +22,10 @@ type ProbeRow = {
 const tryRpc = async (
   provider: Parameters<typeof rpc>[0],
   method: string,
-  params: unknown[],
+  parameters: unknown[],
 ): Promise<ProbeRow> => {
   try {
-    const result = await rpc(provider, method, params);
+    const result = await rpc(provider, method, parameters);
 
     return {
       method,
@@ -51,7 +51,7 @@ export const Eip7702Demo = () => {
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
 
-  const chainIdNum = () => {
+  const getChainIdNumber = () => {
     if (!session) return 1;
 
     return hexToNumber(session.chainId as Hex);
@@ -65,7 +65,7 @@ export const Eip7702Demo = () => {
     setError(undefined);
     const from = session.accounts[0];
     const chainId = session.chainId;
-    const chainIdNumber = chainIdNum();
+    const chainIdNumber = getChainIdNumber();
     const rows: ProbeRow[] = [];
 
     const signCandidates: { method: string; params: unknown[]; }[] = [
@@ -208,7 +208,7 @@ export const Eip7702Demo = () => {
         inspector={{
           request: {
             method: "wallet_getCapabilities",
-            params: [session?.accounts[0] ?? "0x…"],
+            params: [session?.accounts[0] ?? "0x..."],
           },
         }}
         response={capabilities}
@@ -224,8 +224,8 @@ export const Eip7702Demo = () => {
           request: {
             method: "eth_sendTransaction",
             params: [{
-              from: session?.accounts[0] ?? "0x…",
-              to: session?.accounts[0] ?? "0x…",
+              from: session?.accounts[0] ?? "0x...",
+              to: session?.accounts[0] ?? "0x...",
               value: "0x0",
               data: "0x",
               type: "0x4",

@@ -136,28 +136,28 @@ const labelsFromEntry = (
 const pushRow = (
   rows: WalletAssetRow[],
   seen: Set<string>,
-  params: Omit<WalletAssetRow, "searchText">,
+  parameters: Omit<WalletAssetRow, "searchText">,
 ): void => {
-  let id = params.id;
+  let id = parameters.id;
   let suffix = 0;
 
   while (seen.has(id)) {
     suffix += 1;
-    id = `${params.id}#${suffix}`;
+    id = `${parameters.id}#${suffix}`;
   }
   seen.add(id);
   const searchText = [
-    params.chainId,
-    params.address,
-    params.type,
-    params.symbol,
-    params.name,
-    params.balanceLabel,
+    parameters.chainId,
+    parameters.address,
+    parameters.type,
+    parameters.symbol,
+    parameters.name,
+    parameters.balanceLabel,
   ]
     .join(" ")
     .toLowerCase();
 
-  rows.push({ ...params, id, searchText });
+  rows.push({ ...parameters, id, searchText });
 };
 
 const parseErc7811ByChain = (raw: Record<string, unknown>): WalletAssetRow[] => {
@@ -256,14 +256,14 @@ const isGroupedByAssetType = (raw: Record<string, unknown>): boolean => Object.e
 export const parseWalletGetAssetsResponse = (raw: unknown): WalletAssetRow[] => {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return [];
 
-  const obj = raw as Record<string, unknown>;
+  const object = raw as Record<string, unknown>;
   let rows: WalletAssetRow[] = [];
 
-  if (isErc7811ByChain(obj)) {
-    rows = parseErc7811ByChain(obj);
+  if (isErc7811ByChain(object)) {
+    rows = parseErc7811ByChain(object);
   }
-  else if (isGroupedByAssetType(obj)) {
-    rows = parseGroupedByAssetType(obj);
+  else if (isGroupedByAssetType(object)) {
+    rows = parseGroupedByAssetType(object);
   }
 
   return rows.sort((a, b) => {

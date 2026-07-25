@@ -17,9 +17,9 @@ import { ListRow, Spinner, TokenIcon } from "./ui";
  */
 export type PickedToken = DemoToken & { address?: Address; resolved?: boolean; };
 
-type Resolution =
-  | { status: "resolved"; address: Address; token: PickedToken; }
-  | { status: "failed"; address: Address; };
+type Resolution
+  = | { status: "resolved"; address: Address; token: PickedToken; }
+    | { status: "failed"; address: Address; };
 
 /** Deterministic fallback brand color for tokens we have no artwork for. */
 const derivedColor = (address: Address) => {
@@ -53,7 +53,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
   useEffect(() => {
     if (!pastedAddress) return;
 
-    let cancelled = false;
+    let isCancelled = false;
 
     const timer = setTimeout(async () => {
       try {
@@ -63,7 +63,7 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
           mainnetClient.readContract({ address: pastedAddress, abi: erc20Abi, functionName: "decimals" }),
         ]);
 
-        if (cancelled) return;
+        if (isCancelled) return;
 
         setResolution({
           status: "resolved",
@@ -82,12 +82,12 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
         });
       }
       catch {
-        if (!cancelled) setResolution({ status: "failed", address: pastedAddress });
+        if (!isCancelled) setResolution({ status: "failed", address: pastedAddress });
       }
     }, 350);
 
     return () => {
-      cancelled = true;
+      isCancelled = true;
       clearTimeout(timer);
     };
   }, [pastedAddress]);
@@ -128,13 +128,13 @@ export const TokenPicker = ({ tokens = TOKENS, selected, onPick }: {
       ))}
       {!pastedAddress && filtered.length === 0 && (
         <p className="px-4 py-3 text-xs text-muted">
-          No matches in your list - paste a token&rsquo;s contract address to use it directly.
+          No matches in your list - paste a token's contract address to use it directly.
         </p>
       )}
       {pastedAddress && current === undefined && (
         <div className="flex items-center gap-2 px-4 py-3 text-xs text-muted">
           <Spinner />
-          Reading name, symbol and decimals from the contract…
+          Reading name, symbol and decimals from the contract...
         </div>
       )}
       {current?.status === "resolved" && (

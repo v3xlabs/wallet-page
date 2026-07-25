@@ -72,7 +72,7 @@ export const AmountInputDemo = () => {
           />
           <p className="m-0 mt-2 text-right text-xs text-secondary wrap-anywhere" aria-live="polite">
             {parsed.status === "valid" && <code>{`That's ${parsed.baseUnits.toString()} base units`}</code>}
-            {parsed.status === "partial" && "Keep typing…"}
+            {parsed.status === "partial" && "Keep typing..."}
             {parsed.status === "invalid" && "That amount is not valid for this locale and asset."}
           </p>
         </div>

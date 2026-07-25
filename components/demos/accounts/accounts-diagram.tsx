@@ -4,7 +4,7 @@ const MOCK_ACCOUNTS = [
   { address: "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cB2", label: "Account 3" },
 ];
 
-const short = (addr: string) => `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+const short = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
 const avatarBg = (addr: string) => {
   const hue = (Number.parseInt(addr.slice(2, 8), 16) % 360).toString();
@@ -227,8 +227,8 @@ export const AccountsDiagram = () => {
         {/* wallet sidebar */}
         <div style={s.sidebar}>
           <div style={s.sidebarLabel}>Connected accounts</div>
-          {MOCK_ACCOUNTS.map((acct, i) => (
-            <div key={acct.address} style={s.accountRow(i === 0)}>
+          {MOCK_ACCOUNTS.map((acct, index) => (
+            <div key={acct.address} style={s.accountRow(index === 0)}>
               <span style={s.avatar(acct.address)}>
                 {acct.label[acct.label.length - 1]}
               </span>
@@ -252,11 +252,11 @@ export const AccountsDiagram = () => {
           <div style={s.rpcLabel}>eth_requestAccounts() → string[]</div>
 
           <ol style={s.arrayList}>
-            {MOCK_ACCOUNTS.map((acct, i) => (
-              <li key={acct.address} style={s.arrayItem(i === 0)}>
-                <span style={s.indexPill(i === 0)}>{i}</span>
+            {MOCK_ACCOUNTS.map((acct, index) => (
+              <li key={acct.address} style={s.arrayItem(index === 0)}>
+                <span style={s.indexPill(index === 0)}>{index}</span>
                 <code style={s.addrCode}>{acct.address}</code>
-                {i === 0 && <span style={s.tag}>accounts[0]</span>}
+                {index === 0 && <span style={s.tag}>accounts[0]</span>}
               </li>
             ))}
           </ol>

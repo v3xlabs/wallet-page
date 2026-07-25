@@ -54,7 +54,7 @@ export const EthSignDemo = () => {
           ),
           request: {
             method: "eth_sign",
-            params: [session?.accounts[0] ?? "0x…", ZERO_HASH],
+            params: [session?.accounts[0] ?? "0x...", ZERO_HASH],
           },
           hash: ZERO_HASH,
           hashNote: "eth_sign - wallet signs this 32-byte value (no EIP-191 prefix).",

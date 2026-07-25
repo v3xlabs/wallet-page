@@ -35,7 +35,7 @@ export const WalletDemoChrome = ({ source }: { source?: string; }) => {
               onClick={openConnect}
               disabled={connecting}
             >
-              {connecting ? "Connecting…" : "Connect wallet"}
+              {connecting ? "Connecting..." : "Connect wallet"}
             </button>
           )}
     </div>

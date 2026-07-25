@@ -17,9 +17,9 @@ export const GROUPS = ["Today", "Yesterday", "May 2"] as const;
 export type EntryGroup = (typeof GROUPS)[number];
 
 /** Leading circle: token mark, or the counterparty when that says more. */
-export type EntryIcon =
-  | { type: "token"; token: DemoToken; }
-  | { type: "address"; address: Address; };
+export type EntryIcon
+  = | { type: "token"; token: DemoToken; }
+    | { type: "address"; address: Address; };
 
 export type EntryDetail = {
   hash: string;
@@ -41,16 +41,16 @@ export type HistoryEntry = {
   /** Incoming value renders in the success tone; everything else stays quiet. */
   incoming?: boolean;
   value?: string;
-  /** Extra muted line under the row: spend limits, failure reasons, … */
+  /** Extra muted line under the row: spend limits, failure reasons, ... */
   caption?: string;
   detail?: EntryDetail;
 };
 
-// TOKENS is ordered ETH, WETH, USDC, DAI, … - skip WETH.
+// TOKENS is ordered ETH, WETH, USDC, DAI, ... - skip WETH.
 const [ETH, , USDC, DAI] = TOKENS;
 const [VITALIK, LUC, KASSANDRA] = CONTACTS;
 
-export const truncateHash = (hash: string) => `${hash.slice(0, 10)}…${hash.slice(-6)}`;
+export const truncateHash = (hash: string) => `${hash.slice(0, 10)}...${hash.slice(-6)}`;
 
 /** Signed row amount like "-0.25 ETH", localized through the exact formatter. */
 const rowAmount = (sign: "+" | "-", quantity: string, token: DemoToken, locale: string) =>

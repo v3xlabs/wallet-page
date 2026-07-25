@@ -1,8 +1,8 @@
 export type ExactDecimal = { coefficient: bigint; scale: number; };
 
-export type ParsedAmount =
-  | { status: "empty" | "partial" | "invalid"; }
-  | { status: "valid"; baseUnits: bigint; };
+export type ParsedAmount
+  = | { status: "empty" | "partial" | "invalid"; }
+    | { status: "valid"; baseUnits: bigint; };
 
 type LocaleRules = {
   digits: ReadonlyMap<string, string>;

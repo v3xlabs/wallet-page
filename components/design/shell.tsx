@@ -9,12 +9,12 @@ import { I18nControls } from "./locale";
 
 /**
  * A footer control for a demo. Scenario switching reads best as `tabs`;
- * demo-specific settings (truncation style, …) read best as a labelled
+ * demo-specific settings (truncation style, ...) read best as a labelled
  * `select`. Locale and display currency are not controls - they are the
  * shared i18n cluster, enabled with the `i18n` prop.
  */
-export type ShellControl =
-  | {
+export type ShellControl
+  = | {
     type: "tabs";
     options: readonly { value: string; label: string; }[];
     value: string;

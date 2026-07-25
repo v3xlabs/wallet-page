@@ -48,25 +48,25 @@ const EnsAvatarInner: FC<{ address: string; name?: string; size: number; }> = ({
   name,
   size,
 }) => {
-  const [src, setSrc] = useState<string>();
+  const [source, setSource] = useState<string>();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
+    let isCancelled = false;
 
     void (async () => {
       // No name given? Fall back to the address's primary name.
       const ensName = name ?? await primaryNameFor(address);
 
-      if (!ensName || cancelled) return;
+      if (!ensName || isCancelled) return;
 
       const avatar = await avatarFor(ensName);
 
-      if (!cancelled && avatar) setSrc(avatar);
+      if (!isCancelled && avatar) setSource(avatar);
     })();
 
     return () => {
-      cancelled = true;
+      isCancelled = true;
     };
   }, [address, name]);
 
@@ -76,13 +76,13 @@ const EnsAvatarInner: FC<{ address: string; name?: string; size: number; }> = ({
       style={{ width: size, height: size }}
     >
       <AddressAvatar address={address} size={size} />
-      {src && (
+      {source && (
         <img
-          src={src}
+          src={source}
           alt=""
           aria-hidden
           onLoad={() => setLoaded(true)}
-          onError={() => setSrc(undefined)}
+          onError={() => setSource(undefined)}
           className={classNames(
             "absolute inset-0 size-full object-cover transition-opacity duration-200",
             loaded ? "opacity-100" : "opacity-0",

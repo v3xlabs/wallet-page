@@ -162,7 +162,7 @@ const AddNetworkScreen = () => {
             ? (
                 <span className="flex items-center justify-center gap-2">
                   <Spinner />
-                  Adding…
+                  Adding...
                 </span>
               )
             : "Add network"}

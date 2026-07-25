@@ -24,4 +24,4 @@ export const normalizePhrase = (text: string) =>
     .split(/\s+/)
     .filter(Boolean);
 
-export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;

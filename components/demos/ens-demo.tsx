@@ -106,7 +106,7 @@ export const EnsDemo = () => {
             onClick={() => void lookupForward()}
             disabled={forwardPending || !forwardName.trim()}
           >
-            {forwardPending ? "Resolving…" : "Resolve name"}
+            {forwardPending ? "Resolving..." : "Resolve name"}
           </button>
         </div>
         {(forwardResult || forwardError) && (
@@ -136,7 +136,7 @@ export const EnsDemo = () => {
             value={reverseAddress}
             onChange={e => setReverseAddress(e.target.value)}
             onKeyDown={e => e.key === "Enter" && void lookupReverse()}
-            placeholder="0x…"
+            placeholder="0x..."
           />
         </label>
         {session && reverseAddress !== session.accounts[0] && (
@@ -155,7 +155,7 @@ export const EnsDemo = () => {
             onClick={() => void lookupReverse()}
             disabled={reversePending || !reverseAddress.trim()}
           >
-            {reversePending ? "Resolving…" : "Resolve address"}
+            {reversePending ? "Resolving..." : "Resolve address"}
           </button>
         </div>
         {(reverseResult || reverseError) && (

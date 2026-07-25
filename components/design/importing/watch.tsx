@@ -22,7 +22,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
   const [importing, setImporting] = useState(false);
 
   const trimmed = query.trim();
-  const nameShaped = nameLike(trimmed);
+  const isNameShaped = nameLike(trimmed);
 
   const setQuery = (value: string) => {
     setQueryRaw(value);
@@ -38,10 +38,10 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
   }, [resolving, trimmed]);
 
   const resolved = useMemo(() => {
-    if (!nameShaped || resolving) return;
+    if (!isNameShaped || resolving) return;
 
     return CONTACTS.find(contact => contact.name === trimmed.toLowerCase());
-  }, [trimmed, nameShaped, resolving]);
+  }, [trimmed, isNameShaped, resolving]);
 
   const pasted = useMemo(() => {
     if (!isAddress(trimmed, { strict: false })) return;
@@ -91,7 +91,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
           This address fails its checksum - it was likely corrupted in transit. Refusing it.
         </p>
       )}
-      {nameShaped && !resolving && !resolved && (
+      {isNameShaped && !resolving && !resolved && (
         <p className="rounded-lg bg-surfaceMuted px-3 py-2 text-xs text-muted">
           No address registered for
           {" "}
@@ -134,7 +134,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
               ? (
                   <span className="flex items-center justify-center gap-2">
                     <Spinner />
-                    Adding…
+                    Adding...
                   </span>
                 )
               : "Watch this address"}

@@ -27,7 +27,7 @@ const ACCOUNTS: Address[] = Array.from(
   (_, addressIndex) => mnemonicToAccount(MNEMONIC, { addressIndex }).address,
 );
 
-const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-6)}`;
+const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-6)}`;
 
 const SectionLabel = ({ children }: { children: string; }) => (
   <span className="text-xs font-medium tracking-wide text-secondary uppercase">{children}</span>
@@ -188,7 +188,7 @@ export const WordlistDemo = () => {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Type a seed word…"
+          placeholder="Type a seed word..."
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"

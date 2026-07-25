@@ -2,7 +2,7 @@
 
 import { useWallet } from "./WalletProvider";
 
-const trimAddress = (address: string) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+const trimAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 export const WalletBadge = () => {
   const { session, disconnect } = useWallet();
@@ -32,7 +32,7 @@ export const WalletBadge = () => {
         onClick={() => disconnect()}
         aria-label="Disconnect wallet"
       >
-        ×
+        x
       </button>
     </div>
   );

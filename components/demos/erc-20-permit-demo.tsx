@@ -19,7 +19,7 @@ import { useWallet } from "../wallet/WalletProvider";
 const DEMO_DECIMALS = 6;
 const DEMO_SYMBOL = "WPAGE";
 
-type PermitPreviewProps = {
+type PermitPreviewProperties = {
   tokenName: string;
   tokenSymbol: string;
   decimals?: number;
@@ -35,7 +35,7 @@ const PermitPreview = ({
   value,
   spender,
   deadline,
-}: PermitPreviewProps) => {
+}: PermitPreviewProperties) => {
   const amount = formatTokenAmount(value, decimals, tokenSymbol);
   const iconLetter = (tokenSymbol ?? tokenName ?? "T").slice(0, 1).toUpperCase();
 
@@ -159,7 +159,7 @@ export const Erc20PermitDemo = () => {
           ),
           request: {
             method: "eth_signTypedData_v4",
-            params: [session?.accounts[0] ?? "0x…", stringifyRpcData(typed)],
+            params: [session?.accounts[0] ?? "0x...", stringifyRpcData(typed)],
           },
           hash: digest,
           hashNote: "EIP-712 digest - second param to eth_signTypedData_v4 is the typed JSON.",

@@ -17,7 +17,7 @@ export const DUST_TOKENS: DemoToken[] = [
     address: "0x0000000000000000000000000000000000000101",
     color: "#7b70c9",
     balance: parseUnits("1150", 18),
-    priceUsd: 0.000_62,
+    priceUsd: 0.00062,
     change24h: -3.4,
   },
   {

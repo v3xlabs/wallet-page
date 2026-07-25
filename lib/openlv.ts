@@ -4,7 +4,7 @@ import type { EIP1193Provider } from "viem";
 
 import type { Eip6963ProviderDetail } from "./ethereum";
 
-/** Stable id for session restore — not an EIP-6963 wallet extension. */
+/** Stable id for session restore -- not an EIP-6963 wallet extension. */
 export const OPENLV_UUID = "a8c4e1f2-6b3d-4f9e-openlv-wallet-page";
 
 export const OPENLV_RDNS = "company.v3x.openlv";
@@ -22,12 +22,12 @@ let openlvDetail: Eip6963ProviderDetail | undefined;
 export const dismissOpenlvModal = () => {
   if (typeof document === "undefined") return;
 
-  for (const el of document.querySelectorAll("openlv-modal")) {
-    if (el instanceof HTMLElement && "hideModal" in el) {
-      (el as HTMLElement & { hideModal: () => void; }).hideModal();
+  for (const element of document.querySelectorAll("openlv-modal")) {
+    if (element instanceof HTMLElement && "hideModal" in element) {
+      (element as HTMLElement & { hideModal: () => void; }).hideModal();
     }
 
-    el.remove();
+    element.remove();
   }
 };
 
@@ -56,10 +56,10 @@ const openOpenlvModal = async (provider: OpenLVProvider) => {
     });
 
     requestAnimationFrame(() => {
-      const el = document.querySelector("openlv-modal");
+      const element = document.querySelector("openlv-modal");
 
-      if (el instanceof HTMLElement && "showModal" in el) {
-        (el as HTMLElement & { showModal: () => void; }).showModal();
+      if (element instanceof HTMLElement && "showModal" in element) {
+        (element as HTMLElement & { showModal: () => void; }).showModal();
       }
     });
   });

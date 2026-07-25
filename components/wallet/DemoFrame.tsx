@@ -5,15 +5,15 @@ import type { ReactNode } from "react";
 import { WalletDemoChrome } from "./WalletDemoChrome";
 import { useWallet } from "./WalletProvider";
 
-type DemoFrameProps = {
+type DemoFrameProperties = {
   children: ReactNode;
-  /** `inline` — several demos on one MDX page; `mini` — compact RPC block (chains). */
+  /** `inline` -- several demos on one MDX page; `mini` -- compact RPC block (chains). */
   variant?: "panel" | "inline" | "mini";
   /** Repo-relative path to the demo's source file, e.g. `components/demos/erc-20-demo.tsx`. */
   source?: string;
 };
 
-export const DemoFrame = ({ children, variant = "panel", source }: DemoFrameProps) => {
+export const DemoFrame = ({ children, variant = "panel", source }: DemoFrameProperties) => {
   const rootClass
     = variant === "mini"
       ? "my-4 overflow-hidden rounded-md border border-primary bg-code-block"
@@ -37,7 +37,7 @@ export const DemoFrame = ({ children, variant = "panel", source }: DemoFrameProp
   );
 };
 
-/** Prefer `useWallet().requireSession` — alias for demo action handlers. */
+/** Prefer `useWallet().requireSession` -- alias for demo action handlers. */
 export const useDemoFrame = () => {
   const { openConnect, requireSession } = useWallet();
 

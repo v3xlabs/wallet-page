@@ -18,7 +18,7 @@ import {
   WalletHeader,
 } from "../ui";
 
-const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 const RING_RADIUS = 26;
 const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
@@ -183,7 +183,7 @@ export const RecoveryDemo = () => {
                 ? (
                     <span className="flex items-center justify-center gap-2">
                       <Spinner />
-                      Checking…
+                      Checking...
                     </span>
                   )
                 : "Re-verify"}
@@ -212,7 +212,7 @@ export const RecoveryDemo = () => {
                       ? (
                           <span className="flex items-center justify-center gap-2">
                             <Spinner />
-                            Waiting for device…
+                            Waiting for device...
                           </span>
                         )
                       : "Add device"}

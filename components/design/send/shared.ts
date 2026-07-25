@@ -7,7 +7,7 @@ import { TOKENS } from "../data";
 
 export type Recipient = { address: Address; name?: string; };
 
-export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 /** Flat mock network fee: 21k gas at plausible mainnet prices. */
 export const FEE_WEI = parseUnits("0.00042", 18);

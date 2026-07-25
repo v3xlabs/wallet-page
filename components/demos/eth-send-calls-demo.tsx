@@ -36,9 +36,9 @@ const CallsBatchPreview = ({
   calls: { to: string; value?: string; }[];
 }) => (
   <ul className="flex list-none flex-col gap-1.5 p-0">
-    {calls.map((call, i) => (
-      <li key={`${call.to}-${i}`} className="flex items-center gap-2 text-[13px]">
-        <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-code-block text-xs font-semibold">{i + 1}</span>
+    {calls.map((call, index) => (
+      <li key={`${call.to}-${index}`} className="flex items-center gap-2 text-[13px]">
+        <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-code-block text-xs font-semibold">{index + 1}</span>
         <Address address={call.to} />
         <span className="text-sm text-secondary">
           chain
@@ -61,7 +61,7 @@ export const EthSendCallsDemo = () => {
     () => ({
       version: "1.0",
       chainId: session?.chainId ?? "0x1",
-      from: session?.accounts[0] ?? "0x…",
+      from: session?.accounts[0] ?? "0x...",
       calls: [WRAP_ETH, UNWRAP_ETH],
     }),
     [session],

@@ -203,7 +203,7 @@ export const PermissionsDemo = () => {
             >
               {pending && granted.size === 0 && !error
                 ? (
-                    <p className="text-sm text-secondary">Loading…</p>
+                    <p className="text-sm text-secondary">Loading...</p>
                   )
                 : (
                     <CapabilityChecklist groups={groups} />
@@ -231,7 +231,7 @@ export const PermissionsDemo = () => {
                       )
                     : (
                         <p className="text-sm text-secondary">
-                          {pending ? "Loading…" : "No response yet."}
+                          {pending ? "Loading..." : "No response yet."}
                         </p>
                       ))}
             </div>

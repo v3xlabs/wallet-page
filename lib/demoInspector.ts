@@ -1,12 +1,12 @@
-import type { DemoInspectorProps } from "../components/wallet/DemoInspector";
+import type { DemoInspectorProps as DemoInspectorProperties } from "../components/wallet/DemoInspector";
 import { formatDemoOutput } from "./ethereum";
 
 /** Merge action-panel response/error into inspector tabs. */
 export const mergeInspector = (
-  inspector: DemoInspectorProps | undefined,
+  inspector: DemoInspectorProperties | undefined,
   response?: unknown,
   error?: unknown,
-): DemoInspectorProps | undefined => {
+): DemoInspectorProperties | undefined => {
   const request = inspector?.request;
   const responseBody
     = error !== undefined && error !== ""

@@ -15,24 +15,24 @@ import { truncate } from "./shared";
 const nameLike = (value: string) =>
   !value.startsWith("0x") && /^[^\s.]+(\.[^\s.]+)+$/.test(value);
 
-type Lookup =
-  | { status: "resolving"; name: string; }
-  | { status: "resolved"; name: string; address: Address; }
-  | { status: "not-found"; name: string; }
-  | { status: "error"; name: string; };
+type Lookup
+  = | { status: "resolving"; name: string; }
+    | { status: "resolved"; name: string; address: Address; }
+    | { status: "not-found"; name: string; }
+    | { status: "error"; name: string; };
 
 export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => void; }) => {
   const [query, setQuery] = useState("");
   const trimmed = query.trim();
-  const nameShaped = nameLike(trimmed);
+  const isNameShaped = nameLike(trimmed);
 
   // Any name-shaped input goes through a real ENS lookup, debounced a beat.
   const [lookup, setLookup] = useState<Lookup>();
 
   useEffect(() => {
-    if (!nameShaped) return;
+    if (!isNameShaped) return;
 
-    let cancelled = false;
+    let isCancelled = false;
 
     const timer = setTimeout(async () => {
       setLookup({ status: "resolving", name: trimmed });
@@ -40,7 +40,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
       try {
         const address = await mainnetClient.getEnsAddress({ name: normalize(trimmed) });
 
-        if (cancelled) return;
+        if (isCancelled) return;
 
         setLookup(
           address
@@ -49,18 +49,18 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
         );
       }
       catch {
-        if (!cancelled) setLookup({ status: "error", name: trimmed });
+        if (!isCancelled) setLookup({ status: "error", name: trimmed });
       }
     }, 450);
 
     return () => {
-      cancelled = true;
+      isCancelled = true;
       clearTimeout(timer);
     };
-  }, [trimmed, nameShaped]);
+  }, [trimmed, isNameShaped]);
 
   // Only trust a lookup that matches the name currently in the field.
-  const current = nameShaped && lookup?.name === trimmed ? lookup : undefined;
+  const current = isNameShaped && lookup?.name === trimmed ? lookup : undefined;
 
   const pasted = useMemo(() => {
     if (!isAddress(trimmed, { strict: false })) return;
@@ -98,7 +98,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
             autoCapitalize="off"
             className="demo-input pr-9 font-mono text-[13px]"
           />
-          {nameShaped && (current === undefined || current.status === "resolving") && (
+          {isNameShaped && (current === undefined || current.status === "resolving") && (
             <span className="absolute top-1/2 right-3 -translate-y-1/2 text-muted">
               <Spinner />
             </span>

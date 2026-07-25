@@ -34,7 +34,7 @@ export const TransactionPreview = ({
           {" "}
           <code>
             {data.slice(0, 10)}
-            …
+            ...
           </code>
         </p>
       )}

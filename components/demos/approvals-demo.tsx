@@ -103,9 +103,9 @@ export const ApprovalsDemo = () => {
         rpc(session.provider, "eth_call", [allowanceCall!, "latest"]),
       ]);
 
-      const [val] = decodeFunctionResult({ abi: ERC20_ABI, functionName: "allowance", data: allowanceRaw as Hex }) as [bigint];
+      const [value] = decodeFunctionResult({ abi: ERC20_ABI, functionName: "allowance", data: allowanceRaw as Hex }) as [bigint];
 
-      setRawAllowance(val);
+      setRawAllowance(value);
 
       const decimals = decimalsRaw
         ? Number((decodeFunctionResult({ abi: ERC20_ABI, functionName: "decimals", data: decimalsRaw as Hex }) as [number])[0])
@@ -114,14 +114,14 @@ export const ApprovalsDemo = () => {
         ? String((decodeFunctionResult({ abi: ERC20_ABI, functionName: "symbol", data: symbolRaw as Hex }) as [string])[0])
         : "tokens";
 
-      if (val === 0n) {
+      if (value === 0n) {
         setAllowance(`0 ${symbol} - no allowance set`);
       }
-      else if (val >= 2n ** 256n - 1n / 2n) {
+      else if (value >= 2n ** 256n - 1n / 2n) {
         setAllowance(`Unlimited ${symbol}`);
       }
       else {
-        setAllowance(`${formatUnits(val, decimals)} ${symbol}`);
+        setAllowance(`${formatUnits(value, decimals)} ${symbol}`);
       }
     }
     catch (error) {
@@ -161,7 +161,7 @@ export const ApprovalsDemo = () => {
           className="demo-input font-mono"
           value={token}
           onChange={e => setToken(e.target.value)}
-          placeholder="0x…"
+          placeholder="0x..."
         />
       </label>
 
@@ -172,7 +172,7 @@ export const ApprovalsDemo = () => {
           className="demo-input font-mono"
           value={spender}
           onChange={e => setSpender(e.target.value)}
-          placeholder="0x…"
+          placeholder="0x..."
         />
         <div className="mt-1.5 mb-3 flex flex-wrap gap-2">
           {KNOWN_SPENDERS.map(s => (

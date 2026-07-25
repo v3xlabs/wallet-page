@@ -13,20 +13,20 @@ import { Field } from "../ui";
 const HEX_ADDRESS = /^0x[0-9a-f]{40}$/i;
 const PARTIAL_HEX = /^0(x[0-9a-f]{0,39})?$/i;
 
-type Parsed =
-  | { kind: "empty"; }
-  | { kind: "partial"; }
-  | { kind: "address"; address: Address; wasChecksummed: boolean; }
-  | { kind: "checksum-mismatch"; }
-  | { kind: "name"; name: string; }
-  | { kind: "invalid"; };
+type Parsed
+  = | { kind: "empty"; }
+    | { kind: "partial"; }
+    | { kind: "address"; address: Address; wasChecksummed: boolean; }
+    | { kind: "checksum-mismatch"; }
+    | { kind: "name"; name: string; }
+    | { kind: "invalid"; };
 
 /** Strip whitespace and unwrap an EIP-681 URL down to its address/name. */
 const sanitize = (raw: string) => {
   let value = raw.trim();
 
   if (value.toLowerCase().startsWith("ethereum:")) {
-    value = value.slice("ethereum:".length).split(/[@/?]/)[0];
+    value = value.slice("ethereum:".length).split(/[@/?]/, 1)[0];
   }
 
   return value;
@@ -59,10 +59,10 @@ const parse = (value: string): Parsed => {
   return { kind: "invalid" };
 };
 
-type Resolution =
-  | { status: "resolved"; name: string; address: Address; }
-  | { status: "not-found"; name: string; }
-  | { status: "error"; name: string; message: string; };
+type Resolution
+  = | { status: "resolved"; name: string; address: Address; }
+    | { status: "not-found"; name: string; }
+    | { status: "error"; name: string; message: string; };
 
 const VITALIK = CONTACTS.find(contact => contact.name === "vitalik.eth") ?? CONTACTS[0];
 
@@ -90,7 +90,7 @@ export const AddressInputDemo = () => {
   useEffect(() => {
     if (!ensName) return;
 
-    let cancelled = false;
+    let isCancelled = false;
 
     const timer = setTimeout(async () => {
       try {
@@ -98,7 +98,7 @@ export const AddressInputDemo = () => {
           name: normalize(ensName),
         });
 
-        if (cancelled) return;
+        if (isCancelled) return;
 
         setResolution(
           address
@@ -107,7 +107,7 @@ export const AddressInputDemo = () => {
         );
       }
       catch {
-        if (!cancelled) {
+        if (!isCancelled) {
           setResolution({
             status: "error",
             name: ensName,
@@ -118,7 +118,7 @@ export const AddressInputDemo = () => {
     }, 400);
 
     return () => {
-      cancelled = true;
+      isCancelled = true;
       clearTimeout(timer);
     };
   }, [ensName]);
@@ -213,7 +213,7 @@ export const AddressInputDemo = () => {
               setValue(sanitize(e.target.value));
               setExample("");
             }}
-            placeholder="0x… or name.eth"
+            placeholder="0x... or name.eth"
             spellCheck={false}
             autoCorrect="off"
             autoCapitalize="off"

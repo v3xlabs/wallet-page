@@ -122,7 +122,7 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
           ? (
               <span className="flex items-center gap-1.5 text-xs text-muted">
                 <Spinner size={12} />
-                Fetching best route…
+                Fetching best route...
               </span>
             )
           : (

@@ -74,22 +74,22 @@ export const WalletProvider = ({ children }: { children: ReactNode; }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const appendLog = useCallback((entry: Omit<DiscoveryLogEntry, "id" | "at">) => {
-    setDiscoveryLog(prev => [
+    setDiscoveryLog(previous => [
       {
         id: logId(),
         at: new Date().toISOString(),
         ...entry,
       },
-      ...prev,
+      ...previous,
     ].slice(0, 50));
   }, []);
 
   const mergeProvider = useCallback(
     (detail: Eip6963ProviderDetail) => {
-      setProviders((prev) => {
-        if (prev.some(p => p.info.uuid === detail.info.uuid)) return prev;
+      setProviders((previous) => {
+        if (previous.some(p => p.info.uuid === detail.info.uuid)) return previous;
 
-        return [...prev, detail];
+        return [...previous, detail];
       });
       appendLog({ kind: "announce", detail: detail.info });
     },
@@ -269,13 +269,13 @@ export const WalletProvider = ({ children }: { children: ReactNode; }) => {
 };
 
 export const useWallet = () => {
-  const ctx = useContext(WalletContext);
+  const context = useContext(WalletContext);
 
-  if (!ctx) {
+  if (!context) {
     throw new Error("useWallet must be used within WalletProvider");
   }
 
-  return ctx;
+  return context;
 };
 
 export { type Eip6963ProviderDetail } from "../../lib/ethereum";

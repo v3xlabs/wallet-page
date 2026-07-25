@@ -15,7 +15,7 @@ import { PrimaryButton, SecondaryButton, Spinner, StatusPill, SuccessCheck } fro
  * supply what varies - the payload rendering.
  */
 
-export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 export const Mono: FC<PropsWithChildren> = ({ children }) => (
   <span className="font-mono text-xs text-primary">{children}</span>
@@ -117,7 +117,7 @@ export const SheetActions: FC<{
   destructive?: boolean;
   signLabel?: string;
   signingLabel?: string;
-}> = ({ onReject, onSign, signing, disabled, destructive, signLabel = "Sign", signingLabel = "Signing…" }) => (
+}> = ({ onReject, onSign, signing, disabled, destructive, signLabel = "Sign", signingLabel = "Signing..." }) => (
   <div className="flex gap-2 px-4 pt-2 pb-4">
     <SecondaryButton onClick={onReject} disabled={signing}>Reject</SecondaryButton>
     <PrimaryButton onClick={onSign} disabled={disabled || signing} destructive={destructive}>

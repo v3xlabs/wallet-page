@@ -12,4 +12,4 @@ export const WORDS = MNEMONIC.split(" ");
 /** Account 1 of the demo phrase. Deterministic, so computed once at module scope. */
 export const ACCOUNT_ADDRESS = mnemonicToAccount(MNEMONIC).address;
 
-export const truncate = (address: Address) => `${address.slice(0, 6)}…${address.slice(-4)}`;
+export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;

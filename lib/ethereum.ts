@@ -39,10 +39,10 @@ export type RpcResult = unknown;
 export const rpc = async (
   provider: EIP1193Provider,
   method: string,
-  params: unknown[] = [],
-): Promise<RpcResult> => provider.request({ method, params } as never);
+  parameters: unknown[] = [],
+): Promise<RpcResult> => provider.request({ method, params: parameters } as never);
 
-/** JSON.stringify for RPC payloads — bigint fields must not be bigint literals. */
+/** JSON.stringify for RPC payloads -- bigint fields must not be bigint literals. */
 export const stringifyRpcData = (data: unknown): string =>
   JSON.stringify(data, (_key, value) =>
     (typeof value === "bigint" ? value.toString() : value),
@@ -75,8 +75,8 @@ export const formatDemoOutput = (value: unknown): string => {
       return formatDemoOutput({
         name: value.name,
         message: value.message,
-        ...(extra.code === undefined ? {} : { code: extra.code }),
-        ...(extra.data === undefined ? {} : { data: extra.data }),
+        ...(extra.code !== undefined && { code: extra.code }),
+        ...(extra.data !== undefined && { data: extra.data }),
       });
     }
 

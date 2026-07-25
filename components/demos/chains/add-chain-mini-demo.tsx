@@ -17,7 +17,7 @@ export const AddChainMiniDemo = () => {
 
   const meta = getDemoChain(chainId);
 
-  const addParams = useMemo(() => {
+  const addParameters = useMemo(() => {
     if (!meta) return null;
 
     return {
@@ -35,7 +35,7 @@ export const AddChainMiniDemo = () => {
       description={<ChainSelect value={chainId} onChange={setChainId} />}
       actionLabel="Add chain"
       inspector={
-        meta && addParams
+        meta && addParameters
           ? {
               user: (
                 <p>
@@ -46,7 +46,7 @@ export const AddChainMiniDemo = () => {
                   in the wallet (RPC + currency).
                 </p>
               ),
-              request: { method: "wallet_addEthereumChain", params: [addParams] },
+              request: { method: "wallet_addEthereumChain", params: [addParameters] },
             }
           : undefined
       }
@@ -55,7 +55,7 @@ export const AddChainMiniDemo = () => {
       onAction={async () => {
         if (!session) return;
 
-        if (!addParams) {
+        if (!addParameters) {
           setError("Unknown demo chain.");
 
           return;
@@ -64,7 +64,7 @@ export const AddChainMiniDemo = () => {
         setError(undefined);
 
         try {
-          await rpc(session.provider, "wallet_addEthereumChain", [addParams]);
+          await rpc(session.provider, "wallet_addEthereumChain", [addParameters]);
           await refreshSession();
           setResponse(`Added ${meta!.name} (${meta!.chainId}).`);
         }

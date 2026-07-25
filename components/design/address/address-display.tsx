@@ -63,13 +63,13 @@ export const AddressDisplayDemo = () => {
   useEffect(() => {
     if (!address) return;
 
-    let cancelled = false;
+    let isCancelled = false;
 
     const timer = setTimeout(async () => {
       try {
         const primaryName = await mainnetClient.getEnsName({ address });
 
-        if (!cancelled) setReverse({ address, name: primaryName });
+        if (!isCancelled) setReverse({ address, name: primaryName });
       }
       catch {
         // Reverse resolution is decoration; the address stands on its own.
@@ -77,7 +77,7 @@ export const AddressDisplayDemo = () => {
     }, 400);
 
     return () => {
-      cancelled = true;
+      isCancelled = true;
       clearTimeout(timer);
     };
   }, [address]);

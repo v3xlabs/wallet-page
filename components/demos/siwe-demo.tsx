@@ -111,7 +111,7 @@ export const SiweDemo = () => {
           user: <SiwePreview message={previewMessage} />,
           request: {
             method: "personal_sign",
-            params: [previewMessage, session?.accounts[0] ?? "0x…"],
+            params: [previewMessage, session?.accounts[0] ?? "0x..."],
           },
           hash: messageHash,
         }}

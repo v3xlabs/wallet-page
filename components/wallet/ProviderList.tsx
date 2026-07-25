@@ -2,7 +2,7 @@
 
 import type { Eip6963ProviderDetail } from "../../lib/ethereum";
 
-type ProviderListProps = {
+type ProviderListProperties = {
   providers: Eip6963ProviderDetail[];
   connecting: boolean;
   onSelect: (detail: Eip6963ProviderDetail) => void;
@@ -14,7 +14,7 @@ export const ProviderList = ({
   connecting,
   onSelect,
   emptyMessage = "No wallets announced yet. Install an extension and try again.",
-}: ProviderListProps) => {
+}: ProviderListProperties) => {
   if (providers.length === 0) {
     return <p className="text-sm text-secondary">{emptyMessage}</p>;
   }

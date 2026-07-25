@@ -9,7 +9,7 @@ import { useWallet } from "../../wallet/WalletProvider";
 
 const SOURCE = "components/demos/connect/connect-wallet-demo.tsx";
 
-/** Connect + EIP-6963 discovery on one panel — wallet list is always visible. */
+/** Connect + EIP-6963 discovery on one panel -- wallet list is always visible. */
 export const ConnectWalletDemo = () => {
   const {
     providers,
@@ -53,7 +53,7 @@ export const ConnectWalletDemo = () => {
             providers={providers}
             connecting={connecting}
             onSelect={detail => void connectDetail(detail)}
-            emptyMessage="No providers yet — install a wallet extension and use Request providers below."
+            emptyMessage="No providers yet -- install a wallet extension and use Request providers below."
           />
         </section>
 

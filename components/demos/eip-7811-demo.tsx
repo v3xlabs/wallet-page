@@ -101,7 +101,7 @@ export const Eip7811Demo = () => {
           ),
           request: request
             ? { method: "wallet_getAssets", params: [request] }
-            : { method: "wallet_getAssets", params: [{ account: "0x…", chainFilter: ["0x…"] }] },
+            : { method: "wallet_getAssets", params: [{ account: "0x...", chainFilter: ["0x..."] }] },
           response: raw,
         }}
         pending={pending}

@@ -53,12 +53,12 @@ export const SwapDemo = () => {
   const hasAmount = payAmount !== undefined && payAmount > 0;
   // Tokens resolved from a pasted contract carry no price feed, so the
   // quote engine cannot price a pair that includes one.
-  const priceless = pay.priceUsd === 0 || receive.priceUsd === 0;
-  const quote = hasAmount && !quoting && !priceless
+  const isPriceless = pay.priceUsd === 0 || receive.priceUsd === 0;
+  const quote = hasAmount && !quoting && !isPriceless
     ? computeQuote(pay, receive, payAmount)
     : undefined;
-  const insufficient = payAmount !== undefined && payAmount > balanceOf(pay);
-  const highImpact = quote !== undefined && quote.impactPct > IMPACT_HIGH_PCT;
+  const isInsufficient = payAmount !== undefined && payAmount > balanceOf(pay);
+  const isHighImpact = quote !== undefined && quote.impactPct > IMPACT_HIGH_PCT;
 
   // Edits mark the quote stale; it "arrives" a debounced beat later.
   useEffect(() => {
@@ -137,7 +137,7 @@ export const SwapDemo = () => {
                 amountText={amountText}
                 payUsd={hasAmount ? payAmount * pay.priceUsd : undefined}
                 priceless={pay.priceUsd === 0}
-                insufficient={insufficient}
+                insufficient={isInsufficient}
                 onAmount={setAmount}
                 onMax={() => setAmount(maxPayText(pay, locale))}
                 onPickToken={() => openSelect("pay")}
@@ -147,7 +147,7 @@ export const SwapDemo = () => {
                 token={receive}
                 quote={quote}
                 quoting={quoting}
-                unavailable={priceless && hasAmount}
+                unavailable={isPriceless && hasAmount}
                 onPickToken={() => openSelect("receive")}
               />
             </div>
@@ -161,7 +161,7 @@ export const SwapDemo = () => {
               />
             )}
             <div className="mt-auto flex flex-col gap-3">
-              {quote && highImpact && (
+              {quote && isHighImpact && (
                 <label className="flex cursor-pointer items-start gap-2 rounded-xl bg-destructive-tint px-3 py-2.5">
                   <input
                     type="checkbox"
@@ -182,9 +182,9 @@ export const SwapDemo = () => {
               )}
               <PrimaryButton
                 onClick={() => setStep("review")}
-                disabled={!quote || insufficient || (highImpact && !ackImpact)}
+                disabled={!quote || isInsufficient || (isHighImpact && !ackImpact)}
               >
-                {insufficient ? `Insufficient ${pay.symbol}` : "Review swap"}
+                {isInsufficient ? `Insufficient ${pay.symbol}` : "Review swap"}
               </PrimaryButton>
             </div>
           </div>

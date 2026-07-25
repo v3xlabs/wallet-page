@@ -11,8 +11,8 @@ import { formatPrice, formatPriceNaive } from "./shared";
  */
 const CASES: { symbol: string; name: string; color: string; priceUsd: number; }[] = [
   { symbol: "NRD", name: "Near-dollar (mock)", color: "#8b5cf6", priceUsd: 0.9137 },
-  { symbol: "CNT", name: "Cent-range (mock)", color: "#0e7490", priceUsd: 0.084_21 },
-  { symbol: "PEPE", name: "Pepe (mock)", color: "#4c9540", priceUsd: 0.000_021_3 },
+  { symbol: "CNT", name: "Cent-range (mock)", color: "#0e7490", priceUsd: 0.08421 },
+  { symbol: "PEPE", name: "Pepe (mock)", color: "#4c9540", priceUsd: 0.0000213 },
 ];
 
 export const SubDollarDemo = () => {

@@ -4,7 +4,7 @@ import classNames from "classnames";
 import type { ReactNode } from "react";
 
 import { mergeInspector } from "../../../lib/demoInspector";
-import { DemoInspector, type DemoInspectorProps } from "../DemoInspector";
+import { DemoInspector, type DemoInspectorProps as DemoInspectorProperties } from "../DemoInspector";
 
 export type WalletAction = {
   label: string;
@@ -13,8 +13,8 @@ export type WalletAction = {
   disabled?: boolean;
 };
 
-type WalletActionPanelProps = {
-  inspector?: DemoInspectorProps;
+type WalletActionPanelProperties = {
+  inspector?: DemoInspectorProperties;
   /** Shown on the Response tab (merged into inspector). */
   response?: unknown;
   error?: unknown;
@@ -31,7 +31,7 @@ export const WalletActionPanel = ({
   actions,
   pending,
   children,
-}: WalletActionPanelProps) => {
+}: WalletActionPanelProperties) => {
   const merged = mergeInspector(inspector, response, error);
 
   return (

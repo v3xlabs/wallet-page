@@ -10,7 +10,7 @@ import { useDemoFrame } from "../../wallet/DemoFrame";
 import { DemoShell } from "../../wallet/DemoShell";
 import { useWallet } from "../../wallet/WalletProvider";
 
-/** Network grid — switch / add shortcuts (separate from the RPC mini demos below). */
+/** Network grid -- switch / add shortcuts (separate from the RPC mini demos below). */
 export const ChainQuickGrid = () => {
   const { session, refreshSession } = useWallet();
   const { requireSession } = useDemoFrame();

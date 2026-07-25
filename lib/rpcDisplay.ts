@@ -4,8 +4,8 @@ export type RpcCall = {
 };
 
 /** Pretty-print for demo RPC tab (bigint-safe). */
-export const formatRpcCall = ({ method, params = [] }: RpcCall): string => {
-  const payload = { method, params };
+export const formatRpcCall = ({ method, params: parameters = [] }: RpcCall): string => {
+  const payload = { method, params: parameters };
 
   return JSON.stringify(
     payload,

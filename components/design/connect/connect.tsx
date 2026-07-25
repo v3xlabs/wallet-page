@@ -135,7 +135,7 @@ const AppIdentity: FC<{ app: (typeof APPS)[Scenario]; }> = ({ app }) => (
     <span className="text-base font-semibold text-primary">{app.name}</span>
     <span className="font-mono text-xs text-muted">{app.host}</span>
     {app.connectedBefore && (
-      <span className="text-[11px] text-muted">You’ve connected to this app before</span>
+      <span className="text-[11px] text-muted">You've connected to this app before</span>
     )}
   </div>
 );
@@ -144,7 +144,7 @@ const SimilarityWarning: FC<{ host: string; similarTo: string; }> = ({ host, sim
   <div className="flex items-start gap-2.5 rounded-xl bg-warning-tint px-3 py-2.5 text-warning">
     <FiAlertTriangle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
     <p className="text-xs leading-relaxed font-medium">
-      {`${host} looks confusingly similar to ${similarTo}, which you’ve connected to before. If you meant that app, this isn’t it.`}
+      {`${host} looks confusingly similar to ${similarTo}, which you've connected to before. If you meant that app, this isn't it.`}
     </p>
   </div>
 );
@@ -320,7 +320,7 @@ export const ConnectDemo = () => {
                     ? (
                         <span className="flex items-center justify-center gap-2">
                           <Spinner />
-                          Connecting…
+                          Connecting...
                         </span>
                       )
                     : "Connect"}

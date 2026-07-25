@@ -18,8 +18,8 @@ export const SendTransactionDemo = () => {
   const [pending, setPending] = useState(false);
 
   const tx = {
-    from: session?.accounts[0] ?? "0x…",
-    to: session?.accounts[0] ?? "0x…",
+    from: session?.accounts[0] ?? "0x...",
+    to: session?.accounts[0] ?? "0x...",
     value: "0x0" as Hex,
     data: "0x" as Hex,
   };

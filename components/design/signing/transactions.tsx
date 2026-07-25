@@ -298,7 +298,7 @@ export const TransactionDemo = () => {
                       onSign={confirm}
                       signing={phase === "confirming"}
                       signLabel="Confirm"
-                      signingLabel="Confirming…"
+                      signingLabel="Confirming..."
                       disabled={current.gated && !acknowledged}
                       destructive={current.gated}
                     />

@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 import { Address } from "../../wallet/address";
 
-type AccountsPreviewProps = {
+type AccountsPreviewProperties = {
   accounts: string[];
   /** Label for what many dapps do with index 0 */
   firstAccountHint?: string;
@@ -11,7 +11,7 @@ type AccountsPreviewProps = {
 export const AccountsPreview = ({
   accounts,
   firstAccountHint = "Many dapps and wallets only use this entry",
-}: AccountsPreviewProps) => {
+}: AccountsPreviewProperties) => {
   if (accounts.length === 0) {
     return <p className="text-sm text-secondary">Wallet returned an empty list.</p>;
   }

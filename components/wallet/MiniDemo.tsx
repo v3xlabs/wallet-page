@@ -4,13 +4,13 @@ import { type ReactNode, useState } from "react";
 
 import { mergeInspector } from "../../lib/demoInspector";
 import { DemoFrame } from "./DemoFrame";
-import { DemoInspector, type DemoInspectorProps } from "./DemoInspector";
+import { DemoInspector, type DemoInspectorProps as DemoInspectorProperties } from "./DemoInspector";
 import { useWallet } from "./WalletProvider";
 
-type MiniDemoProps = {
+type MiniDemoProperties = {
   title: string;
   description?: ReactNode;
-  inspector?: DemoInspectorProps;
+  inspector?: DemoInspectorProperties;
   actionLabel: string;
   onAction: () => void | Promise<void>;
   response?: string;
@@ -29,7 +29,7 @@ const MiniDemoContent = ({
   response,
   error,
   pending,
-}: Omit<MiniDemoProps, "source">) => {
+}: Omit<MiniDemoProperties, "source">) => {
   const { requireSession } = useWallet();
   const [localPending, setLocalPending] = useState(false);
 
@@ -71,8 +71,8 @@ const MiniDemoContent = ({
 };
 
 /** Compact RPC demo: Preview / Request / Response tabs + primary action. */
-export const MiniDemo = ({ source, ...props }: MiniDemoProps) => (
+export const MiniDemo = ({ source, ...properties }: MiniDemoProperties) => (
   <DemoFrame variant="mini" source={source}>
-    <MiniDemoContent {...props} />
+    <MiniDemoContent {...properties} />
   </DemoFrame>
 );

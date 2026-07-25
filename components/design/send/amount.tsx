@@ -47,9 +47,9 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
   const display = useDisplayValue();
 
   const amount = parseAmount(amountText, token, unit, locale, denomination.rate);
-  const insufficient = amount !== undefined && amount > token.balance;
+  const isInsufficient = amount !== undefined && amount > token.balance;
   // Tokens resolved from a pasted contract carry no price feed.
-  const priceless = token.priceUsd === 0;
+  const isPriceless = token.priceUsd === 0;
   const converted
     = amount === undefined
       ? undefined
@@ -106,13 +106,13 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
               placeholder="0"
               className={classNames(
                 "w-full max-w-44 border-none bg-transparent text-center text-4xl font-semibold outline-none placeholder:text-muted",
-                insufficient ? "text-destructive" : "text-primary",
+                isInsufficient ? "text-destructive" : "text-primary",
               )}
               style={{ caretColor: "var(--vocs-color-accent)" }}
             />
           </div>
           <div className="flex items-center justify-between gap-2">
-            {priceless
+            {isPriceless
               ? (
                   <span className="text-xs text-muted">No price feed for this token</span>
                 )
@@ -140,7 +140,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
             </button>
           </div>
         </div>
-        {insufficient && (
+        {isInsufficient && (
           <p className="text-xs font-medium text-destructive">
             Exceeds your
             {" "}
@@ -155,7 +155,7 @@ export const AmountScreen = ({ token, recipient, amountText, unit, onAmount, onU
       <div className="px-4 pt-3 pb-4">
         <PrimaryButton
           onClick={onContinue}
-          disabled={amount === undefined || amount === 0n || insufficient}
+          disabled={amount === undefined || amount === 0n || isInsufficient}
         >
           Review
         </PrimaryButton>

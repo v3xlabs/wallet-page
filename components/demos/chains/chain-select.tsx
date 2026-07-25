@@ -4,13 +4,13 @@ import type { Hex } from "viem";
 
 import { DEMO_CHAINS } from "../../../lib/chains";
 
-type ChainSelectProps = {
+type ChainSelectProperties = {
   value: Hex;
   onChange: (chainId: Hex) => void;
   id?: string;
 };
 
-export const ChainSelect = ({ value, onChange, id }: ChainSelectProps) => (
+export const ChainSelect = ({ value, onChange, id }: ChainSelectProperties) => (
   <select
     id={id}
     className="demo-select mt-2 max-w-[22rem]"

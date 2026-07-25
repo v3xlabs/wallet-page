@@ -10,7 +10,7 @@ import { PrimaryButton, TokenIcon, WalletFrame, WalletHeader } from "../ui";
 import { HOODI_COLOR } from "./shared";
 
 /**
- * Networks are just… on. No health meters, no default radio - silence means
+ * Networks are just... on. No health meters, no default radio - silence means
  * working. The interesting surface is configuration: every network's RPCs
  * are the user's to edit, extend, and swap between.
  */
@@ -142,7 +142,7 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
 }) => {
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
-  const valid = /^https?:\/\/.+\../.test(draft.trim());
+  const isValid = /^https?:\/\/.+\../.test(draft.trim());
 
   const close = () => {
     setAdding(false);
@@ -170,7 +170,7 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
               onSubmit={(e) => {
                 e.preventDefault();
 
-                if (!valid) return;
+                if (!isValid) return;
 
                 onAddRpc(draft.trim());
                 close();
@@ -180,13 +180,13 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
                 type="text"
                 value={draft}
                 onChange={e => setDraft(e.target.value)}
-                placeholder="https://…"
+                placeholder="https://..."
                 spellCheck={false}
                 className="w-full rounded-md border border-primary bg-surface px-2 py-1 font-mono text-xs text-primary outline-none placeholder:text-muted focus:border-accent"
               />
               <button
                 type="submit"
-                disabled={!valid}
+                disabled={!isValid}
                 className="shrink-0 cursor-pointer rounded-md border border-primary bg-surfaceMuted px-2 py-1 text-[11px] font-medium text-secondary transition-colors enabled:hover:bg-surfaceTint enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-45"
               >
                 Add
@@ -283,7 +283,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
 
   const idNumber = Number(id);
   const duplicate = id !== "" && taken.includes(idNumber);
-  const valid
+  const isValid
     = name.trim() !== ""
       && /^https?:\/\/.+\../.test(rpc.trim())
       && /^[A-Za-z]{2,6}$/.test(symbol.trim())
@@ -343,7 +343,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
       )}
       <div className="mt-auto pt-2">
         <PrimaryButton
-          disabled={!valid}
+          disabled={!isValid}
           onClick={() =>
             onAdd({
               id: idNumber,

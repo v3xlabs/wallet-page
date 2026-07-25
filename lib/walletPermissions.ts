@@ -109,7 +109,7 @@ export const buildCapabilityGroups = (granted: Set<string>): CapabilityGroup[] =
     byPrefix.set(prefix, items);
   }
 
-  return [...byPrefix.entries()]
+  return [...byPrefix]
     .sort(([a], [b]) => prefixRank(a) - prefixRank(b) || a.localeCompare(b))
     .map(([prefix, items]) => ({ prefix, items }));
 };
@@ -122,18 +122,16 @@ export const normalizePermissionsResponse = (raw: unknown): WalletPermissionLike
   }
 
   if (typeof raw === "object" && raw !== null) {
-    const obj = raw as Record<string, unknown>;
+    const object = raw as Record<string, unknown>;
 
-    if ("caveats" in obj || "parentCapability" in obj) {
-      return isPermissionLike(obj) ? [obj] : [];
+    if ("caveats" in object || "parentCapability" in object) {
+      return isPermissionLike(object) ? [object] : [];
     }
 
-    return Object.keys(obj).map(key => ({
+    return Object.entries(object).map(([key, value]) => ({
       parentCapability: key,
       caveats: [],
-      ...(typeof obj[key] === "object" && obj[key] !== null
-        ? (obj[key] as Record<string, unknown>)
-        : {}),
+      ...(typeof value === "object" && value !== null && (value as Record<string, unknown>)),
     }));
   }
 

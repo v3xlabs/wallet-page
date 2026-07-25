@@ -6,13 +6,13 @@ import { createPortal } from "react-dom";
 import { ProviderList } from "./ProviderList";
 import { useWallet } from "./WalletProvider";
 
-type WalletPickerModalProps = {
+type WalletPickerModalProperties = {
   open: boolean;
   onClose: () => void;
 };
 
-export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProps) => {
-  const dialogRef = useRef<HTMLDialogElement>(null);
+export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProperties) => {
+  const dialogReference = useRef<HTMLDialogElement>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const {
     providers,
@@ -28,7 +28,7 @@ export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProps) => 
   }, []);
 
   useEffect(() => {
-    const dialog = dialogRef.current;
+    const dialog = dialogReference.current;
 
     if (!dialog) return;
 
@@ -45,11 +45,11 @@ export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProps) => 
 
   const pickerDialog = (
     <dialog
-      ref={dialogRef}
+      ref={dialogReference}
       className="fixed inset-0 m-auto h-fit max-h-[min(90vh,calc(100dvh-2rem))] w-fit max-w-[min(28rem,calc(100vw-2rem))] overflow-visible bg-transparent p-0 backdrop:bg-black/45"
       onClose={onClose}
       onClick={(e) => {
-        if (e.target === dialogRef.current) onClose();
+        if (e.target === dialogReference.current) onClose();
       }}
     >
       <div className="rounded-lg border border-primary bg-code-block px-5 py-4">
@@ -61,7 +61,7 @@ export const WalletPickerModal = ({ open, onClose }: WalletPickerModalProps) => 
             onClick={onClose}
             aria-label="Close"
           >
-            ×
+            x
           </button>
         </div>
         <p className="text-sm text-secondary">

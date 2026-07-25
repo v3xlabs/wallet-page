@@ -56,7 +56,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
   const feeUsd = usdValue(ETH, FEE_WEI);
   const totalUsd = usdValue(token, amount) + feeUsd;
   // Tokens resolved from a pasted contract carry no price feed.
-  const priceless = token.priceUsd === 0;
+  const isPriceless = token.priceUsd === 0;
 
   return (
     <>
@@ -67,7 +67,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
           {" "}
           {token.symbol}
         </span>
-        {!priceless && (
+        {!isPriceless && (
           <span className="text-sm text-muted tabular-nums">
             {display(usdValue(token, amount))}
           </span>
@@ -90,7 +90,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
           value={`${formatTokenAmount(FEE_WEI, ETH, locale)} ETH`}
           subvalue={display(feeUsd)}
         />
-        {!priceless && (
+        {!isPriceless && (
           <ReviewRow label="Total" value={display(totalUsd)} />
         )}
       </div>
@@ -100,7 +100,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
             ? (
                 <span className="flex items-center justify-center gap-2">
                   <Spinner />
-                  Sending…
+                  Sending...
                 </span>
               )
             : "Confirm send"}

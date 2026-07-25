@@ -18,7 +18,7 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
   const [importing, setImporting] = useState(false);
 
   const trimmed = text.trim();
-  const valid = KEY_PATTERN.test(trimmed);
+  const isValid = KEY_PATTERN.test(trimmed);
 
   const account = useMemo(() => {
     if (!KEY_PATTERN.test(trimmed)) return;
@@ -45,7 +45,7 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
           type={visible ? "text" : "password"}
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="0x…"
+          placeholder="0x..."
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"
@@ -65,7 +65,7 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
         <span className="text-xs text-muted">
           {trimmed === ""
             ? "64 hex characters, 0x-prefixed"
-            : (valid ? "Key format valid" : "Expecting 0x + 64 hex characters")}
+            : (isValid ? "Key format valid" : "Expecting 0x + 64 hex characters")}
         </span>
         <button
           type="button"
@@ -91,7 +91,7 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
               ? (
                   <span className="flex items-center justify-center gap-2">
                     <Spinner />
-                    Importing…
+                    Importing...
                   </span>
                 )
               : "Import account"}

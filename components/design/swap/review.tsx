@@ -89,7 +89,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
             ? (
                 <span className="flex items-center justify-center gap-2">
                   <Spinner />
-                  Swapping…
+                  Swapping...
                 </span>
               )
             : "Confirm swap"}

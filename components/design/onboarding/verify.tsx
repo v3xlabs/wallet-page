@@ -72,7 +72,7 @@ const ChoiceRow = ({ wordNumber, choices, solved, onSolved }: {
 
 export const VerifyScreen = ({ onDone }: { onDone: () => void; }) => {
   const [solvedRows, setSolvedRows] = useState<number[]>([]);
-  const allSolved = solvedRows.length === CHALLENGES.length;
+  const isAllSolved = solvedRows.length === CHALLENGES.length;
 
   return (
     <div className="flex grow flex-col gap-4 px-4 pt-2 pb-4">
@@ -89,8 +89,8 @@ export const VerifyScreen = ({ onDone }: { onDone: () => void; }) => {
         />
       ))}
       <div className="mt-auto">
-        <PrimaryButton onClick={onDone} disabled={!allSolved}>
-          {allSolved ? "Continue" : "Match both words to continue"}
+        <PrimaryButton onClick={onDone} disabled={!isAllSolved}>
+          {isAllSolved ? "Continue" : "Match both words to continue"}
         </PrimaryButton>
       </div>
       <style>

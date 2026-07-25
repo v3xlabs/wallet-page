@@ -49,7 +49,7 @@ export const PersonalSignDemo = () => {
           user: <p className="text-sm leading-normal whitespace-pre-wrap wrap-break-word">{MESSAGE}</p>,
           request: {
             method: "personal_sign",
-            params: [MESSAGE, session?.accounts[0] ?? "0x…"],
+            params: [MESSAGE, session?.accounts[0] ?? "0x..."],
           },
           hash: MESSAGE_HASH,
           hashNote: "EIP-191 - wallets hash the prefixed message before secp256k1.",
