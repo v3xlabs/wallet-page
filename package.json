@@ -38,6 +38,6 @@
     "eslint": "10.8.0",
     "eslint-plugin-v3xlabs": "1.8.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14"
+    "vite": "^8.0.16"
   }
 }
