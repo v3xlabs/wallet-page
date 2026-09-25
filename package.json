@@ -23,21 +23,21 @@
     "blo": "^2.0.0",
     "classnames": "^2.5.1",
     "qr": "^0.6.0",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "react-icons": "^5.6.0",
+    "react": "~19.2.8",
+    "react-dom": "~19.2.8",
+    "react-icons": "^5.7.0",
     "react-server-dom-webpack": "~19.2.8",
-    "viem": "^2.51.3",
+    "viem": "^2.56.9",
     "vocs": "2.0.4",
-    "waku": "^1.0.0-beta.0"
+    "waku": "1.0.0-beta.1"
   },
   "devDependencies": {
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
+    "@types/react": "~19.2.18",
+    "@types/react-dom": "~19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
     "eslint": "10.8.0",
     "eslint-plugin-v3xlabs": "1.8.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16"
+    "vite": "^8.3.1"
   }
 }
