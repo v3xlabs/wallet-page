@@ -121,4 +121,7 @@ export const installOpenlv = (
 
 export const getOpenlvConnector = (): Eip6963ProviderDetail | undefined => openlvDetail;
 
+export const closeOpenlvSession = () =>
+  openlvDetail?.provider.request({ method: "wallet_revokePermissions", params: [{ eth_accounts: {} }] });
+
 export const isOpenlvProvider = (detail: Eip6963ProviderDetail) => detail.info.rdns === OPENLV_RDNS;

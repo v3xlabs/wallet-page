@@ -200,8 +200,12 @@ export const WalletProvider = ({ children }: { children: ReactNode; }) => {
     setSession(undefined);
     setConnectError(undefined);
     clearStoredSession();
-    void import("../../lib/openlv").then(m => m.dismissOpenlvModal());
-  }, []);
+    void import("../../lib/openlv").then((m) => {
+      m.dismissOpenlvModal();
+
+      if (session?.provider === m.getOpenlvConnector()?.provider) void m.closeOpenlvSession();
+    });
+  }, [session]);
 
   const requestProviders = useCallback(() => {
     appendLog({ kind: "request" });
