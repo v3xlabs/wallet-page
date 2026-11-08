@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@openlv/connector':
-        specifier: 0.0.3
-        version: 0.0.3(tailwindcss@4.3.3)(typescript@6.0.3)(viem@2.56.9(typescript@6.0.3)(zod@4.6.5))(zod@4.6.5)
+        specifier: 0.2.2
+        version: 0.2.2(tailwindcss@4.3.3)(typescript@6.0.3)(viem@2.56.9(typescript@6.0.3)(zod@4.6.7))(zod@4.6.7)
       '@openlv/core':
-        specifier: 0.0.2
-        version: 0.0.2
+        specifier: 0.3.0
+        version: 0.3.0
       '@openlv/modal':
-        specifier: 0.0.3
-        version: 0.0.3(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.5)
+        specifier: 0.2.2
+        version: 0.2.2(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.7)
       '@openlv/provider':
-        specifier: 0.0.3
-        version: 0.0.3(typescript@6.0.3)(zod@4.6.5)
+        specifier: 0.3.1
+        version: 0.3.1(typescript@6.0.3)
       blo:
         specifier: ^2.0.0
         version: 2.0.0
@@ -43,7 +43,7 @@ importers:
         version: 19.2.8(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       viem:
         specifier: ^2.56.9
-        version: 2.56.9(typescript@6.0.3)(zod@4.6.5)
+        version: 2.56.9(typescript@6.0.3)(zod@4.6.7)
       vocs:
         specifier: 2.0.4
         version: 2.0.4(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react-server-dom-webpack@19.2.8(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@6.0.3)(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(waku@1.0.0-beta.1(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.2.8(react@19.2.8))(react-server-dom-webpack@19.2.8(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(tsx@4.23.15)(yaml@2.9.1))
@@ -571,35 +571,35 @@ packages:
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
 
-  '@openlv/connector@0.0.3':
-    resolution: {integrity: sha512-V1EhBRbyueEkyvJ4ncigI4fFTOxDg24pkcFI7u5fnjsOReTPuCzX7XXPlPfpjAA7b5fEJywUnEHxhbjE1IO0lQ==}
+  '@openlv/connector@0.2.2':
+    resolution: {integrity: sha512-vJqJ0WxsV9lCNZ1KKjzknbq4JPQ5QhMiFRYnuLKRqfgZnVNfP27HORU91yIpyUDuDyoqKgzPISFGVlz9IwnB6w==}
     peerDependencies:
       '@wagmi/core': '3'
       viem: '2'
 
-  '@openlv/core@0.0.2':
-    resolution: {integrity: sha512-Q7ISpgQX8YkKw25hs76SgDjsIosFkiA/28P/p9b+MvpnN8cymCJDauWA31SSNSyMOrsOS/iMK4I5VHCcwwC5RA==}
+  '@openlv/core@0.3.0':
+    resolution: {integrity: sha512-NAGihiOzdqqB5vp7LkLho2GGBKrcRTdc8qK+EQetu54HHG1oyzHFMUuq1sXWqBWL0GyD1C+igMFdM0R1VzLPGA==}
 
-  '@openlv/modal@0.0.3':
-    resolution: {integrity: sha512-4LH3OfFsjQe3dNUSroqvgoffyPVO6arHe+1uUht+C/210w5Bqak0QFHVRXfenkYx1yzcEpwDXfYiGx2G96f19A==}
+  '@openlv/modal@0.2.2':
+    resolution: {integrity: sha512-k4pZ6pNy+Td8mPwAMQEIDGTmd2b096FUVRili1bGEN/sVc5ZKVYHY4RzCaOhOngFb25tRGi7IWwCgKolcMnpUA==}
 
-  '@openlv/provider@0.0.3':
-    resolution: {integrity: sha512-Ma1/sJr/g+hWt3fEt6ESl5G4v72za9dCq7QQk4EesD9gfw6QSvvgpvQjZs3v/BFwNYK+i9hzaGQy8yZ36zIlSg==}
+  '@openlv/provider@0.3.1':
+    resolution: {integrity: sha512-GZvQFMMqa13I7N7LjGGLlnZQWahWfU8pkiXzu7cFlZCbUzJvc4v2LnyAOKH1Fs1L9eLnqAXMj3YzO/shAcJNbg==}
 
-  '@openlv/session@0.0.3':
-    resolution: {integrity: sha512-s5Q6BIYAXEnmGuOIW3IQYbY1qW9YS5R5ytgwEjSYWJHiJCOVBu8gcNCQ9NIZ9wI6XLlprKFSdHkw6pzP7pAx4g==}
+  '@openlv/session@0.3.1':
+    resolution: {integrity: sha512-EbokMXfFPXN6WLecpuKouaWii8QUxQApJusiHzwlXdfJXNDrkXT64PfoM5Fjwbm0YSSkKI/53srOWoi+aS1JXA==}
 
-  '@openlv/signaling@0.0.3':
-    resolution: {integrity: sha512-U2WBRN05DjC6keeTWG7p2WAcm71XDkHjqC8GMpU6LeCcmoqAHIO/rfLcRZxpr3E+BImSblLVe6nwuImAN/v5tg==}
+  '@openlv/signaling@0.3.1':
+    resolution: {integrity: sha512-KGtgZbEbsfA1EG5XKiP1BRVrhp2TILXlJef/CrUjytykGZwq/XzG9qtXxTFSFEmW3atpYC2Us5gU064SZamNVg==}
 
-  '@openlv/transport@0.0.3':
-    resolution: {integrity: sha512-nqQnYk/jATPx25zIHFG409sVlNRrDYjxrqXFkmr+zmSlbBSq29Blk/XzwK/7xCcaiDf4tZu+hnf2V0b2YU2IuQ==}
+  '@openlv/transport@0.3.0':
+    resolution: {integrity: sha512-zQIJFwzxWYhtUPsBHm50PR2pIDOydnX4FrkI/+vr/gT+W7vZxD25PIICZPqzYGnqBIfQcX07T94MlGul3T4rAg==}
 
   '@oxc-project/types@0.151.0':
     resolution: {integrity: sha512-J1yXrIlNDZVzE3ada310xeAw7nH8yCAyLPuUIsjKatFPmfn5bS1oW+cM+QsGOtVWd5nhSpbwZWx/rue+r5Z+PA==}
 
-  '@peculiar/asn1-schema@2.9.5':
-    resolution: {integrity: sha512-Ez3wLKVjaxdsLcgeWN4OE31QkM7oBOgKuuBJxldRYAkfYw2C+8zJPcSd/SThnbhszsEOlAmoaS5kIIkN29fGKQ==}
+  '@peculiar/asn1-schema@2.11.1':
+    resolution: {integrity: sha512-jaU9OaCcbZUdyXx9hMETZB9xoNmxTGjOGFqd3cOwKFkpKnyKd9WxF3uqj4PvX4cyOMP9bSdHg5YyML2qtx/d/g==}
     engines: {node: '>=14'}
 
   '@peculiar/json-schema@1.1.12':
@@ -609,8 +609,8 @@ packages:
   '@peculiar/utils@2.0.3':
     resolution: {integrity: sha512-+oL3HPFRIZ1St2K50lWCXiioIgSoxzz7R1J3uF6neO2yl1sgmpgY6XXJH4BdpoDkMWznQTeYF6oWNDZLCdQ4eQ==}
 
-  '@peculiar/webcrypto@1.7.1':
-    resolution: {integrity: sha512-ODOov0sGMJMf3jPonOkgGqPknTsu+DdQ7kD++gz8aI+aFMOMHFbWAA2taqXXVTdP+OTOQR/znGvSpmkeI0WTYQ==}
+  '@peculiar/webcrypto@1.7.2':
+    resolution: {integrity: sha512-ktTSACRJ5WdpfjHjFT2EWJQQPacGv1cPCDfEbdmpAHOxdFiYqPe4lfnXGA3D8Dg9/0kHPYSvyRlgujIOVlTdvQ==}
     engines: {node: '>=14.18.0'}
 
   '@pkgr/core@0.3.6':
@@ -1313,8 +1313,8 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  asn1js@3.0.10:
-    resolution: {integrity: sha512-S2s3aOytiKdFRdulw2qPE51MzjzVOisppcVv7jVFR+Kw0kxwvFrDcYA0h7Ndqbmj0HkMIXYWaoj7fli8kgx1eg==}
+  asn1js@3.1.0:
+    resolution: {integrity: sha512-HWYi1THkOqguCiO+vwj09ZkQFD2kKEsejYHAYCtX0D80WVdoDnvRc9IukXX/jeb0T9NRWJnRtqwdbHltnFjwXA==}
     engines: {node: '>=12.0.0'}
 
   astring@1.9.0:
@@ -2935,14 +2935,14 @@ packages:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
 
-  seroval-plugins@1.5.6:
-    resolution: {integrity: sha512-HXuLAX2pu/UByPpaeo/TaMfvMIi+1QqIoPJYCcAtU8QkVNwgR6MPlGuCQTErV1JwraaMbYaWVIBX7mppzGLATQ==}
+  seroval-plugins@1.6.12:
+    resolution: {integrity: sha512-+reiwp/lYxiyctSrdvX7OQ1YLrcbWYgBiZrhSFL+V43b0/DGRLNVSDyZINbQe+tWplPOI2fw2dPrdv6hcc09kQ==}
     engines: {node: '>=10'}
     peerDependencies:
       seroval: ^1.0
 
-  seroval@1.5.6:
-    resolution: {integrity: sha512-rVQVWjjSvlINzaQPZH5JFqsqEsIWdTxY3iJZCnTL/5gQbXIRooVZKI60tVCkOVfzcRPejboxO2t0P89dg5mQaA==}
+  seroval@1.6.12:
+    resolution: {integrity: sha512-CqbIVfk/7GL3ITwZI55lcPbpQbjHZ2DD5cUj4iH7E9YsCfHNJV1mx7yNp86Z84w5IpmkZZS/2s5vPOWmVWSdQg==}
     engines: {node: '>=10'}
 
   serve-static@2.2.1:
@@ -2992,8 +2992,8 @@ packages:
     peerDependencies:
       solid-js: '*'
 
-  solid-js@1.9.15:
-    resolution: {integrity: sha512-EeiY2xfpZJqPLjXspVEKjAII4yv8NyG//NxZ3IpOFHdUNnnTyL0uJOeS9LWGvA7cFCz5y94cjFwYlmw5Luncsg==}
+  solid-js@1.9.18:
+    resolution: {integrity: sha512-CHGO5YFk6Y9m/1YSxVtKnXfrW7JD3Tmof8HmR4z6TmCPsS8efo8LnzIR8CQh3cUvffqYm6DWyBFfk8dQw1CNQQ==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -3131,11 +3131,14 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  ts-pattern@5.9.0:
-    resolution: {integrity: sha512-6s5V71mX8qBUmlgbrfL33xDUwO0fq48rxAu2LBE11WBeGdpCPOsXksQbZJHvHwhrd3QjUusd3mAOM5Gg0mFBLg==}
+  ts-pattern@5.9.2:
+    resolution: {integrity: sha512-qAf+7M7Jjk7uebZeIo9uEzyintfuRtgHdzM9dqxRKcMi2dt76Ec+FH2wW3bnU9TuGLkZIJLoLs7cCQnU7Tu8ig==}
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+
+  tslib@2.9.1:
+    resolution: {integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==}
 
   tsx@4.23.15:
     resolution: {integrity: sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==}
@@ -3447,6 +3450,9 @@ packages:
 
   zod@4.6.5:
     resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4025,13 +4031,13 @@ snapshots:
 
   '@open-draft/deferred-promise@2.2.0': {}
 
-  '@openlv/connector@0.0.3(tailwindcss@4.3.3)(typescript@6.0.3)(viem@2.56.9(typescript@6.0.3)(zod@4.6.5))(zod@4.6.5)':
+  '@openlv/connector@0.2.2(tailwindcss@4.3.3)(typescript@6.0.3)(viem@2.56.9(typescript@6.0.3)(zod@4.6.7))(zod@4.6.7)':
     dependencies:
-      '@openlv/core': 0.0.2
-      '@openlv/modal': 0.0.3(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.5)
-      '@openlv/provider': 0.0.3(typescript@6.0.3)(zod@4.6.5)
+      '@openlv/core': 0.3.0
+      '@openlv/modal': 0.2.2(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.7)
+      '@openlv/provider': 0.3.1(typescript@6.0.3)
       eventemitter3: 5.0.4
-      viem: 2.56.9(typescript@6.0.3)(zod@4.6.5)
+      viem: 2.56.9(typescript@6.0.3)(zod@4.6.7)
     transitivePeerDependencies:
       - bufferutil
       - tailwind-merge
@@ -4040,26 +4046,26 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@openlv/core@0.0.2':
+  '@openlv/core@0.3.0':
     dependencies:
       '@noble/ciphers': 1.3.0
       '@noble/curves': 1.9.7
       eventemitter3: 5.0.4
 
-  '@openlv/modal@0.0.3(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.5)':
+  '@openlv/modal@0.2.2(tailwindcss@4.3.3)(typescript@6.0.3)(zod@4.6.7)':
     dependencies:
-      '@openlv/core': 0.0.2
-      '@openlv/provider': 0.0.3(typescript@6.0.3)(zod@4.6.5)
-      '@openlv/session': 0.0.3
-      '@openlv/signaling': 0.0.3
+      '@openlv/core': 0.3.0
+      '@openlv/provider': 0.3.1(typescript@6.0.3)
+      '@openlv/session': 0.3.1
+      '@openlv/signaling': 0.3.1
       classnames: 2.5.1
       eventemitter3: 5.0.4
-      lucide-solid: 0.574.0(solid-js@1.9.15)
-      ox: 0.9.17(typescript@6.0.3)(zod@4.6.5)
+      lucide-solid: 0.574.0(solid-js@1.9.18)
+      ox: 0.9.17(typescript@6.0.3)(zod@4.6.7)
       qr: 0.6.0
-      solid-element: 1.9.2(solid-js@1.9.15)
-      solid-icons: 1.2.0(solid-js@1.9.15)
-      solid-js: 1.9.15
+      solid-element: 1.9.2(solid-js@1.9.18)
+      solid-icons: 1.2.0(solid-js@1.9.18)
+      solid-js: 1.9.18
       tailwind-variants: 3.3.1(tailwindcss@4.3.3)
     transitivePeerDependencies:
       - bufferutil
@@ -4069,77 +4075,75 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@openlv/provider@0.0.3(typescript@6.0.3)(zod@4.6.5)':
+  '@openlv/provider@0.3.1(typescript@6.0.3)':
     dependencies:
-      '@openlv/core': 0.0.2
-      '@openlv/session': 0.0.3
-      '@openlv/signaling': 0.0.3
-      '@openlv/transport': 0.0.3
-      eventemitter3: 5.0.4
-      ox: 0.9.17(typescript@6.0.3)(zod@4.6.5)
-      ts-pattern: 5.9.0
+      '@openlv/core': 0.3.0
+      '@openlv/session': 0.3.1
+      '@openlv/signaling': 0.3.1
+      '@openlv/transport': 0.3.0
+      ox: 0.9.17(typescript@6.0.3)(zod@4.6.7)
+      zod: 4.6.7
     transitivePeerDependencies:
       - bufferutil
       - typescript
       - utf-8-validate
-      - zod
 
-  '@openlv/session@0.0.3':
+  '@openlv/session@0.3.1':
     dependencies:
-      '@openlv/core': 0.0.2
-      '@openlv/signaling': 0.0.3
-      '@openlv/transport': 0.0.3
+      '@openlv/core': 0.3.0
+      '@openlv/signaling': 0.3.1
+      '@openlv/transport': 0.3.0
       eventemitter3: 5.0.4
       globals: 16.5.0
-      ts-pattern: 5.9.0
+      ts-pattern: 5.9.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/signaling@0.0.3':
+  '@openlv/signaling@0.3.1':
     dependencies:
-      '@openlv/core': 0.0.2
+      '@openlv/core': 0.3.0
       eventemitter3: 5.0.4
       globals: 16.5.0
       gun: 0.2020.1241
-      ts-pattern: 5.9.0
+      ts-pattern: 5.9.2
       websocket-mqtt: 0.0.7
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@openlv/transport@0.0.3':
+  '@openlv/transport@0.3.0':
     dependencies:
-      '@openlv/core': 0.0.2
+      '@openlv/core': 0.3.0
       eventemitter3: 5.0.4
       globals: 16.5.0
-      ts-pattern: 5.9.0
+      ts-pattern: 5.9.2
 
   '@oxc-project/types@0.151.0': {}
 
-  '@peculiar/asn1-schema@2.9.5':
+  '@peculiar/asn1-schema@2.11.1':
     dependencies:
       '@peculiar/utils': 2.0.3
-      asn1js: 3.0.10
-      tslib: 2.8.1
+      asn1js: 3.1.0
+      tslib: 2.9.1
     optional: true
 
   '@peculiar/json-schema@1.1.12':
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
     optional: true
 
   '@peculiar/utils@2.0.3':
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
     optional: true
 
-  '@peculiar/webcrypto@1.7.1':
+  '@peculiar/webcrypto@1.7.2':
     dependencies:
-      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-schema': 2.11.1
       '@peculiar/json-schema': 1.1.12
       '@peculiar/utils': 2.0.3
-      tslib: 2.8.1
+      tslib: 2.9.1
       webcrypto-core: 1.9.2
     optional: true
 
@@ -4713,15 +4717,15 @@ snapshots:
     optionalDependencies:
       react-server-dom-webpack: 19.2.8(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
-  abitype@1.2.3(typescript@6.0.3)(zod@4.6.5):
+  abitype@1.2.3(typescript@6.0.3)(zod@4.6.7):
     optionalDependencies:
       typescript: 6.0.3
-      zod: 4.6.5
+      zod: 4.6.7
 
-  abitype@1.3.0(typescript@6.0.3)(zod@4.6.5):
+  abitype@1.3.0(typescript@6.0.3)(zod@4.6.7):
     optionalDependencies:
       typescript: 6.0.3
-      zod: 4.6.5
+      zod: 4.6.7
 
   accepts@2.0.0:
     dependencies:
@@ -4762,11 +4766,11 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  asn1js@3.0.10:
+  asn1js@3.1.0:
     dependencies:
       pvtsutils: 1.3.6
       pvutils: 1.2.0
-      tslib: 2.8.1
+      tslib: 2.9.1
     optional: true
 
   astring@1.9.0: {}
@@ -5469,7 +5473,7 @@ snapshots:
     dependencies:
       ws: 7.5.13
     optionalDependencies:
-      '@peculiar/webcrypto': 1.7.1
+      '@peculiar/webcrypto': 1.7.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -5805,9 +5809,9 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-solid@0.574.0(solid-js@1.9.15):
+  lucide-solid@0.574.0(solid-js@1.9.18):
     dependencies:
-      solid-js: 1.9.15
+      solid-js: 1.9.18
 
   lz-string@1.5.0: {}
 
@@ -6392,7 +6396,7 @@ snapshots:
 
   outvariant@1.4.0: {}
 
-  ox@0.14.45(typescript@6.0.3)(zod@4.6.5):
+  ox@0.14.45(typescript@6.0.3)(zod@4.6.7):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
       '@noble/ciphers': 1.3.0
@@ -6400,14 +6404,14 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@6.0.3)(zod@4.6.5)
+      abitype: 1.2.3(typescript@6.0.3)(zod@4.6.7)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
       - zod
 
-  ox@0.9.17(typescript@6.0.3)(zod@4.6.5):
+  ox@0.9.17(typescript@6.0.3)(zod@4.6.7):
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
       '@noble/ciphers': 1.3.0
@@ -6415,7 +6419,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.3.0(typescript@6.0.3)(zod@4.6.5)
+      abitype: 1.3.0(typescript@6.0.3)(zod@4.6.7)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 6.0.3
@@ -6522,7 +6526,7 @@ snapshots:
 
   pvtsutils@1.3.6:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
     optional: true
 
   pvutils@1.2.0:
@@ -6803,11 +6807,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  seroval-plugins@1.5.6(seroval@1.5.6):
+  seroval-plugins@1.6.12(seroval@1.6.12):
     dependencies:
-      seroval: 1.5.6
+      seroval: 1.6.12
 
-  seroval@1.5.6: {}
+  seroval@1.6.12: {}
 
   serve-static@2.2.1:
     dependencies:
@@ -6870,20 +6874,20 @@ snapshots:
       dot-case: 3.0.4
       tslib: 2.8.1
 
-  solid-element@1.9.2(solid-js@1.9.15):
+  solid-element@1.9.2(solid-js@1.9.18):
     dependencies:
       component-register: 0.8.8
-      solid-js: 1.9.15
+      solid-js: 1.9.18
 
-  solid-icons@1.2.0(solid-js@1.9.15):
+  solid-icons@1.2.0(solid-js@1.9.18):
     dependencies:
-      solid-js: 1.9.15
+      solid-js: 1.9.18
 
-  solid-js@1.9.15:
+  solid-js@1.9.18:
     dependencies:
       csstype: 3.2.3
-      seroval: 1.5.6
-      seroval-plugins: 1.5.6(seroval@1.5.6)
+      seroval: 1.6.12
+      seroval-plugins: 1.6.12(seroval@1.6.12)
 
   source-map-js@1.2.1: {}
 
@@ -7001,9 +7005,12 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-pattern@5.9.0: {}
+  ts-pattern@5.9.2: {}
 
   tslib@2.8.1: {}
+
+  tslib@2.9.1:
+    optional: true
 
   tsx@4.23.15:
     dependencies:
@@ -7177,15 +7184,15 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  viem@2.56.9(typescript@6.0.3)(zod@4.6.5):
+  viem@2.56.9(typescript@6.0.3)(zod@4.6.7):
     dependencies:
       '@noble/curves': 1.9.1
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.2.3(typescript@6.0.3)(zod@4.6.5)
+      abitype: 1.2.3(typescript@6.0.3)(zod@4.6.7)
       isows: 1.0.7(ws@8.21.0)
-      ox: 0.14.45(typescript@6.0.3)(zod@4.6.5)
+      ox: 0.14.45(typescript@6.0.3)(zod@4.6.7)
       ws: 8.21.0
     optionalDependencies:
       typescript: 6.0.3
@@ -7355,11 +7362,11 @@ snapshots:
 
   webcrypto-core@1.9.2:
     dependencies:
-      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-schema': 2.11.1
       '@peculiar/json-schema': 1.1.12
       '@peculiar/utils': 2.0.3
-      asn1js: 3.0.10
-      tslib: 2.8.1
+      asn1js: 3.1.0
+      tslib: 2.9.1
     optional: true
 
   webpack-sources@3.5.3: {}
@@ -7395,5 +7402,7 @@ snapshots:
       zod: 4.6.5
 
   zod@4.6.5: {}
+
+  zod@4.6.7: {}
 
   zwitch@2.0.4: {}

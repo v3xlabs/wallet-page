@@ -1,6 +1,6 @@
 import { OPENLV_ICON_128_WHITE } from "@openlv/core/icons";
-import { createProvider, type OpenLVProvider } from "@openlv/provider";
-import type { EIP1193Provider } from "viem";
+import { createProvider, type OpenLVProvider, ProviderStatus } from "@openlv/provider";
+import type { EIP1193Parameters, EIP1193Provider } from "viem";
 
 import type { Eip6963ProviderDetail } from "./ethereum";
 
@@ -38,15 +38,31 @@ const openOpenlvModal = async (provider: OpenLVProvider) => {
 
   registerOpenLVModal();
 
+  if (provider.status.get() === ProviderStatus.CONNECTED) return;
+
   await new Promise<void>((resolve, reject) => {
+    const unsubscribe = provider.status.subscribe((status) => {
+      if (status !== ProviderStatus.CONNECTED) return;
+
+      unsubscribe();
+      dismissOpenlvModal();
+      resolve();
+    });
+
     triggerOpenModal({
       provider,
-      onClose: () => {
+      onClose: async () => {
+        unsubscribe();
         dismissOpenlvModal();
 
-        if (provider.getSession() === undefined) {
-          void provider.closeSession().catch(() => {});
-          reject(new Error("Connection cancelled"));
+        if (provider.status.get() !== ProviderStatus.CONNECTED) {
+          try {
+            await provider.closeSession();
+            reject(new Error("Connection cancelled"));
+          }
+          catch (error) {
+            reject(error);
+          }
 
           return;
         }
@@ -66,22 +82,22 @@ const openOpenlvModal = async (provider: OpenLVProvider) => {
 };
 
 const createOpenlvDetail = (): Eip6963ProviderDetail => {
-  const provider = createProvider({
-    config: {
-      signaling: {
-        p: "mqtt",
-        s: {
-          mqtt: "wss://test.mosquitto.org:8081/mqtt",
-        },
-      },
-      transport: { p: "webrtc" },
-    },
-    openModal: openOpenlvModal,
-  });
+  const provider = createProvider({});
 
   return {
     info: { ...OPENLV_INFO },
-    provider: provider as unknown as EIP1193Provider,
+    provider: {
+      ...provider,
+      request: async (request: EIP1193Parameters) => {
+        if (request.method === "eth_requestAccounts") {
+          await openOpenlvModal(provider);
+
+          return provider.getAccounts();
+        }
+
+        return provider.request(request);
+      },
+    } as unknown as EIP1193Provider,
   };
 };
 
