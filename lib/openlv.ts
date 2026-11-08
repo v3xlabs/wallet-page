@@ -51,6 +51,10 @@ const openOpenlvModal = async (provider: OpenLVProvider) => {
 
     triggerOpenModal({
       provider,
+      theme: {
+        theme: "openlv",
+        mode: document.documentElement.dataset.vocsTheme === "dark" ? "dark" : "light",
+      },
       onClose: async () => {
         unsubscribe();
         dismissOpenlvModal();
