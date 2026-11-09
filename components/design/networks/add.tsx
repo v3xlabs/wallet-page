@@ -41,12 +41,12 @@ const FieldRow = ({ label, value, caption, pill, warn, mono }: {
 }) => (
   <div className={classNames("flex flex-col gap-1 px-4 py-2.5", warn && "bg-warning-tint")}>
     <div className="flex items-start justify-between gap-3">
-      <span className="text-[13px] text-secondary">{label}</span>
+      <span className="shrink-0 text-control whitespace-nowrap text-secondary">{label}</span>
       <span className="flex min-w-0 flex-col items-end gap-1">
         <span
           className={classNames(
-            "max-w-full truncate font-medium text-primary tabular-nums",
-            mono ? "font-mono text-xs" : "text-[13px]",
+            "max-w-full truncate font-medium text-heading tabular-nums",
+            mono ? "font-mono text-xs" : "text-control",
           )}
         >
           {value}
@@ -76,7 +76,7 @@ const AddNetworkScreen = () => {
       <div className="flex grow flex-col items-center justify-center gap-3 px-4 pt-6 pb-4">
         <SuccessCheck />
         <div className="flex flex-col items-center gap-1">
-          <span className="text-lg font-semibold text-primary">
+          <span className="text-lg font-semibold text-heading">
             {chain.name}
             {" "}
             added
@@ -89,7 +89,7 @@ const AddNetworkScreen = () => {
           <TokenIcon symbol={chain.name} color={HOODI_COLOR} size={32} />
           <span className="flex min-w-0 grow flex-col gap-px">
             <span className="flex items-center gap-1.5">
-              <span className="truncate text-sm font-medium text-primary">{chain.name}</span>
+              <span className="truncate text-sm font-medium text-heading">{chain.name}</span>
               <StatusPill tone="info">{SOURCE_LABELS.app}</StatusPill>
             </span>
             <span className="text-xs text-muted tabular-nums">
@@ -109,7 +109,7 @@ const AddNetworkScreen = () => {
   if (phase === "dismissed") {
     return (
       <div className="flex grow flex-col items-center justify-center gap-2 px-6 py-6 text-center">
-        <span className="text-sm font-medium text-primary">Request declined</span>
+        <span className="text-sm font-medium text-heading">Request declined</span>
         <p className="text-xs text-muted">
           {ORIGIN}
           {" "}
@@ -125,9 +125,9 @@ const AddNetworkScreen = () => {
   return (
     <>
       <div className="flex flex-col items-center gap-2 px-4 pt-1 pb-3">
-        <span className="flex items-center gap-2 rounded-full border border-primary bg-surfaceMuted px-3 py-1.5">
+        <span className="flex h-8 items-center gap-2 rounded-md border border-primary bg-surface px-2.5">
           <FiGlobe aria-hidden className="size-3.5 text-muted" />
-          <span className="text-[13px] font-medium text-primary">{ORIGIN}</span>
+          <span className="text-control font-medium text-heading">{ORIGIN}</span>
         </span>
         <p className="text-center text-xs text-muted">
           This site wants to add a network to your wallet
@@ -153,7 +153,7 @@ const AddNetworkScreen = () => {
         <FieldRow label="Currency" value={chain.nativeCurrency.symbol} />
         <FieldRow label="Explorer" value={PROPOSED.explorerUrl} mono />
       </div>
-      <div className="mt-auto grid grid-cols-2 gap-2 px-4 pt-4 pb-4">
+      <div className="mt-auto grid grid-cols-2 gap-2 px-4 pt-5 pb-4">
         <SecondaryButton onClick={() => setPhase("dismissed")} disabled={phase === "adding"}>
           Cancel
         </SecondaryButton>

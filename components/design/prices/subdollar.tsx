@@ -24,10 +24,10 @@ export const SubDollarDemo = () => {
       <div className="flex flex-col gap-1.5">
         <div className="flex flex-col divide-y divide-(--vocs-border-color-primary) rounded-lg border border-primary bg-surface">
           {CASES.map(token => (
-            <div key={token.symbol} className="flex items-center gap-3 px-3 py-2.5">
+            <div key={token.symbol} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3 py-2.5">
               <TokenIcon symbol={token.symbol} color={token.color} size={28} />
               <span className="flex min-w-0 flex-col">
-                <span className="truncate text-sm font-medium text-primary">{token.name}</span>
+                <span className="text-sm font-medium text-primary">{token.name}</span>
                 <span className="text-xs text-muted">{token.symbol}</span>
               </span>
               <span className="ml-auto flex shrink-0 flex-col items-end">
@@ -36,7 +36,7 @@ export const SubDollarDemo = () => {
                 </span>
                 <span className="text-[11px] text-muted">4 significant digits</span>
               </span>
-              <span className="flex w-24 shrink-0 flex-col items-end">
+              <span className="flex w-24 shrink-0 flex-col items-end max-sm:ml-auto">
                 <span className="text-sm text-destructive line-through tabular-nums">
                   {formatPriceNaive(token.priceUsd, denomination, locale)}
                 </span>

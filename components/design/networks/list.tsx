@@ -97,8 +97,8 @@ const RpcRow = ({ rpc, active, onUse, onRemove }: {
       onClick={onUse}
       disabled={active}
       className={classNames(
-        "flex min-w-0 grow items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
-        !active && "cursor-pointer hover:bg-surfaceMuted",
+        "flex h-8 min-w-0 grow items-center justify-between gap-2 rounded-md px-2 text-left transition-colors duration-150",
+        !active && "cursor-pointer hover:bg-surfaceTint",
       )}
     >
       <span
@@ -120,13 +120,13 @@ const RpcRow = ({ rpc, active, onUse, onRemove }: {
               ))}
     </button>
     {active
-      ? <span aria-hidden className="size-6 shrink-0" />
+      ? <span aria-hidden className="size-8 shrink-0" />
       : (
           <button
             type="button"
             onClick={onRemove}
             aria-label={`Remove ${host(rpc.url)}`}
-            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted opacity-0 transition-opacity group-hover:opacity-100 hover:bg-surfaceMuted hover:text-destructive"
+            className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted opacity-0 transition-[background-color,color,opacity,transform] duration-150 group-hover:opacity-100 after:absolute after:-inset-y-0.5 after:inset-x-0 after:content-[''] hover:bg-surfaceTint hover:text-destructive active:scale-[0.96]"
           >
             <FiMinus className="size-3.5" />
           </button>
@@ -182,12 +182,12 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
                 onChange={e => setDraft(e.target.value)}
                 placeholder="https://..."
                 spellCheck={false}
-                className="w-full rounded-md border border-primary bg-surface px-2 py-1 font-mono text-xs text-primary outline-none placeholder:text-muted focus:border-accent"
+                className="h-8 w-full rounded-md border border-primary bg-surface px-2 font-mono text-xs text-primary outline-none placeholder:text-muted focus:border-accent"
               />
               <button
                 type="submit"
                 disabled={!isValid}
-                className="shrink-0 cursor-pointer rounded-md border border-primary bg-surfaceMuted px-2 py-1 text-[11px] font-medium text-secondary transition-colors enabled:hover:bg-surfaceTint enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-45"
+                className="relative h-8 shrink-0 cursor-pointer rounded-md bg-surfaceTint px-2 text-xs font-medium text-secondary transition-[color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] enabled:hover:text-heading enabled:active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-45"
               >
                 Add
               </button>
@@ -195,7 +195,7 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
                 type="button"
                 onClick={close}
                 aria-label="Cancel adding an endpoint"
-                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-surfaceMuted hover:text-primary"
+                className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
               >
                 <FiX className="size-3.5" />
               </button>
@@ -205,7 +205,7 @@ const NetworkPanel = ({ network, onUseRpc, onAddRpc, onRemoveRpc }: {
             <button
               type="button"
               onClick={() => setAdding(true)}
-              className="flex w-fit cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium text-accent hover:underline"
+              className="relative flex h-8 w-fit cursor-pointer items-center gap-1.5 rounded-md px-2 text-[11px] font-medium text-accent after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:underline"
             >
               <FiPlus className="size-3" aria-hidden />
               Add RPC
@@ -235,18 +235,18 @@ const NetworkRow = ({ network, expanded, onToggle, onUseRpc, onAddRpc, onRemoveR
         type="button"
         onClick={onToggle}
         aria-expanded={expanded}
-        className="flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-surfaceMuted"
+        className="flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left transition-colors duration-150 hover:bg-surfaceMuted"
       >
         <TokenIcon symbol={network.name} color={network.color} size={32} />
         <span className="flex min-w-0 grow flex-col gap-px">
-          <span className="truncate text-sm font-medium text-primary">{network.name}</span>
+          <span className="truncate text-sm font-medium text-heading">{network.name}</span>
           <span className={classNames("truncate font-mono text-[11px]", caption.tone)}>
             {caption.text}
           </span>
         </span>
         <FiChevronDown
           className={classNames(
-            "size-4 shrink-0 text-muted transition-transform",
+            "size-4 shrink-0 text-muted transition-transform duration-150",
             expanded && "rotate-180",
           )}
         />
@@ -299,7 +299,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder="My network"
-          className="demo-input text-[13px]"
+          className="demo-input text-control"
         />
       </FormField>
       <FormField label="RPC URL">
@@ -309,7 +309,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
           onChange={e => setRpc(e.target.value)}
           placeholder="https://rpc.mynetwork.org"
           spellCheck={false}
-          className="demo-input font-mono text-[13px]"
+          className="demo-input font-mono text-control"
         />
       </FormField>
       <div className="grid grid-cols-2 gap-3">
@@ -319,7 +319,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
             value={symbol}
             onChange={e => setSymbol(e.target.value.toUpperCase())}
             placeholder="ETH"
-            className="demo-input text-[13px] uppercase"
+            className="demo-input text-control uppercase"
           />
         </FormField>
         <FormField label="Network id">
@@ -329,7 +329,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
             value={id}
             onChange={e => setId(e.target.value.replaceAll(/\D/g, ""))}
             placeholder="1"
-            className="demo-input font-mono text-[13px]"
+            className="demo-input font-mono text-control"
           />
         </FormField>
       </div>
@@ -341,7 +341,7 @@ const AddNetworkScreen = ({ taken, onAdd }: {
           .
         </p>
       )}
-      <div className="mt-auto pt-2">
+      <div className="mt-auto pt-1.5">
         <PrimaryButton
           disabled={!isValid}
           onClick={() =>
@@ -404,7 +404,7 @@ export const NetworkListDemo = () => {
               type="button"
               onClick={() => setAdding(true)}
               aria-label="Add a network"
-              className="flex size-9 cursor-pointer items-center justify-center rounded-full text-secondary transition-colors hover:bg-surfaceMuted hover:text-primary"
+              className="relative flex size-8 cursor-pointer items-center justify-center rounded-md text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-1.5 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
             >
               <FiPlus className="size-4" />
             </button>

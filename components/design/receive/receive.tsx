@@ -4,6 +4,7 @@ import { encodeQR } from "qr";
 import { useMemo, useState } from "react";
 import { parseUnits } from "viem";
 
+import { Select } from "../../select";
 import { SELF, TOKENS } from "../data";
 import { EnsAvatar } from "../ens-avatar";
 import { NetworkSelect } from "../network-select";
@@ -85,11 +86,11 @@ export const ReceiveDemo = () => {
             />
           </div>
           <div className="flex flex-col items-center gap-0.5">
-            <span className="flex items-center gap-1.5 text-sm font-semibold text-primary">
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-heading">
               <EnsAvatar address={SELF.address} name={SELF.name} size={18} />
               {SELF.name}
             </span>
-            <span title={SELF.address} className="font-mono text-xs text-muted">
+            <span title={SELF.address} className="font-mono text-xs whitespace-nowrap text-muted">
               {truncate(SELF.address)}
             </span>
           </div>
@@ -100,27 +101,13 @@ export const ReceiveDemo = () => {
               </Field>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Asset">
-                  <span className="relative">
-                    <select
-                      value={symbol}
-                      onChange={e => setSymbol(e.target.value)}
-                      className="demo-select appearance-none pr-9 text-[13px]"
-                    >
-                      {TOKENS.map(entry => (
-                        <option key={entry.symbol} value={entry.symbol}>
-                          {entry.symbol}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      aria-hidden
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted"
-                    >
-                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
+                  <Select
+                    label="Asset"
+                    value={symbol}
+                    options={TOKENS.map(entry => ({ value: entry.symbol, label: entry.symbol }))}
+                    onChange={setSymbol}
+                    className="demo-select text-control"
+                  />
                 </Field>
                 <Field label={`Amount (${token.symbol})`}>
                   <input
@@ -130,16 +117,16 @@ export const ReceiveDemo = () => {
                     onChange={e => setAmountText(e.target.value)}
                     placeholder="1.0"
                     spellCheck={false}
-                    className="demo-input font-mono text-[13px]"
+                    className="demo-input bg-surfaceMuted/40 font-mono text-control"
                   />
                 </Field>
               </div>
             </div>
           )}
-          <div className="w-full rounded-lg bg-surfaceMuted px-3 py-2 font-mono text-[11px] leading-relaxed text-secondary wrap-anywhere">
+          <div className="w-full rounded-lg bg-surfaceMuted px-3 py-2 font-mono text-[11px] leading-relaxed break-all text-secondary">
             {url}
           </div>
-          <div className="mt-auto w-full pt-1">
+          <div className="mt-auto w-full pt-2">
             <PrimaryButton onClick={copy}>
               {copied ? "Copied!" : (mode === "raw" ? "Copy address" : "Copy payment link")}
             </PrimaryButton>

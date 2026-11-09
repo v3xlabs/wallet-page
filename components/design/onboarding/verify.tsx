@@ -54,12 +54,12 @@ const ChoiceRow = ({ wordNumber, choices, solved, onSolved }: {
             type="button"
             onClick={() => pick(choice)}
             className={classNames(
-              "cursor-pointer rounded-lg border px-1 py-1.5 font-mono text-[13px] transition-colors",
+              "relative h-8 cursor-pointer rounded-md border px-1 font-mono text-sm font-semibold transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] active:scale-[0.98]",
               solved && choice === WORDS[wordNumber - 1]
                 ? "border-primary bg-success-tint text-success"
                 : (wrong === choice
                     ? "border-primary bg-destructive-tint text-destructive"
-                    : "border-primary bg-surfaceMuted text-primary hover:bg-surfaceTint"),
+                    : "border-primary bg-surface text-heading hover:bg-surfaceTint"),
             )}
           >
             {choice}
@@ -76,7 +76,7 @@ export const VerifyScreen = ({ onDone }: { onDone: () => void; }) => {
 
   return (
     <div className="flex grow flex-col gap-4 px-4 pt-2 pb-4">
-      <p className="text-[13px] leading-relaxed text-secondary">
+      <p className="text-control text-secondary">
         Pick the right words from your backup - this catches a bad copy now, not at recovery time.
       </p>
       {CHALLENGES.map(challenge => (
@@ -88,7 +88,7 @@ export const VerifyScreen = ({ onDone }: { onDone: () => void; }) => {
           onSolved={() => setSolvedRows(rows => [...rows, challenge.wordNumber])}
         />
       ))}
-      <div className="mt-auto">
+      <div className="mt-auto pt-1">
         <PrimaryButton onClick={onDone} disabled={!isAllSolved}>
           {isAllSolved ? "Continue" : "Match both words to continue"}
         </PrimaryButton>

@@ -16,9 +16,9 @@ const ReviewRow = ({ label, value, subvalue }: {
   subvalue?: ReactNode;
 }) => (
   <div className="flex items-start justify-between gap-3 px-4 py-3">
-    <span className="text-[13px] text-secondary">{label}</span>
+    <span className="text-control text-secondary">{label}</span>
     <span className="flex flex-col items-end gap-px text-right">
-      <span className="text-[13px] font-medium text-primary tabular-nums">{value}</span>
+      <span className="text-control font-medium text-heading tabular-nums">{value}</span>
       {subvalue !== undefined && <span className="text-xs text-muted tabular-nums">{subvalue}</span>}
     </span>
   </div>
@@ -50,7 +50,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
           <TokenIcon symbol={pay.symbol} color={pay.color} address={pay.address} size={40} />
           <TokenIcon symbol={receive.symbol} color={receive.color} address={receive.address} size={40} />
         </span>
-        <span className="text-xl font-semibold text-primary tabular-nums">
+        <span className="text-xl font-semibold text-heading tabular-nums">
           {formatAmount(quote.payAmount, locale)}
           {" "}
           {pay.symbol}
@@ -61,7 +61,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
         </span>
         <span className="text-sm text-muted tabular-nums">{display(quote.payUsd)}</span>
       </div>
-      <div className="mx-4 mb-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
+      <div className="mx-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
         <ReviewRow
           label="You pay"
           value={`${formatAmount(quote.payAmount, locale)} ${pay.symbol}`}
@@ -83,7 +83,7 @@ export const ReviewScreen = ({ pay, receive, quote, slippage, onConfirm }: {
           subvalue={`${formatTokenAmount(NETWORK_FEE_WEI, ETH, locale)} ETH network + ${display(quote.appFeeUsd)} app`}
         />
       </div>
-      <div className="mt-auto px-4 pb-4">
+      <div className="mt-auto px-4 pt-5 pb-4">
         <PrimaryButton onClick={confirm} disabled={swapping}>
           {swapping
             ? (

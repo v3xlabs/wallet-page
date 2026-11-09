@@ -221,7 +221,7 @@ export const AddressInputDemo = () => {
           />
         </Field>
         <p
-          className={classNames("text-[13px]", {
+          className={classNames("text-control", {
             "text-muted": status.tone === "muted",
             "text-success": status.tone === "success",
             "text-destructive": status.tone === "destructive",
@@ -235,7 +235,7 @@ export const AddressInputDemo = () => {
               {current.name}
               <span className="text-muted"> resolves to</span>
             </span>
-            <span className="font-mono text-xs break-all text-primary">
+            <span className="font-mono text-xs break-all text-heading">
               {current.address}
             </span>
           </div>
@@ -245,7 +245,7 @@ export const AddressInputDemo = () => {
           <span className="text-xs font-medium tracking-wide text-secondary uppercase">
             What the wallet submits
           </span>
-          <pre className="w-full rounded-md border border-primary bg-surface whitespace-pre-wrap wrap-anywhere">
+          <pre className="w-full rounded-md border border-primary bg-surface whitespace-pre-wrap break-all">
             <code
               className={classNames(
                 "block p-2 font-mono text-xs",

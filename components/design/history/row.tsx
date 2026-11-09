@@ -61,7 +61,7 @@ const CopyHash: FC<{ hash: string; }> = ({ hash }) => {
       type="button"
       onClick={copy}
       title="Copy transaction hash"
-      className="flex cursor-pointer items-center gap-1.5 text-xs font-medium text-primary transition-colors hover:text-accent"
+      className="-my-2 flex h-8 cursor-pointer items-center gap-1.5 text-xs font-medium whitespace-nowrap text-primary transition-colors duration-150 hover:text-accent"
     >
       <span className="font-mono">{truncateHash(hash)}</span>
       {copied
@@ -157,7 +157,7 @@ export const EntryRow: FC<{
             <button
               type="button"
               onClick={onSpeedUp}
-              className="cursor-pointer text-xs font-medium text-accent hover:underline"
+              className="-my-2 flex h-8 cursor-pointer items-center text-xs font-medium text-accent hover:underline"
             >
               Speed up
             </button>
@@ -169,7 +169,7 @@ export const EntryRow: FC<{
           <span className="text-xs text-muted">{entry.caption}</span>
           <button
             type="button"
-            className="cursor-pointer text-xs font-medium text-accent hover:underline"
+            className="-my-2 flex h-8 cursor-pointer items-center text-xs font-medium text-accent hover:underline"
             title="Rebuild this swap with fresh quotes"
           >
             Retry

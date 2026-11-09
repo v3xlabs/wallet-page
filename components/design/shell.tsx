@@ -5,6 +5,7 @@ import type { PropsWithChildren, ReactNode } from "react";
 import { FiCode } from "react-icons/fi";
 
 import { sourceUrl } from "../../lib/repo";
+import { Select } from "../select";
 import { I18nControls } from "./locale";
 
 /**
@@ -22,7 +23,7 @@ export type ShellControl
   }
   | {
     type: "select";
-    label: ReactNode;
+    label: string;
     options: readonly { value: string; label: string; }[];
     value: string;
     onChange: (value: string) => void;
@@ -53,27 +54,13 @@ const TabsControl = ({ control, name }: { control: ShellControl & { type: "tabs"
 const SelectControl = ({ control }: { control: ShellControl & { type: "select"; }; }) => (
   <label className="flex items-center gap-2 text-xs text-muted">
     {control.label}
-    <span className="relative">
-      <select
-        value={control.value}
-        onChange={e => control.onChange(e.target.value)}
-        className="cursor-pointer appearance-none rounded-md border border-primary bg-surface py-1 pr-7 pl-2 text-xs text-primary outline-none transition-colors hover:bg-surfaceMuted"
-      >
-        {control.options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <svg
-        aria-hidden
-        viewBox="0 0 16 16"
-        fill="none"
-        className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-muted"
-      >
-        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
+    <Select
+      label={control.label}
+      value={control.value}
+      options={control.options}
+      onChange={control.onChange}
+      className="h-8 rounded-md border border-primary bg-surface px-2 text-control text-primary outline-none transition-colors hover:bg-surfaceTint focus-visible:ring-2 focus-visible:ring-accenta3 aria-expanded:bg-surfaceTint"
+    />
   </label>
 );
 

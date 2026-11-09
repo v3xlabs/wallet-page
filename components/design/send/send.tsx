@@ -30,10 +30,10 @@ const ReviewRow = ({ label, value, subvalue }: {
   subvalue?: ReactNode;
 }) => (
   <div className="flex items-start justify-between gap-3 px-4 py-3">
-    <span className="text-[13px] text-secondary">{label}</span>
+    <span className="text-control text-secondary">{label}</span>
     <span className="flex flex-col items-end gap-px text-right">
-      <span className="text-[13px] font-medium text-primary">{value}</span>
-      {subvalue !== undefined && <span className="text-xs text-muted tabular-nums">{subvalue}</span>}
+      <span className="text-control font-medium text-heading">{value}</span>
+      {subvalue !== undefined && <span className="text-xs whitespace-nowrap text-muted tabular-nums">{subvalue}</span>}
     </span>
   </div>
 );
@@ -62,7 +62,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
     <>
       <div className="flex flex-col items-center gap-2 px-4 pt-5 pb-4">
         <TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={44} />
-        <span className="text-3xl font-semibold text-primary tabular-nums">
+        <span className="text-3xl font-semibold text-heading tabular-nums">
           {formatTokenAmount(amount, token, locale)}
           {" "}
           {token.symbol}
@@ -73,11 +73,11 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
           </span>
         )}
       </div>
-      <div className="mx-4 mb-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
+      <div className="mx-4 divide-y divide-(--vocs-border-color-primary) rounded-xl border border-primary bg-surfaceMuted/50">
         <ReviewRow
           label="To"
           value={(
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-1.5 whitespace-nowrap">
               <EnsAvatar address={recipient.address} name={recipient.name} size={16} />
               {recipient.name ?? truncate(recipient.address)}
             </span>
@@ -94,7 +94,7 @@ const ReviewScreen = ({ token, recipient, amount, onConfirm }: {
           <ReviewRow label="Total" value={display(totalUsd)} />
         )}
       </div>
-      <div className="px-4 pb-4">
+      <div className="px-4 pt-5 pb-4">
         <PrimaryButton onClick={confirm} disabled={sending}>
           {sending
             ? (
@@ -200,7 +200,7 @@ export const SendDemo = () => {
           <div className="flex grow flex-col items-center justify-center gap-3 px-4 pt-6 pb-4">
             <SuccessCheck />
             <div className="flex flex-col items-center gap-1">
-              <span className="text-lg font-semibold text-primary tabular-nums">
+              <span className="text-lg font-semibold text-heading tabular-nums">
                 Sent
                 {" "}
                 {formatTokenAmount(amount, token, locale)}
@@ -216,14 +216,14 @@ export const SendDemo = () => {
               </span>
             </div>
             <a
-              className="text-xs text-accent hover:underline"
+              className="relative flex h-8 items-center text-xs text-accent transition-colors duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:underline"
               href={`https://etherscan.io/address/${recipient.address}`}
               target="_blank"
               rel="noreferrer"
             >
               View on explorer ↗
             </a>
-            <div className="w-full pt-3">
+            <div className="w-full pt-2">
               <PrimaryButton onClick={reset}>Done</PrimaryButton>
             </div>
           </div>

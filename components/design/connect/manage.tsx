@@ -66,7 +66,7 @@ export const ManageConnectionDemo = () => {
           : (
               <div className="flex grow flex-col items-center justify-center gap-3 px-4 pb-4">
                 <TokenIcon symbol="EXS" color="#6366f1" size={44} />
-                <span className="text-sm font-medium text-primary">Disconnected</span>
+                <span className="text-sm font-medium text-heading">Disconnected</span>
                 <p className="text-center text-xs leading-relaxed text-muted">
                   {HOST}
                   {" "}

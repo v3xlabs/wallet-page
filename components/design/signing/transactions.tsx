@@ -165,7 +165,7 @@ const UnknownCallSheet = () => (
       </TreeSection>
       <div className="flex flex-col gap-1">
         <span className="text-[11px] font-medium tracking-wide text-muted uppercase">Calldata</span>
-        <p className="font-mono text-xs leading-relaxed break-all text-primary">{OPAQUE_CALLDATA}</p>
+        <p className="font-mono text-xs leading-relaxed break-all text-heading">{OPAQUE_CALLDATA}</p>
       </div>
       <CostSection fee={FEES.unknown} />
     </Panel>
@@ -281,7 +281,7 @@ export const TransactionDemo = () => {
           : (
               <>
                 <OriginBar host={current.host} verdict={current.verdict} tone={current.verdictTone} />
-                <div className="flex items-center justify-between gap-3 px-5 pt-3 pb-1.5">
+                <div className="flex items-center justify-between gap-3 px-4 pt-3 pb-1.5">
                   <span className="text-[11px] font-medium tracking-wide text-muted uppercase">
                     Request
                   </span>
@@ -289,7 +289,7 @@ export const TransactionDemo = () => {
                 </div>
                 <div className="flex grow flex-col gap-3">
                   <Body />
-                  <div className="mt-auto flex flex-col gap-2 pt-2">
+                  <div className="mt-auto flex flex-col">
                     {current.gated && (
                       <RiskCheckbox checked={acknowledged} onChange={setAcknowledged} />
                     )}

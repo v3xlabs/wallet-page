@@ -48,7 +48,7 @@ const StepDots = ({ current }: { current: number; }) => (
       <span
         key={dot}
         className={classNames(
-          "size-1.5 rounded-full transition-colors",
+          "size-1.5 rounded-full transition-colors duration-150",
           dot <= current ? "bg-accent" : "bg-accenta3",
         )}
       />
@@ -60,12 +60,12 @@ const WelcomeScreen = ({ onCreate, onExisting }: {
   onCreate: () => void;
   onExisting: () => void;
 }) => (
-  <div className="flex grow flex-col px-5 pb-5">
+  <div className="flex grow flex-col px-4 pb-4">
     <div className="flex grow flex-col items-center justify-center gap-4 py-8 text-center">
       <EnsAvatar address={SELF.address} name={SELF.name} size={64} />
       <div className="flex flex-col gap-1.5">
-        <span className="text-lg font-semibold text-primary">Your keys, your wallet</span>
-        <p className="text-[13px] leading-relaxed text-secondary">
+        <span className="text-lg font-semibold text-heading">Your keys, your wallet</span>
+        <p className="text-control text-secondary">
           Twelve words are about to become the only thing that controls this account. Give them
           two quiet minutes.
         </p>
@@ -79,9 +79,9 @@ const WelcomeScreen = ({ onCreate, onExisting }: {
 );
 
 const ExistingScreen = ({ onBack }: { onBack: () => void; }) => (
-  <div className="flex grow flex-col px-5 pb-5">
+  <div className="flex grow flex-col px-4 pb-4">
     <div className="flex grow flex-col items-center justify-center py-8">
-      <p className="text-center text-[13px] leading-relaxed text-muted">
+      <p className="text-center text-control text-muted">
         Existing wallets come in through a dedicated import flow - recovery phrase, private key,
         or watch-only address - not through onboarding.
       </p>
@@ -94,19 +94,19 @@ const DoneScreen = ({ onOpen }: { onOpen: () => void; }) => (
   <div className="flex grow flex-col items-center justify-center gap-4 px-4 pt-6 pb-4">
     <SuccessCheck />
     <div className="flex flex-col items-center gap-1">
-      <span className="text-lg font-semibold text-primary">Backed up and verified</span>
-      <span className="text-[13px] text-muted">Your first account is ready to use.</span>
+      <span className="text-lg font-semibold text-heading">Backed up and verified</span>
+      <span className="text-control text-muted">Your first account is ready to use.</span>
     </div>
     <div className="flex w-full items-center gap-3 rounded-xl border border-primary bg-surfaceMuted/50 px-3 py-2.5">
       <EnsAvatar address={ACCOUNT_ADDRESS} size={36} />
       <span className="flex min-w-0 flex-col">
-        <span className="text-sm font-medium text-primary">Account 1</span>
-        <span className="font-mono text-xs text-muted" title={ACCOUNT_ADDRESS}>
+        <span className="text-sm font-medium text-heading">Account 1</span>
+        <span className="font-mono text-xs whitespace-nowrap text-muted" title={ACCOUNT_ADDRESS}>
           {truncate(ACCOUNT_ADDRESS)}
         </span>
       </span>
     </div>
-    <div className="flex w-full flex-col gap-2 pt-2">
+    <div className="flex w-full flex-col gap-2 pt-1">
       <PrimaryButton onClick={onOpen}>Open wallet</PrimaryButton>
       <p className="text-center text-[11px] text-muted">
         Derived from the demo phrase - never reuse it.

@@ -10,15 +10,14 @@ import { Spinner, TokenIcon } from "../ui";
 import type { Quote } from "./shared";
 import { formatAmount } from "./shared";
 
-/** Pill that names the token on a panel and opens the token selector. */
 const TokenChip = ({ token, onClick }: { token: DemoToken; onClick: () => void; }) => (
   <button
     type="button"
     onClick={onClick}
-    className="flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-primary bg-surface py-1 pr-2.5 pl-1 transition-colors hover:bg-surfaceTint"
+    className="relative flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-primary bg-surface pr-2 pl-1.5 transition-[background-color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:bg-surfaceTint active:scale-[0.98]"
   >
-    <TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={24} />
-    <span className="text-sm font-semibold text-primary">{token.symbol}</span>
+    <TokenIcon symbol={token.symbol} color={token.color} address={token.address} size={20} />
+    <span className="text-sm font-semibold text-heading">{token.symbol}</span>
     <svg viewBox="0 0 16 16" fill="none" className="size-3.5 text-muted">
       <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -26,7 +25,7 @@ const TokenChip = ({ token, onClick }: { token: DemoToken; onClick: () => void; 
 );
 
 const Panel = ({ label, children }: PropsWithChildren<{ label: string; }>) => (
-  <div className="flex flex-col gap-2.5 rounded-2xl border border-primary bg-surfaceMuted/50 px-4 pt-3 pb-3.5">
+  <div className="flex flex-col gap-1.5 rounded-xl border border-primary bg-surfaceMuted/40 p-3">
     <span className="text-xs font-medium text-muted">{label}</span>
     {children}
   </div>
@@ -65,7 +64,7 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
         />
       </div>
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-xs text-muted tabular-nums">
+        <span className="flex items-center gap-1.5 text-control text-secondary tabular-nums">
           <span className={insufficient ? "font-medium text-destructive" : undefined}>
             Balance:
             {" "}
@@ -76,12 +75,12 @@ export const PayPanel = ({ token, amountText, payUsd, priceless, insufficient, o
           <button
             type="button"
             onClick={onMax}
-            className="cursor-pointer rounded-full border border-primary bg-surfaceMuted px-2 py-0.5 text-[11px] font-medium text-secondary transition-colors hover:bg-surfaceTint hover:text-primary"
+            className="relative h-6 cursor-pointer rounded-md border border-primary bg-surface px-1.5 text-xs font-medium text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1 after:inset-x-0 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
           >
             Max
           </button>
         </span>
-        <span className="text-xs text-muted tabular-nums">
+        <span className="text-control text-secondary tabular-nums">
           {priceless ? "" : display(payUsd ?? 0)}
         </span>
       </div>
@@ -117,22 +116,22 @@ export const ReceivePanel = ({ token, quote, quoting, unavailable, onPickToken }
               </span>
             )}
       </div>
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex min-h-6 items-center justify-between gap-2">
         {quoting
           ? (
-              <span className="flex items-center gap-1.5 text-xs text-muted">
+              <span className="flex items-center gap-1.5 text-control text-secondary">
                 <Spinner size={12} />
                 Fetching best route...
               </span>
             )
           : (
-              <span className="text-xs text-muted">
+              <span className="text-control text-secondary">
                 {unavailable
                   ? "No price feed for this token - quote unavailable"
                   : (quote ? "Best of 4 quoted venues" : "")}
               </span>
             )}
-        <span className="text-xs text-muted tabular-nums">
+        <span className="text-control text-secondary tabular-nums">
           {quoting || unavailable || token.priceUsd === 0 ? "" : display(quote?.receiveUsd ?? 0)}
         </span>
       </div>
@@ -146,7 +145,7 @@ export const FlipButton = ({ flips, onFlip }: { flips: number; onFlip: () => voi
     type="button"
     onClick={onFlip}
     aria-label="Reverse swap direction"
-    className="relative z-10 mx-auto -my-4 flex size-9 cursor-pointer items-center justify-center rounded-full border border-primary bg-surface text-secondary transition-transform duration-300 hover:text-primary"
+    className="relative z-10 mx-auto -my-4 flex size-9 cursor-pointer items-center justify-center rounded-full border border-primary bg-surface text-secondary transition-[background-color,color,transform] duration-300 hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
     style={{ transform: `rotate(${flips * 180}deg)` }}
   >
     <svg viewBox="0 0 16 16" fill="none" className="size-4">

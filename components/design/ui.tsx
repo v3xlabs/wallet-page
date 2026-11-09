@@ -37,10 +37,10 @@ export const Segmented = <T extends string>({ options, value, onChange, fit }: {
         type="button"
         onClick={() => onChange(option.value)}
         className={classNames(
-          "cursor-pointer rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
+          "flex h-6.5 cursor-pointer items-center justify-center rounded-md px-3 text-control font-medium transition-colors duration-150",
           option.value === value
-            ? "bg-surface text-primary"
-            : "text-secondary hover:text-primary",
+            ? "bg-surface text-heading"
+            : "text-secondary hover:text-heading",
         )}
       >
         {option.label}
@@ -136,7 +136,7 @@ export const WalletHeader: FC<{ title: ReactNode; onBack?: () => void; right?: R
             type="button"
             onClick={onBack}
             aria-label="Back"
-            className="flex size-9 cursor-pointer items-center justify-center rounded-full text-secondary transition-colors hover:bg-surfaceMuted hover:text-primary"
+            className="relative flex size-8 cursor-pointer items-center justify-center rounded-md text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-1 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
           >
             <svg viewBox="0 0 16 16" fill="none" className="size-4">
               <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

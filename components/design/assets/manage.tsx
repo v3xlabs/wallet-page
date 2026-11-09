@@ -121,7 +121,7 @@ export const ManageScreen: FC<{
             <button
               type="button"
               onClick={() => setAdding(true)}
-              className="flex cursor-pointer items-center gap-2 px-4 py-2.5 text-left text-xs font-medium text-accent hover:underline"
+              className="flex h-8 cursor-pointer items-center gap-2 px-4 text-left text-xs font-medium text-accent hover:underline"
             >
               <FiPlus className="size-3.5" aria-hidden />
               Add token
@@ -142,22 +142,22 @@ export const ManageScreen: FC<{
               size={32}
             />
             <span className="flex min-w-0 grow flex-col items-start gap-px">
-              <span className="w-full truncate text-sm font-medium text-primary">{item.token.name}</span>
-              <span className="w-full truncate text-xs text-warning tabular-nums">
+              <span className="w-full text-sm font-medium text-primary wrap-anywhere">{item.token.name}</span>
+              <span className="w-full text-xs text-warning tabular-nums wrap-anywhere">
                 {`${formatTokenAmount(item.token.balance, item.token, locale)} ${item.token.symbol} - ${item.note}`}
               </span>
             </span>
             <button
               type="button"
               onClick={() => onDismissDiscovered(item)}
-              className="shrink-0 cursor-pointer rounded-full border border-primary bg-surfaceMuted px-3 py-1 text-xs font-medium text-secondary transition-colors hover:bg-surfaceTint hover:text-primary"
+              className="h-8 shrink-0 cursor-pointer rounded-md border border-primary bg-surface px-3 text-xs font-medium text-secondary transition-[background-color,color,transform] duration-150 hover:bg-surfaceTint hover:text-heading active:scale-[0.98]"
             >
               Dismiss
             </button>
             <button
               type="button"
               onClick={() => onAddDiscovered(item)}
-              className="shrink-0 cursor-pointer text-xs font-medium text-muted hover:text-primary hover:underline"
+              className="h-8 shrink-0 cursor-pointer text-xs font-medium text-muted transition-colors duration-150 hover:text-heading hover:underline"
             >
               Add anyway
             </button>

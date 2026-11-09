@@ -18,7 +18,7 @@ import { PrimaryButton, SecondaryButton, Spinner, StatusPill, SuccessCheck } fro
 export const truncate = (address: Address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 export const Mono: FC<PropsWithChildren> = ({ children }) => (
-  <span className="font-mono text-xs text-primary">{children}</span>
+  <span className="font-mono text-xs text-heading">{children}</span>
 );
 
 /** Rounded payload panel every scenario renders its request inside. */
@@ -44,10 +44,10 @@ export const TreeRow: FC<{ label: string; value: ReactNode; sub?: ReactNode; dan
   <div className="flex items-baseline justify-between gap-3 py-1">
     <span className="text-xs text-muted">{label}</span>
     <span className="flex min-w-0 flex-col items-end gap-px text-right">
-      <span className={danger ? "text-xs font-semibold text-warning" : "text-xs font-medium text-primary"}>
+      <span className={danger ? "text-xs font-semibold text-warning" : "text-xs font-medium text-heading"}>
         {value}
       </span>
-      {sub !== undefined && <span className="font-mono text-[11px] text-muted">{sub}</span>}
+      {sub !== undefined && <span className="font-mono text-[11px] whitespace-nowrap text-muted">{sub}</span>}
     </span>
   </div>
 );
@@ -62,14 +62,14 @@ export const OriginBar: FC<{ host: string; verdict: string; tone: Tone; }> = ({
     <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surfaceTint text-secondary">
       <FiGlobe className="size-4" aria-hidden />
     </span>
-    <span className="min-w-0 grow truncate font-mono text-[13px] text-primary">{host}</span>
+    <span className="min-w-0 grow truncate font-mono text-control text-heading">{host}</span>
     <StatusPill tone={tone}>{verdict}</StatusPill>
   </div>
 );
 
 /** Neutral explainer under the payload - context, not a warning. */
 export const SheetNote: FC<PropsWithChildren> = ({ children }) => (
-  <p className="flex items-start gap-1.5 px-5 text-xs leading-relaxed text-muted">
+  <p className="flex items-start gap-1.5 px-4 text-xs leading-relaxed text-muted">
     <FiInfo className="mt-0.5 size-3.5 shrink-0" aria-hidden />
     <span>{children}</span>
   </p>
@@ -96,7 +96,7 @@ export const RiskCheckbox: FC<{ checked: boolean; onChange: (checked: boolean) =
   checked,
   onChange,
 }) => (
-  <label className="mx-4 flex cursor-pointer items-center gap-2.5 rounded-lg px-1 py-1 text-[13px] font-medium text-secondary select-none">
+  <label className="mx-4 flex h-8 cursor-pointer items-center gap-2.5 rounded-md px-1 text-control font-medium text-secondary select-none">
     <input
       type="checkbox"
       checked={checked}
@@ -118,7 +118,7 @@ export const SheetActions: FC<{
   signLabel?: string;
   signingLabel?: string;
 }> = ({ onReject, onSign, signing, disabled, destructive, signLabel = "Sign", signingLabel = "Signing..." }) => (
-  <div className="flex gap-2 px-4 pt-2 pb-4">
+  <div className="flex gap-2 px-4 pt-5 pb-4">
     <SecondaryButton onClick={onReject} disabled={signing}>Reject</SecondaryButton>
     <PrimaryButton onClick={onSign} disabled={disabled || signing} destructive={destructive}>
       {signing
@@ -142,10 +142,10 @@ export const SignedScreen: FC<{ label: string; onDone: () => void; title?: strin
   <div className="flex grow flex-col items-center justify-center gap-3 px-4 pt-6 pb-4">
     <SuccessCheck />
     <div className="flex flex-col items-center gap-1">
-      <span className="text-lg font-semibold text-primary">{title}</span>
+      <span className="text-lg font-semibold text-heading">{title}</span>
       <span className="text-center text-sm text-muted">{label}</span>
     </div>
-    <div className="w-full pt-3">
+    <div className="w-full pt-2">
       <PrimaryButton onClick={onDone}>Done</PrimaryButton>
     </div>
   </div>

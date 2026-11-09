@@ -50,8 +50,8 @@ export const AccountRow = ({ account, selected, onSelect }: {
       type="button"
       onClick={onSelect}
       className={classNames(
-        "flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors",
-        selected ? "bg-accenta2" : "hover:bg-surfaceMuted",
+        "flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150",
+        selected ? "bg-accenta2" : "hover:bg-surfaceTint",
       )}
     >
       <EnsAvatar
@@ -60,8 +60,8 @@ export const AccountRow = ({ account, selected, onSelect }: {
         size={32}
       />
       <span className="flex min-w-0 grow flex-col gap-px">
-        <span className="truncate text-sm font-medium text-primary">{account.name}</span>
-        <span className="font-mono text-[11px] text-muted">{truncate(account.address)}</span>
+        <span className="truncate text-sm font-medium text-heading">{account.name}</span>
+        <span className="font-mono text-[11px] whitespace-nowrap text-muted">{truncate(account.address)}</span>
       </span>
       <span className="text-xs text-secondary tabular-nums">{display(account.balanceUsd)}</span>
       <span

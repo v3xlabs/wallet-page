@@ -28,8 +28,8 @@ const DetailRow = ({ label, value, caption, tone }: {
 }) => (
   <div className="flex flex-col gap-0.5 px-4 py-2.5">
     <div className="flex items-center justify-between gap-3">
-      <span className="text-[13px] text-secondary">{label}</span>
-      <span className={classNames("text-right text-[13px] font-medium tabular-nums", tone ?? "text-primary")}>
+      <span className="text-control text-secondary">{label}</span>
+      <span className={classNames("text-right text-control font-medium tabular-nums", tone ?? "text-heading")}>
         {value}
       </span>
     </div>
@@ -41,7 +41,7 @@ const DetailRow = ({ label, value, caption, tone }: {
 export const impactTone = (impactPct: number) =>
   (impactPct > IMPACT_HIGH_PCT
     ? "text-destructive"
-    : (impactPct > IMPACT_WARN_PCT ? "text-warning" : "text-primary"));
+    : (impactPct > IMPACT_WARN_PCT ? "text-warning" : "text-heading"));
 
 export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
   pay: DemoToken;
@@ -58,14 +58,14 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
   const networkFeeUsd = usdValue(ETH, NETWORK_FEE_WEI);
 
   return (
-    <div className="rounded-2xl border border-primary">
+    <div className="rounded-xl border border-primary">
       <button
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         className="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-2.5 text-left"
       >
-        <span className="text-[13px] font-medium text-primary tabular-nums">{formatRate(from, to, locale)}</span>
+        <span className="text-control font-medium text-heading tabular-nums">{formatRate(from, to, locale)}</span>
         <span className="flex items-center gap-2">
           {!open && quote.impactPct > IMPACT_WARN_PCT && (
             <span className={classNames("text-xs font-medium tabular-nums", impactTone(quote.impactPct))}>
@@ -92,7 +92,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
                 type="button"
                 onClick={() => setInverted(!inverted)}
                 title="Invert rate"
-                className="flex cursor-pointer items-center gap-1 tabular-nums transition-colors hover:text-accent"
+                className="relative -my-1.5 flex h-8 cursor-pointer items-center gap-1 tabular-nums transition-[color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:text-accent active:scale-[0.98]"
               >
                 {formatRate(from, to, locale)}
                 <svg viewBox="0 0 16 16" fill="none" className="size-3 text-muted">
@@ -122,7 +122,7 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
           />
           <div className="flex flex-col gap-2 px-4 py-2.5">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-[13px] text-secondary">Slippage</span>
+              <span className="text-control text-secondary">Slippage</span>
               <Segmented
                 fit
                 options={SLIPPAGES.map(option => ({ value: `${option}`, label: `${option}%` }))}
@@ -131,8 +131,8 @@ export const SwapDetails = ({ pay, receive, quote, slippage, onSlippage }: {
               />
             </div>
             <div className="flex items-center justify-between gap-3">
-              <span className="text-[13px] text-secondary">Minimum received</span>
-              <span className="text-[13px] font-medium text-primary tabular-nums">
+              <span className="text-control text-secondary">Minimum received</span>
+              <span className="text-control font-medium text-heading tabular-nums">
                 {formatAmount(minReceived(quote, slippage), locale)}
                 {" "}
                 {receive.symbol}

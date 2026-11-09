@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { type Address, getAddress, isAddress } from "viem";
 
@@ -41,7 +42,10 @@ const AddressChip = ({ address, style, onCopy, copied }: {
     type="button"
     onClick={onCopy}
     title={address}
-    className="cursor-pointer rounded-md border border-primary bg-surfaceMuted px-1.5 py-0.5 text-left font-mono text-xs break-all text-secondary transition-colors hover:bg-surfaceTint hover:text-primary"
+    className={classNames(
+      "relative cursor-pointer rounded-md border border-primary bg-surface px-2 text-left font-mono text-xs text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.98]",
+      style === "full" ? "min-h-8 py-1.5 break-all" : "h-8 whitespace-nowrap",
+    )}
   >
     {copied ? "Copied full address" : truncate(address, style)}
   </button>
@@ -124,7 +128,7 @@ export const AddressDisplayDemo = () => {
                 <div className="flex items-center gap-3 rounded-lg border border-primary bg-surface px-3 py-2.5">
                   <EnsAvatar address={address} name={name ?? undefined} size={32} />
                   <div className="flex min-w-0 flex-col gap-0.5">
-                    <span className="text-sm font-medium text-primary">
+                    <span className="text-sm font-medium text-heading">
                       {name ?? "Account"}
                     </span>
                     <AddressChip address={address} style={style} onCopy={copy} copied={copied} />
@@ -134,17 +138,17 @@ export const AddressDisplayDemo = () => {
                   <span>
                     Sent
                     {" "}
-                    <span className="font-medium text-primary">0.1 ETH</span>
+                    <span className="font-medium text-heading">0.1 ETH</span>
                     {" "}
                     to
                   </span>
-                  {name && <span className="font-medium text-primary">{name}</span>}
+                  {name && <span className="font-medium text-heading">{name}</span>}
                   <AddressChip address={address} style={style} onCopy={copy} copied={copied} />
                 </div>
               </div>
             )
           : (
-              <p className="text-[13px] text-muted">
+              <p className="text-control text-muted">
                 Enter a valid address to preview how it renders.
               </p>
             )}

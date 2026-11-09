@@ -45,7 +45,7 @@ const permitAmount = (value: bigint, locale: string) =>
 const MessageSheet = () => (
   <>
     <Panel>
-      <p className="border-l-2 border-secondary pl-3 text-sm leading-relaxed text-primary">
+      <p className="border-l-2 border-secondary pl-3 text-sm leading-relaxed text-heading">
         Log in to Example on 2026-07-14. Nonce: 4821
       </p>
     </Panel>
@@ -88,7 +88,7 @@ const BlindSheet = () => (
   <>
     <Panel>
       <span className="text-[11px] font-medium tracking-wide text-muted uppercase">Payload</span>
-      <p className="font-mono text-xs leading-relaxed break-all text-primary">{OPAQUE_HASH}</p>
+      <p className="font-mono text-xs leading-relaxed break-all text-heading">{OPAQUE_HASH}</p>
     </Panel>
     <SheetBanner tone="destructive">
       This request is not readable. Signing opaque data can authorize anything - a careful wallet
@@ -225,7 +225,7 @@ export const SigningDemo = () => {
           : (
               <>
                 <OriginBar host={current.host} verdict={current.verdict} tone={current.verdictTone} />
-                <div className="flex items-center justify-between gap-3 px-5 pt-3 pb-1.5">
+                <div className="flex items-center justify-between gap-3 px-4 pt-3 pb-1.5">
                   <span className="text-[11px] font-medium tracking-wide text-muted uppercase">
                     Request
                   </span>
@@ -233,7 +233,7 @@ export const SigningDemo = () => {
                 </div>
                 <div className="flex grow flex-col gap-3">
                   <Body />
-                  <div className="mt-auto flex flex-col gap-2 pt-2">
+                  <div className="mt-auto flex flex-col">
                     {current.gated && (
                       <RiskCheckbox checked={acknowledged} onChange={setAcknowledged} />
                     )}

@@ -53,9 +53,9 @@ export const PhraseScreen = ({ onImport }: { onImport: (result: ImportResult) =>
         spellCheck={false}
         autoCorrect="off"
         autoCapitalize="off"
-        className="demo-input resize-none font-mono text-[13px]"
+        className="demo-input resize-none font-mono text-control"
       />
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-xs text-muted tabular-nums">
           {words.length}
           {" "}
@@ -68,7 +68,7 @@ export const PhraseScreen = ({ onImport }: { onImport: (result: ImportResult) =>
         <button
           type="button"
           onClick={() => setText(DEMO_MNEMONIC)}
-          className="cursor-pointer rounded-md px-1 py-0.5 text-xs text-accent transition-colors hover:underline"
+          className="relative flex h-8 shrink-0 cursor-pointer items-center rounded-md px-1 text-xs whitespace-nowrap text-accent transition-colors duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:underline"
         >
           Use the demo phrase
         </button>
@@ -93,12 +93,12 @@ export const PhraseScreen = ({ onImport }: { onImport: (result: ImportResult) =>
         </div>
       )}
       {account && (
-        <div className="mt-auto flex flex-col gap-3 border-t border-primary pt-3">
+        <div className="mt-auto flex flex-col gap-5 border-t border-primary pt-3">
           <div className="flex items-center gap-3 px-1">
             <EnsAvatar address={account.address} size={36} />
             <span className="flex min-w-0 flex-col">
-              <span className="text-sm font-medium text-primary">Account 1</span>
-              <span className="font-mono text-xs text-muted" title={account.address}>
+              <span className="text-sm font-medium text-heading">Account 1</span>
+              <span className="font-mono text-xs whitespace-nowrap text-muted" title={account.address}>
                 {truncate(account.address)}
               </span>
             </span>

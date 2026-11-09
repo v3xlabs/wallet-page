@@ -43,12 +43,12 @@ const PATH_SEGMENTS: { text: string; hint: string; }[] = [
 
 const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: number) => void; }) => (
   <div className="flex flex-col gap-2">
-    <div className="flex flex-wrap items-center gap-1 font-mono text-[13px]">
+    <div className="flex flex-wrap items-center gap-1 font-mono text-control">
       {PATH_SEGMENTS.map(segment => (
         <span key={segment.hint} className="flex items-center gap-1">
           <span
             title={segment.hint}
-            className="cursor-help rounded-md border border-primary bg-surfaceMuted px-2 py-1 text-secondary"
+            className="flex h-8 cursor-help items-center rounded-md border border-primary bg-surface px-2 text-secondary"
           >
             {segment.text}
           </span>
@@ -57,7 +57,7 @@ const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: numbe
       ))}
       <span
         title="Address index - the only segment wallets usually change"
-        className="flex items-center gap-0.5 rounded-md border border-primary bg-accenta2 py-0.5 pr-0.5 pl-2"
+        className="flex h-8 items-center gap-0.5 rounded-md border border-primary bg-accenta2 pr-0.5 pl-2"
       >
         <span className="pr-1 font-semibold text-accent tabular-nums">{index}</span>
         <button
@@ -65,7 +65,7 @@ const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: numbe
           onClick={() => onIndex(index - 1)}
           disabled={index === 0}
           aria-label="Decrement address index"
-          className="flex size-6 cursor-pointer items-center justify-center rounded text-secondary transition-colors enabled:hover:bg-accenta3 enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+          className="relative flex size-7 cursor-pointer items-center justify-center rounded-md text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-2 after:inset-x-0 after:content-[''] enabled:hover:bg-accenta3 enabled:hover:text-heading enabled:active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-40"
         >
           -
         </button>
@@ -74,7 +74,7 @@ const PathBuilder = ({ index, onIndex }: { index: number; onIndex: (index: numbe
           onClick={() => onIndex(index + 1)}
           disabled={index === MAX_INDEX}
           aria-label="Increment address index"
-          className="flex size-6 cursor-pointer items-center justify-center rounded text-secondary transition-colors enabled:hover:bg-accenta3 enabled:hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+          className="relative flex size-7 cursor-pointer items-center justify-center rounded-md text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-2 after:inset-x-0 after:content-[''] enabled:hover:bg-accenta3 enabled:hover:text-heading enabled:active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-40"
         >
           +
         </button>
@@ -90,7 +90,7 @@ const AccountRow = ({ index, selected }: { index: number; selected: boolean; }) 
   return (
     <div
       className={classNames(
-        "flex items-center gap-3 px-3 py-2 transition-colors",
+        "flex items-center gap-3 px-3 py-2 transition-colors duration-150",
         selected && "bg-accenta2",
       )}
     >
@@ -104,7 +104,7 @@ const AccountRow = ({ index, selected }: { index: number; selected: boolean; }) 
         {index}
       </span>
       <EnsAvatar address={address} size={28} />
-      <span className="min-w-0 truncate font-mono text-[13px] text-primary" title={address}>
+      <span className="min-w-0 truncate font-mono text-control text-heading" title={address}>
         {truncate(address)}
       </span>
       {selected && (
@@ -135,7 +135,7 @@ export const DerivationDemo = () => {
                 className="flex items-baseline gap-1.5 rounded-md border border-primary bg-surfaceMuted px-2 py-1"
               >
                 <span className="text-[10px] text-muted tabular-nums">{wordIndex + 1}</span>
-                <span className="font-mono text-xs text-primary">{word}</span>
+                <span className="font-mono text-xs text-heading">{word}</span>
               </span>
             ))}
           </div>
@@ -192,7 +192,7 @@ export const WordlistDemo = () => {
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"
-          className="demo-input max-w-64 font-mono text-[13px]"
+          className="demo-input max-w-64 font-mono text-control"
         />
         {matches.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -202,10 +202,10 @@ export const WordlistDemo = () => {
                 type="button"
                 onClick={() => setQuery(word)}
                 className={classNames(
-                  "cursor-pointer rounded-full border border-primary px-2.5 py-1 font-mono text-xs transition-colors",
+                  "relative h-8 cursor-pointer rounded-md border border-primary px-2.5 font-mono text-sm font-semibold transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] active:scale-[0.98]",
                   word === trimmed
                     ? "bg-success-tint text-success"
-                    : "bg-surfaceMuted text-secondary hover:bg-surfaceTint hover:text-primary",
+                    : "bg-surface text-heading hover:bg-surfaceTint",
                 )}
               >
                 {word}

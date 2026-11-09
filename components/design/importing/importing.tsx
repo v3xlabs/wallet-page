@@ -29,7 +29,7 @@ const TABS: { value: Tab; label: string; }[] = [
 const SuccessScreen = ({ result, onDone }: { result: ImportResult; onDone: () => void; }) => (
   <div className="flex grow flex-col items-center justify-center gap-4 px-4 pt-6 pb-4">
     <SuccessCheck />
-    <span className="text-lg font-semibold text-primary">
+    <span className="text-lg font-semibold text-heading">
       {result.watchOnly ? "Now watching" : "Account imported"}
     </span>
     <div className="flex w-full items-center gap-3 rounded-xl border border-primary bg-surfaceMuted/50 px-3 py-2.5">
@@ -39,14 +39,14 @@ const SuccessScreen = ({ result, onDone }: { result: ImportResult; onDone: () =>
         size={36}
       />
       <span className="flex min-w-0 grow flex-col">
-        <span className="truncate text-sm font-medium text-primary">{result.name}</span>
-        <span className="font-mono text-xs text-muted" title={result.address}>
+        <span className="truncate text-sm font-medium text-heading">{result.name}</span>
+        <span className="font-mono text-xs whitespace-nowrap text-muted" title={result.address}>
           {truncate(result.address)}
         </span>
       </span>
       {result.watchOnly && <StatusPill tone="info">Watch-only</StatusPill>}
     </div>
-    <div className="w-full pt-2">
+    <div className="w-full pt-1">
       <PrimaryButton onClick={onDone}>Done</PrimaryButton>
     </div>
   </div>

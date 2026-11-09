@@ -1,10 +1,10 @@
 "use client";
 
-import type { FC, ReactNode } from "react";
 import { useSyncExternalStore } from "react";
 import { LuLanguages } from "react-icons/lu";
 
 import { formatAssetAmount, formatFiat } from "../../lib/display";
+import { Select } from "../select";
 import { denominationFor, DENOMINATIONS } from "./data";
 
 /**
@@ -16,14 +16,14 @@ import { denominationFor, DENOMINATIONS } from "./data";
  */
 
 const LOCALES = [
-  { value: "en-US", label: "en-US - English (United States)" },
-  { value: "de-DE", label: "de-DE - Deutsch (Deutschland)" },
-  { value: "nl-NL", label: "nl-NL - Nederlands (Nederland)" },
-  { value: "sv-SE", label: "sv-SE - Svenska (Sverige)" },
-  { value: "fr-FR", label: "fr-FR - Français (France)" },
-  { value: "hi-IN", label: "hi-IN - हिन्दी (भारत)" },
-  { value: "ar-EG", label: "ar-EG - العربية (مصر)" },
-  { value: "fa-IR", label: "fa-IR - فارسی (ایران)" },
+  { value: "en-US", label: "en-US", detail: "English (United States)" },
+  { value: "de-DE", label: "de-DE", detail: "Deutsch (Deutschland)" },
+  { value: "nl-NL", label: "nl-NL", detail: "Nederlands (Nederland)" },
+  { value: "sv-SE", label: "sv-SE", detail: "Svenska (Sverige)" },
+  { value: "fr-FR", label: "fr-FR", detail: "Français (France)" },
+  { value: "hi-IN", label: "hi-IN", detail: "हिन्दी (भारत)" },
+  { value: "ar-EG", label: "ar-EG", detail: "العربية (مصر)" },
+  { value: "fa-IR", label: "fa-IR", detail: "فارسی (ایران)" },
 ] as const;
 
 const AUTOMATIC = "automatic";
@@ -95,39 +95,7 @@ export const useDisplayValue = () => {
   };
 };
 
-/**
- * Label-less native select: a compact readout with the real `<select>`
- * stretched invisibly over it, so the dropdown stays fully native.
- */
-const CompactSelect: FC<{
-  label: string;
-  value: string;
-  display: ReactNode;
-  options: readonly { value: string; label: string; }[];
-  onChange: (value: string) => void;
-}> = ({ label, value, display, options, onChange }) => (
-  <span className="relative inline-flex">
-    <select
-      aria-label={label}
-      title={label}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      className="peer absolute inset-0 w-full cursor-pointer opacity-0"
-    >
-      {options.map(option => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-    <span className="pointer-events-none flex h-8 items-center gap-1 rounded-md px-2 text-sm text-secondary transition-colors peer-hover:bg-surfaceTint peer-hover:text-heading peer-focus-visible:bg-surfaceTint peer-focus-visible:text-heading peer-focus-visible:ring-2 peer-focus-visible:ring-accenta3 peer-active:bg-surfaceTint">
-      {display}
-      <svg aria-hidden viewBox="0 0 16 16" fill="none" className="size-3">
-        <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
-  </span>
-);
+const COMPACT_TRIGGER = "h-8 rounded-md px-2 text-sm text-secondary outline-none transition-colors hover:bg-surfaceTint hover:text-heading focus-visible:bg-surfaceTint focus-visible:text-heading focus-visible:ring-2 focus-visible:ring-accenta3 aria-expanded:bg-surfaceTint aria-expanded:text-heading";
 
 /**
  * The wallet's two i18n settings - locale and value denomination - as one
@@ -139,19 +107,20 @@ export const I18nControls = () => {
 
   return (
     <span className="flex items-center gap-0.5 text-muted">
-      <CompactSelect
+      <Select
         label="Locale"
         value={locale}
         display={locale === AUTOMATIC ? browserLocale : locale}
-        options={[{ value: AUTOMATIC, label: `Automatic (${browserLocale})` }, ...LOCALES]}
+        options={[{ value: AUTOMATIC, label: "Automatic", detail: browserLocale }, ...LOCALES]}
         onChange={value => update({ locale: value })}
+        className={COMPACT_TRIGGER}
       />
-      <CompactSelect
+      <Select
         label="Display denomination"
         value={denomination}
-        display={denomination}
         options={DENOMINATIONS.map(entry => ({ value: entry.code, label: entry.code }))}
         onChange={value => update({ denomination: denominationFor(value).code })}
+        className={COMPACT_TRIGGER}
       />
       <LuLanguages className="size-3.5 shrink-0" aria-hidden />
     </span>

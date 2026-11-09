@@ -109,18 +109,18 @@ export const AssetsDemo = () => {
           : (
               <>
                 <WalletHeader title="Assets" />
-                <div className="flex flex-col items-start gap-0.5 px-4 pt-2 pb-3">
+                <div className="flex flex-col items-start gap-0.5 px-4 pt-2 pb-1.5">
                   <span className="text-3xl font-semibold text-primary tabular-nums">
                     {display(total)}
                   </span>
-                  <div className="flex w-full items-center justify-between">
-                    <span className="text-xs text-muted">
+                  <div className="-mt-1.5 flex w-full items-center justify-between text-control">
+                    <span className="text-secondary">
                       {`${visible.length} assets - Ethereum`}
                     </span>
                     <button
                       type="button"
                       onClick={() => setScreen("manage")}
-                      className="cursor-pointer text-xs font-medium text-accent hover:underline"
+                      className="flex h-8 cursor-pointer items-center font-medium text-accent hover:underline"
                     >
                       Manage
                     </button>

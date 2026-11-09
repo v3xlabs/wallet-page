@@ -27,7 +27,7 @@ const RING_LENGTH = 2 * Math.PI * RING_RADIUS;
 const ScoreRing = ({ active, total }: { active: number; total: number; }) => (
   <span
     className={classNames(
-      "relative block size-16 shrink-0 transition-colors",
+      "relative block size-16 shrink-0 transition-colors duration-150",
       active === total ? "text-success" : "text-warning",
     )}
   >
@@ -54,7 +54,7 @@ const ScoreRing = ({ active, total }: { active: number; total: number; }) => (
         style={{ transition: "stroke-dashoffset 0.6s ease, stroke 0.3s ease" }}
       />
     </svg>
-    <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-primary tabular-nums">
+    <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-heading tabular-nums">
       {active}
       /
       {total}
@@ -84,18 +84,18 @@ const ProtectionRow = ({ icon, tone, title, caption, expanded, onToggle, childre
       type="button"
       onClick={onToggle}
       aria-expanded={expanded}
-      className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-surfaceMuted"
+      className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition-colors duration-150 hover:bg-surfaceMuted"
     >
       <span
         className={classNames(
-          "flex size-8 shrink-0 items-center justify-center rounded-full transition-colors",
+          "flex size-8 shrink-0 items-center justify-center rounded-full transition-colors duration-150",
           ICON_TONES[tone],
         )}
       >
         {icon}
       </span>
       <span className="flex min-w-0 grow flex-col gap-px">
-        <span className="text-sm font-medium text-primary">{title}</span>
+        <span className="text-sm font-medium text-heading">{title}</span>
         <span className="truncate text-xs text-muted">{caption}</span>
       </span>
       <FiChevronDown
@@ -147,12 +147,12 @@ export const RecoveryDemo = () => {
     <DemoShell source="components/design/recovery/recovery.tsx">
       <WalletFrame>
         <WalletHeader title="Security checkup" />
-        <div className="flex items-center gap-4 px-5 pt-2 pb-4">
+        <div className="flex items-center gap-4 px-4 pt-2 pb-4">
           <ScoreRing active={active} total={3} />
           <div className="flex min-w-0 flex-col gap-0.5">
             <span
               className={classNames(
-                "text-sm font-semibold transition-colors",
+                "text-sm font-semibold transition-colors duration-150",
                 active === 3 ? "text-success" : "text-warning",
               )}
             >
@@ -231,8 +231,8 @@ export const RecoveryDemo = () => {
               <div key={guardian.address} className="flex items-center gap-2.5">
                 <EnsAvatar address={guardian.address} name={guardian.name} size={28} />
                 <span className="flex min-w-0 flex-col">
-                  <span className="text-[13px] font-medium text-primary">{guardian.name}</span>
-                  <span className="font-mono text-[11px] text-muted" title={guardian.address}>
+                  <span className="text-control font-medium text-heading">{guardian.name}</span>
+                  <span className="font-mono text-[11px] whitespace-nowrap text-muted" title={guardian.address}>
                     {truncate(guardian.address)}
                   </span>
                 </span>
@@ -242,7 +242,7 @@ export const RecoveryDemo = () => {
               <button
                 type="button"
                 onClick={() => setGuardians(current => [...current, CONTACTS[2]])}
-                className="flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-dashed border-primary px-3 py-2 text-xs font-medium text-secondary transition-colors hover:bg-surfaceMuted hover:text-primary"
+                className="relative flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-xs font-medium text-secondary transition-[background-color,color,transform] duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.98]"
               >
                 <FiPlus className="size-3.5" />
                 Add a third guardian
@@ -253,7 +253,7 @@ export const RecoveryDemo = () => {
             </p>
           </ProtectionRow>
         </div>
-        <p className="border-t border-primary px-5 py-3 text-center text-[11px] leading-relaxed text-muted">
+        <p className="border-t border-primary px-4 py-3 text-center text-[11px] leading-relaxed text-muted">
           Recovery must be legible - a user should always know exactly what protects their
           account.
         </p>

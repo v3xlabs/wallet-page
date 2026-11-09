@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { hoodi, mainnet, sepolia } from "viem/chains";
 
+import { Select } from "../select";
+
 /** The demo networks: mainnet plus the two public testnets. */
 export const KNOWN_NETWORKS = [mainnet, sepolia, hoodi];
 
@@ -21,37 +23,25 @@ export const NetworkSelect = ({ value, onChange }: {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="relative">
-        <select
-          value={custom ? CUSTOM : value}
-          onChange={(e) => {
-            if (e.target.value === CUSTOM) {
-              setCustom(true);
+      <Select
+        label="Network"
+        value={custom ? CUSTOM : String(value)}
+        options={[
+          ...KNOWN_NETWORKS.map(network => ({ value: String(network.id), label: network.name })),
+          { value: CUSTOM, label: "Custom network id..." },
+        ]}
+        onChange={(selected) => {
+          if (selected === CUSTOM) {
+            setCustom(true);
 
-              return;
-            }
+            return;
+          }
 
-            setCustom(false);
-            onChange(Number(e.target.value));
-          }}
-          className="demo-select appearance-none pr-9"
-        >
-          {KNOWN_NETWORKS.map(network => (
-            <option key={network.id} value={network.id}>
-              {network.name}
-            </option>
-          ))}
-          <option value={CUSTOM}>Custom network id...</option>
-        </select>
-        <svg
-          aria-hidden
-          viewBox="0 0 16 16"
-          fill="none"
-          className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted"
-        >
-          <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
+          setCustom(false);
+          onChange(Number(selected));
+        }}
+        className="demo-select"
+      />
       {custom && (
         <input
           type="number"

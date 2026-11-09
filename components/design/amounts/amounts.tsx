@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useState } from "react";
 
 import { formatBaseUnits, parseLocalizedAmount } from "../../../lib/amounts";
@@ -45,7 +46,10 @@ export const AmountInput = ({ value, locale, decimals, onChange }: {
         aria-invalid={parsed.status === "invalid"}
         value={value}
         onChange={event => onChange?.(event.target.value)}
-        className={`w-full bg-transparent text-right text-3xl font-medium outline-none placeholder:text-muted read-only:cursor-default ${parsed.status === "invalid" ? "text-red-500" : "text-primary"}`}
+        className={classNames(
+          "w-full bg-transparent text-right text-3xl font-medium tabular-nums outline-none placeholder:text-muted read-only:cursor-default",
+          parsed.status === "invalid" ? "text-destructive" : "text-primary",
+        )}
         placeholder="0"
       />
     </div>
@@ -70,7 +74,13 @@ export const AmountInputDemo = () => {
             decimals={decimals}
             onChange={setAmount}
           />
-          <p className="m-0 mt-2 text-right text-xs text-secondary wrap-anywhere" aria-live="polite">
+          <p
+            className={classNames(
+              "m-0 mt-2 text-right wrap-anywhere",
+              parsed.status === "invalid" ? "text-xs font-medium text-destructive" : "text-control text-secondary",
+            )}
+            aria-live="polite"
+          >
             {parsed.status === "valid" && <code>{`That's ${parsed.baseUnits.toString()} base units`}</code>}
             {parsed.status === "partial" && "Keep typing..."}
             {parsed.status === "invalid" && "That amount is not valid for this locale and asset."}
@@ -107,12 +117,17 @@ export const AmountDisplayDemo = () => {
         </div>
         <hr className="border-t border-primary" />
         <div className="mx-auto w-full max-w-sm">
-          <div className="rounded-xl border border-primary bg-surface p-3 text-right">
-            <output className="text-3xl font-medium text-primary" aria-live="polite">
+          <div className="rounded-xl border border-primary bg-surfaceMuted/40 p-3 text-right">
+            <output className="text-3xl font-medium text-primary tabular-nums" aria-live="polite">
               <bdi>{formatted ?? "-"}</bdi>
             </output>
           </div>
-          <p className="m-0 mt-2 text-right text-xs text-secondary">
+          <p
+            className={classNames(
+              "m-0 mt-2 text-right",
+              formatted === undefined ? "text-xs font-medium text-destructive" : "text-control text-secondary",
+            )}
+          >
             {formatted === undefined && "Enter valid base units and 0-100 decimals."}
           </p>
         </div>

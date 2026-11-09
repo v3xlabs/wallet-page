@@ -50,18 +50,18 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
           autoCorrect="off"
           autoCapitalize="off"
           autoComplete="off"
-          className="demo-input pr-9 font-mono text-[13px]"
+          className="demo-input pr-10 font-mono text-control"
         />
         <button
           type="button"
           onClick={() => setVisible(current => !current)}
           aria-label={visible ? "Hide private key" : "Show private key"}
-          className="absolute top-1/2 right-2 flex size-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:bg-surfaceMuted hover:text-primary"
+          className="absolute top-1/2 right-1 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-muted transition-[background-color,color,transform] duration-150 after:absolute after:-inset-1 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96]"
         >
           {visible ? <FiEyeOff /> : <FiEye />}
         </button>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-xs text-muted">
           {trimmed === ""
             ? "64 hex characters, 0x-prefixed"
@@ -70,18 +70,18 @@ export const KeyScreen = ({ onImport }: { onImport: (result: ImportResult) => vo
         <button
           type="button"
           onClick={() => setText(DEMO_PRIVATE_KEY)}
-          className="cursor-pointer rounded-md px-1 py-0.5 text-xs text-accent transition-colors hover:underline"
+          className="relative flex h-8 shrink-0 cursor-pointer items-center rounded-md px-1 text-xs whitespace-nowrap text-accent transition-colors duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] hover:underline"
         >
           Use the demo key
         </button>
       </div>
       {account && (
-        <div className="mt-auto flex flex-col gap-3 border-t border-primary pt-3">
+        <div className="mt-auto flex flex-col gap-5 border-t border-primary pt-3">
           <div className="flex items-center gap-3 px-1">
             <EnsAvatar address={account.address} size={36} />
             <span className="flex min-w-0 flex-col">
-              <span className="text-sm font-medium text-primary">Account 1</span>
-              <span className="font-mono text-xs text-muted" title={account.address}>
+              <span className="text-sm font-medium text-heading">Account 1</span>
+              <span className="font-mono text-xs whitespace-nowrap text-muted" title={account.address}>
                 {truncate(account.address)}
               </span>
             </span>

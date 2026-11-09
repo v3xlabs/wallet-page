@@ -29,19 +29,19 @@ export const BackupScreen = ({ onContinue }: { onContinue: () => void; }) => {
       <div
         aria-hidden={!revealed}
         className={classNames(
-          "grid grid-cols-3 gap-1.5 transition-[filter] duration-200",
+          "grid grid-cols-3 gap-1.5 transition-[filter] duration-150",
           !revealed && "blur-sm select-none",
         )}
       >
         {WORDS.map((word, index) => (
           <span
             key={index}
-            className="flex items-baseline gap-1.5 rounded-lg border border-primary bg-surfaceMuted px-2 py-1.5"
+            className="flex h-8 items-center gap-1.5 rounded-md border border-primary bg-surfaceMuted px-2"
           >
             <span className="w-3.5 shrink-0 text-right text-[10px] text-muted tabular-nums">
               {index + 1}
             </span>
-            <span className="font-mono text-[13px] text-primary">{word}</span>
+            <span className="font-mono text-control text-heading">{word}</span>
           </span>
         ))}
       </div>
@@ -63,14 +63,14 @@ export const BackupScreen = ({ onContinue }: { onContinue: () => void; }) => {
             show();
           }
         }}
-        className="w-full cursor-pointer rounded-xl border border-primary bg-surfaceMuted px-4 py-2.5 text-sm font-semibold text-primary transition-colors select-none hover:bg-surfaceTint"
+        className="w-full cursor-pointer rounded-xl border border-primary bg-surfaceMuted px-4 py-3 text-sm font-semibold text-primary transition-[background-color,transform] duration-150 select-none hover:bg-surfaceTint active:scale-[0.985]"
       >
         {revealed ? "Release to hide" : "Hold to reveal"}
       </button>
       <p className="text-center text-[11px] text-muted">
         This is the standard demo phrase - never reuse it for real funds.
       </p>
-      <div className="mt-auto">
+      <div className="mt-auto pt-2">
         <PrimaryButton onClick={onContinue} disabled={!everRevealed}>
           I wrote them down
         </PrimaryButton>

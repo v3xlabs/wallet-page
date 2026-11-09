@@ -97,13 +97,13 @@ const Toggle: FC<{ checked: boolean; onChange: (checked: boolean) => void; label
     aria-label={label}
     onClick={() => onChange(!checked)}
     className={classNames(
-      "relative h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors",
+      "relative h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-150 after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-['']",
       checked ? "bg-accent" : "bg-surfaceTint",
     )}
   >
     <span
       className={classNames(
-        "absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform",
+        "absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform duration-150",
         checked && "translate-x-4",
       )}
     />
@@ -121,7 +121,7 @@ const PermissionRow: FC<{
       <Icon className="size-4" aria-hidden />
     </span>
     <span className="flex min-w-0 grow flex-col gap-px">
-      <span className="text-[13px] font-medium text-primary">{label}</span>
+      <span className="text-control font-medium text-heading">{label}</span>
       <span className="text-[11px] text-muted">{caption}</span>
     </span>
     {toggle && <Toggle checked={toggle.checked} onChange={toggle.onChange} label={label} />}
@@ -132,7 +132,7 @@ const PermissionRow: FC<{
 const AppIdentity: FC<{ app: (typeof APPS)[Scenario]; }> = ({ app }) => (
   <div className="flex flex-col items-center gap-1.5">
     <TokenIcon symbol="EXS" color="#6366f1" size={44} />
-    <span className="text-base font-semibold text-primary">{app.name}</span>
+    <span className="text-base font-semibold text-heading">{app.name}</span>
     <span className="font-mono text-xs text-muted">{app.host}</span>
     {app.connectedBefore && (
       <span className="text-[11px] text-muted">You've connected to this app before</span>
@@ -222,8 +222,8 @@ export const ConnectDemo = () => {
                     size={32}
                   />
                   <span className="flex min-w-0 grow flex-col gap-px">
-                    <span className="truncate text-sm font-medium text-primary">{account.name}</span>
-                    <span className="font-mono text-[11px] text-muted">{truncate(account.address)}</span>
+                    <span className="truncate text-sm font-medium text-heading">{account.name}</span>
+                    <span className="font-mono text-[11px] whitespace-nowrap text-muted">{truncate(account.address)}</span>
                   </span>
                   <span className="text-xs text-secondary">{networkName(chainId)}</span>
                 </div>
@@ -260,7 +260,7 @@ export const ConnectDemo = () => {
                   ))}
                 </RowGroup>
               </div>
-              <div className="mt-auto flex gap-2 pt-2">
+              <div className="mt-auto flex gap-2 pt-1">
                 <SecondaryButton onClick={reset}>Cancel</SecondaryButton>
                 <PrimaryButton onClick={() => setPhase("permissions")}>Continue</PrimaryButton>
               </div>
@@ -277,7 +277,7 @@ export const ConnectDemo = () => {
                   name={account.name.includes(".") ? account.name : undefined}
                   size={20}
                 />
-                <span className="text-sm font-medium text-primary">{account.name}</span>
+                <span className="text-sm font-medium text-heading">{account.name}</span>
                 <span className="text-sm text-muted">→</span>
                 <span className="font-mono text-xs text-muted">{app.host}</span>
               </div>
@@ -311,7 +311,7 @@ export const ConnectDemo = () => {
                 <SectionLabel>Network</SectionLabel>
                 <NetworkSelect value={chainId} onChange={setChainId} />
               </div>
-              <div className="mt-auto flex gap-2 pt-2">
+              <div className="mt-auto flex gap-2 pt-1">
                 <SecondaryButton onClick={reset} disabled={phase === "connecting"}>
                   Cancel
                 </SecondaryButton>

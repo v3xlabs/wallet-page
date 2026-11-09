@@ -4,6 +4,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { FiClock } from "react-icons/fi";
 
+import { Select } from "../../select";
 import type { DemoToken } from "../data";
 import { formatTokenAmount, TOKENS, usdValue } from "../data";
 import { useDemoLocale, useDenomination } from "../locale";
@@ -225,19 +226,13 @@ export const PricesDemo = () => {
     >
       <div className="flex flex-col gap-4">
         <Field label="Token">
-          <select
+          <Select
+            label="Token"
             value={token.symbol}
-            onChange={event => setSymbol(event.target.value)}
+            options={TOKENS.map(candidate => ({ value: candidate.symbol, label: candidate.symbol, detail: candidate.name }))}
+            onChange={setSymbol}
             className="demo-select w-fit min-w-36"
-          >
-            {TOKENS.map(candidate => (
-              <option key={candidate.symbol} value={candidate.symbol}>
-                {candidate.symbol}
-                {" - "}
-                {candidate.name}
-              </option>
-            ))}
-          </select>
+          />
         </Field>
         <hr className="border-t border-primary" />
         <PriceTile token={token} freshness={freshness} />

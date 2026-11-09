@@ -96,7 +96,7 @@ export const RecipientScreen = ({ onPick }: { onPick: (recipient: Recipient) => 
             spellCheck={false}
             autoCorrect="off"
             autoCapitalize="off"
-            className="demo-input pr-9 font-mono text-[13px]"
+            className="demo-input pr-9 font-mono text-control"
           />
           {isNameShaped && (current === undefined || current.status === "resolving") && (
             <span className="absolute top-1/2 right-3 -translate-y-1/2 text-muted">

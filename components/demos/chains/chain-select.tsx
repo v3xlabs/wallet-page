@@ -3,6 +3,7 @@
 import type { Hex } from "viem";
 
 import { DEMO_CHAINS } from "../../../lib/chains";
+import { Select } from "../../select";
 
 type ChainSelectProperties = {
   value: Hex;
@@ -11,20 +12,12 @@ type ChainSelectProperties = {
 };
 
 export const ChainSelect = ({ value, onChange, id }: ChainSelectProperties) => (
-  <select
+  <Select
+    label="Chain"
     id={id}
-    className="demo-select mt-2 max-w-[22rem]"
     value={value}
-    onChange={e => onChange(e.target.value as Hex)}
-  >
-    {DEMO_CHAINS.map(chain => (
-      <option key={chain.chainId} value={chain.chainId}>
-        {chain.name}
-        {" "}
-        (
-        {chain.chainId}
-        )
-      </option>
-    ))}
-  </select>
+    options={DEMO_CHAINS.map(chain => ({ value: chain.chainId, label: chain.name, detail: chain.chainId }))}
+    onChange={onChange}
+    className="demo-select mt-2 max-w-[22rem]"
+  />
 );

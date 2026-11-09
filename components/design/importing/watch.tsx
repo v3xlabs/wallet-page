@@ -78,7 +78,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
           spellCheck={false}
           autoCorrect="off"
           autoCapitalize="off"
-          className="demo-input pr-9 font-mono text-[13px]"
+          className="demo-input pr-9 font-mono text-control"
         />
         {resolving && (
           <span className="absolute top-1/2 right-3 -translate-y-1/2 text-muted">
@@ -106,7 +106,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
           <button
             type="button"
             onClick={() => setQuery(CONTACTS[0].name)}
-            className="cursor-pointer text-accent hover:underline"
+            className="relative cursor-pointer text-accent after:absolute after:-inset-y-2 after:-inset-x-1 after:content-[''] hover:underline"
           >
             {CONTACTS[0].name}
           </button>
@@ -115,7 +115,7 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
         </p>
       )}
       {candidate && (
-        <div className="mt-auto flex flex-col gap-3 border-t border-primary pt-3">
+        <div className="mt-auto flex flex-col gap-5 border-t border-primary pt-3">
           <div className="flex items-center gap-3 px-1">
             <EnsAvatar
               address={candidate.address}
@@ -123,8 +123,8 @@ export const WatchScreen = ({ onImport }: { onImport: (result: ImportResult) => 
               size={36}
             />
             <span className="flex min-w-0 flex-col">
-              <span className="text-sm font-medium text-primary">{candidate.name}</span>
-              <span className="font-mono text-xs text-muted" title={candidate.address}>
+              <span className="text-sm font-medium text-heading">{candidate.name}</span>
+              <span className="font-mono text-xs whitespace-nowrap text-muted" title={candidate.address}>
                 {truncate(candidate.address)}
               </span>
             </span>

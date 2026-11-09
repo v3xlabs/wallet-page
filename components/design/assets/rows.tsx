@@ -61,8 +61,8 @@ export const TokenRow: FC<{
           onClick={onToggleMenu}
           aria-label={`More options for ${token.symbol}`}
           className={classNames(
-            "-mr-1.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-surfaceMuted hover:text-primary",
-            menuOpen ? "bg-surfaceMuted text-primary" : "text-muted",
+            "-mr-2 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md transition-[background-color,color,transform] duration-150 hover:bg-surfaceTint hover:text-heading active:scale-[0.96]",
+            menuOpen ? "bg-surfaceTint text-heading" : "text-muted",
           )}
         >
           <FiMoreHorizontal className="size-4" />
@@ -73,7 +73,7 @@ export const TokenRow: FC<{
           <button
             type="button"
             onClick={onHide}
-            className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-surfaceMuted px-2.5 py-1.5 text-xs font-medium text-secondary transition-colors hover:text-destructive"
+            className="flex h-8 cursor-pointer items-center gap-1.5 rounded-md bg-surfaceTint px-2.5 text-xs font-medium text-secondary transition-[color,transform] duration-150 hover:text-destructive active:scale-[0.96]"
           >
             <FiEyeOff className="size-3.5" />
             Hide token
@@ -132,7 +132,7 @@ export const HiddenShelf: FC<{
             <button
               type="button"
               onClick={() => onShow(token.symbol)}
-              className="cursor-pointer text-xs font-medium text-accent hover:underline"
+              className="flex h-8 cursor-pointer items-center text-xs font-medium text-accent hover:underline"
             >
               Show
             </button>

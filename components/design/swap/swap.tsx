@@ -210,16 +210,16 @@ export const SwapDemo = () => {
           <div className="flex grow flex-col items-center justify-center gap-3 px-4 pt-6 pb-4">
             <SuccessCheck />
             <div className="flex flex-col items-center gap-1">
-              <span className="text-lg font-semibold text-primary">Swapped</span>
+              <span className="text-lg font-semibold text-heading">Swapped</span>
               <span className="text-sm text-secondary tabular-nums">
                 {`${formatAmount(quote.payAmount, locale)} ${pay.symbol} → `}
-                <span className="font-medium text-primary">
+                <span className="font-medium text-heading">
                   {`${formatAmount(quote.receiveAmount, locale)} ${receive.symbol}`}
                 </span>
               </span>
               <span className="text-xs text-muted">Filled at the best of 4 quoted venues</span>
             </div>
-            <div className="w-full pt-3">
+            <div className="w-full pt-2">
               <PrimaryButton onClick={reset}>Done</PrimaryButton>
             </div>
           </div>
