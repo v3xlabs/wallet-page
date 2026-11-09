@@ -167,24 +167,26 @@ export const Eip7702Demo = () => {
 
   return (
     <DemoShell source="components/demos/eip-7702-demo.tsx">
-      <p className="text-sm text-secondary">
-        Wallet teams are standardizing RPC names for authorizations and type-4
-        transactions. This page probes common method names and
-        {" "}
-        <code>authorizationList</code>
-        {" "}
-        handling.
-      </p>
-      <label className="my-3 flex flex-col gap-1.5">
-        <span className="text-sm text-secondary">Delegator contract (probe only)</span>
-        <input
-          type="text"
-          className="demo-input font-mono"
-          value={delegator}
-          onChange={e => setDelegator(e.target.value as Address)}
-          spellCheck={false}
-        />
-      </label>
+      <div className="flex flex-col gap-3">
+        <p className="text-sm text-secondary">
+          Wallet teams are standardizing RPC names for authorizations and type-4
+          transactions. This page probes common method names and
+          {" "}
+          <span className="font-mono text-control">authorizationList</span>
+          {" "}
+          handling.
+        </p>
+        <label className="flex flex-col gap-2">
+          <span className="text-control text-secondary">Delegator contract (probe only)</span>
+          <input
+            type="text"
+            className="demo-input h-8 py-0 font-mono text-control"
+            value={delegator}
+            onChange={event => setDelegator(event.target.value as Address)}
+            spellCheck={false}
+          />
+        </label>
+      </div>
 
       <WalletActionPanel
         inspector={{

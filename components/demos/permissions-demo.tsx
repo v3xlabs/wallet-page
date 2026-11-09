@@ -15,11 +15,11 @@ import { DemoShell } from "../wallet/DemoShell";
 import { useWallet } from "../wallet/WalletProvider";
 
 const CapabilityChecklist = ({ groups }: { groups: CapabilityGroup[]; }) => (
-  <div className="grid grid-cols-[repeat(auto-fill,minmax(11.5rem,1fr))] items-start gap-x-5 gap-y-2">
+  <div className="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] items-start gap-x-5 gap-y-2">
     {groups.map(group => (
-      <ul key={group.prefix} className="flex min-w-0 list-none flex-col gap-0.5 p-0">
+      <ul key={group.prefix} className="m-0 flex min-w-0 list-none flex-col gap-1 p-0">
         {group.items.map(item => (
-          <li key={item.id} className="flex items-baseline gap-2 text-[13px] leading-snug">
+          <li key={item.id} className="flex items-baseline gap-2 text-control">
             <span
               className={classNames(
                 "flex-none basis-4 text-center font-semibold select-none",
@@ -29,7 +29,7 @@ const CapabilityChecklist = ({ groups }: { groups: CapabilityGroup[]; }) => (
             >
               {item.granted ? "✓" : "-"}
             </span>
-            <code className="font-mono text-[13px]">{item.id}</code>
+            <code className="min-w-0 font-mono text-control">{item.id}</code>
           </li>
         ))}
       </ul>
@@ -130,8 +130,8 @@ export const PermissionsDemo = () => {
 
   return (
     <DemoShell source="components/demos/permissions-demo.tsx">
-      <div className="flex flex-col gap-2.5">
-        <div className="mb-1.5 flex flex-wrap justify-end gap-2">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap justify-end gap-2">
           <button
             type="button"
             className="demo-btn"
@@ -158,20 +158,15 @@ export const PermissionsDemo = () => {
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-md border border-primary bg-surfaceMuted">
-          <div className="flex border-b border-primary bg-code-block" role="tablist" aria-label="Permission views">
+        <div className="flex flex-col">
+          <div className="flex gap-5 overflow-x-auto overflow-y-hidden border-b border-primary" role="tablist" aria-label="Permission views">
             <button
               type="button"
               role="tab"
               id={`${baseId}-capabilities`}
               aria-selected={tab === "capabilities"}
               aria-controls={`${baseId}-panel-capabilities`}
-              className={classNames(
-                "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
-                tab === "capabilities"
-                  ? "text-primary"
-                  : "text-secondary hover:text-primary",
-              )}
+              className="demo-tab"
               onClick={() => setTab("capabilities")}
             >
               Capabilities
@@ -182,12 +177,7 @@ export const PermissionsDemo = () => {
               id={`${baseId}-raw`}
               aria-selected={tab === "raw"}
               aria-controls={`${baseId}-panel-raw`}
-              className={classNames(
-                "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
-                tab === "raw"
-                  ? "text-primary"
-                  : "text-secondary hover:text-primary",
-              )}
+              className="demo-tab"
               onClick={() => setTab("raw")}
             >
               Response
@@ -199,17 +189,17 @@ export const PermissionsDemo = () => {
               id={`${baseId}-panel-capabilities`}
               role="tabpanel"
               aria-labelledby={`${baseId}-capabilities`}
-              className="min-h-14 px-3.5 py-2"
+              className="flex flex-col gap-3 pt-3"
             >
-              {pending && granted.size === 0 && !error
+              {!error && pending && granted.size === 0
                 ? (
-                    <p className="text-sm text-secondary">Loading...</p>
+                    <p className="m-0 text-sm text-secondary">Loading...</p>
                   )
                 : (
                     <CapabilityChecklist groups={groups} />
                   )}
               {error && (
-                <pre className="mt-2.5 font-mono text-[13px] whitespace-pre-wrap text-destructive wrap-break-word">{error}</pre>
+                <pre className="m-0 font-mono text-control break-all whitespace-pre-wrap text-destructive">{error}</pre>
               )}
             </div>
           )}
@@ -219,18 +209,18 @@ export const PermissionsDemo = () => {
               id={`${baseId}-panel-raw`}
               role="tabpanel"
               aria-labelledby={`${baseId}-raw`}
-              className="min-h-14 px-3.5 py-3"
+              className="pt-3"
             >
               {error
                 ? (
-                    <pre className="mt-2.5 font-mono text-[13px] whitespace-pre-wrap text-destructive wrap-break-word">{error}</pre>
+                    <pre className="m-0 font-mono text-control break-all whitespace-pre-wrap text-destructive">{error}</pre>
                   )
                 : (raw
                     ? (
-                        <pre className="font-mono text-[13px] leading-normal whitespace-pre-wrap wrap-break-word">{raw}</pre>
+                        <pre className="demo-scroll-x m-0 pb-1 font-mono text-control whitespace-pre">{raw}</pre>
                       )
                     : (
-                        <p className="text-sm text-secondary">
+                        <p className="m-0 text-sm text-secondary">
                           {pending ? "Loading..." : "No response yet."}
                         </p>
                       ))}

@@ -140,13 +140,13 @@ export const Erc20Demo = () => {
 
   return (
     <DemoShell source="components/demos/erc-20-demo.tsx">
-      <label className="my-3 flex flex-col gap-1.5">
-        <span className="text-sm text-secondary">Token contract</span>
+      <label className="flex flex-col gap-2">
+        <span className="text-control text-secondary">Token contract</span>
         <input
           type="text"
-          className="demo-input font-mono"
+          className="demo-input h-8 py-0 font-mono text-control"
           value={token}
-          onChange={e => setToken(e.target.value)}
+          onChange={event => setToken(event.target.value)}
         />
       </label>
 
@@ -202,7 +202,6 @@ export const Erc20Demo = () => {
           {
             label: "Transfer to self",
             onClick: sendTransfer,
-            primary: true,
             disabled: !tokenAddress,
           },
         ]}

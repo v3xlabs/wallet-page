@@ -20,24 +20,24 @@ export const TransactionPreview = ({
   const hasCalldata = data && data !== "0x" && data !== "0x0";
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       {subtitle}
-      <p className="font-mono text-[13px]">
+      <p className="font-mono text-control">
         <Address address={from} />
         <span aria-hidden> → </span>
         <Address address={to} />
       </p>
-      {valueLabel && <p className="mt-1.5 font-semibold">{valueLabel}</p>}
+      {valueLabel && <p className="font-semibold">{valueLabel}</p>}
       {hasCalldata && (
-        <p className="mt-1.5 text-[13px] text-secondary">
+        <p className="text-control text-secondary">
           Contract call -
           {" "}
-          <code>
+          <span className="font-mono">
             {data.slice(0, 10)}
             ...
-          </code>
+          </span>
         </p>
       )}
-    </>
+    </div>
   );
 };

@@ -20,13 +20,13 @@ export const ConnectWalletDemo = () => {
 
   return (
     <DemoFrame source={SOURCE}>
-      <section className="mt-5 first:mt-0">
-        <h3 className="mb-2 text-base">Connect</h3>
-        <p className="text-sm text-secondary">
+      <div className="flex flex-col gap-3">
+        <h3 className="m-0 text-sm font-semibold">Connect</h3>
+        <p className="m-0 text-sm text-secondary">
           Choose a provider from the list below.
         </p>
         {connectError && (
-          <p className="mb-4 rounded-md bg-destructive-tint px-4 py-3 text-sm text-primary" role="alert">
+          <p className="m-0 rounded-md bg-destructive-tint px-3 py-2 text-sm text-primary" role="alert">
             {connectError}
           </p>
         )}
@@ -36,10 +36,19 @@ export const ConnectWalletDemo = () => {
           onSelect={detail => void connectDetail(detail)}
           emptyMessage="No providers yet -- install a wallet extension and use Request providers below."
         />
-      </section>
-
-      <section className="mt-5 first:mt-0">
-        <div className="my-3 flex flex-wrap gap-2">
+        <details className="text-control text-secondary">
+          <summary className="cursor-pointer">
+            Announce payloads (
+            {infoPayload.length}
+            )
+          </summary>
+          <pre className="demo-scroll-x m-0 pt-3 pb-1 font-mono text-control whitespace-pre text-primary">
+            {infoPayload.length === 0
+              ? "[]"
+              : JSON.stringify(infoPayload, null, 2)}
+          </pre>
+        </details>
+        <div className="flex flex-wrap justify-end gap-2">
           <button
             type="button"
             className="demo-btn demo-btn-primary"
@@ -48,19 +57,7 @@ export const ConnectWalletDemo = () => {
             Request providers
           </button>
         </div>
-        <details className="mt-4 text-sm">
-          <summary>
-            Announce payloads (
-            {infoPayload.length}
-            )
-          </summary>
-          <pre className="mt-2 max-h-64 overflow-auto rounded-md border border-primary bg-surfaceMuted p-3 font-mono text-xs whitespace-pre-wrap wrap-break-word">
-            {infoPayload.length === 0
-              ? "[]"
-              : JSON.stringify(infoPayload, null, 2)}
-          </pre>
-        </details>
-      </section>
+      </div>
     </DemoFrame>
   );
 };

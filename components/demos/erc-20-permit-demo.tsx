@@ -43,24 +43,24 @@ const PermitPreview = ({
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <span
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[1.1rem] font-bold"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent/20 text-lg font-bold"
           aria-hidden
         >
           {iconLetter}
         </span>
-        <div>
-          <p className="text-[1.05rem] font-semibold">{amount}</p>
-          <p className="mt-0.5 text-sm text-secondary">{tokenName}</p>
+        <div className="flex min-w-0 flex-col gap-1">
+          <p className="m-0 text-base font-semibold">{amount}</p>
+          <p className="m-0 text-control text-secondary">{tokenName}</p>
         </div>
       </div>
-      <dl className="m-0 flex flex-col gap-1">
+      <dl className="m-0 flex flex-col gap-2">
         <div className="flex items-baseline justify-between gap-4">
-          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Spender</dt>
-          <dd className="m-0 break-all text-right"><Address address={spender} /></dd>
+          <dt className="m-0 text-control text-secondary">Spender</dt>
+          <dd className="m-0 text-right"><Address address={spender} /></dd>
         </div>
         <div className="flex items-baseline justify-between gap-4">
-          <dt className="m-0 text-[11px] uppercase tracking-[0.04em] text-secondary">Expires</dt>
-          <dd className="m-0 break-all text-right">{formatDeadline(deadline)}</dd>
+          <dt className="m-0 text-control text-secondary">Expires</dt>
+          <dd className="m-0 text-right">{formatDeadline(deadline)}</dd>
         </div>
       </dl>
     </div>

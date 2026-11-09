@@ -35,15 +35,14 @@ const CallsBatchPreview = ({
   chainId: string;
   calls: { to: string; value?: string; }[];
 }) => (
-  <ul className="flex list-none flex-col gap-1.5 p-0">
+  <ul className="m-0 flex list-none flex-col gap-2 p-0">
     {calls.map((call, index) => (
-      <li key={`${call.to}-${index}`} className="flex items-center gap-2 text-[13px]">
-        <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-code-block text-xs font-semibold">{index + 1}</span>
+      <li key={`${call.to}-${index}`} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-control">
         <Address address={call.to} />
-        <span className="text-sm text-secondary">
+        <span className="text-secondary">
           chain
           {" "}
-          <code className="font-mono text-[13px] break-all">{chainId}</code>
+          <span className="font-mono break-all">{chainId}</span>
         </span>
       </li>
     ))}

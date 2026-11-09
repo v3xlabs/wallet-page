@@ -80,97 +80,101 @@ export const EnsDemo = () => {
 
   return (
     <DemoShell source="components/demos/ens-demo.tsx">
-      <p className="mb-5 text-sm text-secondary">
-        Resolves against Ethereum mainnet via a public RPC.
-      </p>
+      <div className="flex flex-col gap-6">
+        <p className="m-0 text-sm text-secondary">
+          Resolves against Ethereum mainnet via a public RPC.
+        </p>
 
-      {/* Forward lookup */}
-      <div className="mt-5 first:mt-0">
-        <h3 className="mb-2 text-base">Forward lookup</h3>
-        <p className="text-sm text-secondary">name → address</p>
-        <label className="my-3 flex flex-col gap-1.5">
-          <span className="text-sm text-secondary">ENS name</span>
-          <input
-            type="text"
-            className="demo-input font-mono"
-            value={forwardName}
-            onChange={e => setForwardName(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && void lookupForward()}
-            placeholder="vitalik.eth"
-          />
-        </label>
-        <div className="flex flex-wrap justify-end gap-2">
-          <button
-            type="button"
-            className="demo-btn demo-btn-primary"
-            onClick={() => void lookupForward()}
-            disabled={forwardPending || !forwardName.trim()}
-          >
-            {forwardPending ? "Resolving..." : "Resolve name"}
-          </button>
-        </div>
-        {(forwardResult || forwardError) && (
-          <div className="mt-3 rounded-md border border-primary bg-surfaceMuted px-4 py-3">
-            <div className="mb-1.5 text-xs tracking-[0.04em] uppercase text-secondary">Address</div>
-            <pre
-              className={classNames(
-                "m-0 overflow-x-auto font-mono text-[13px]",
-                forwardError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success",
-              )}
-            >
-              {forwardError ?? forwardResult}
-            </pre>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h3 className="m-0 text-sm font-semibold">Forward lookup</h3>
+            <p className="m-0 text-control text-secondary">name → address</p>
           </div>
-        )}
-      </div>
+          <label className="flex flex-col gap-2">
+            <span className="text-control text-secondary">ENS name</span>
+            <input
+              type="text"
+              className="demo-input h-8 py-0 font-mono text-control"
+              value={forwardName}
+              onChange={event => setForwardName(event.target.value)}
+              onKeyDown={event => event.key === "Enter" && void lookupForward()}
+              placeholder="vitalik.eth"
+            />
+          </label>
+          <div className="flex flex-wrap justify-end gap-2">
+            <button
+              type="button"
+              className="demo-btn demo-btn-primary"
+              onClick={() => void lookupForward()}
+              disabled={forwardPending || !forwardName.trim()}
+            >
+              {forwardPending ? "Resolving..." : "Resolve name"}
+            </button>
+          </div>
+          {(forwardResult || forwardError) && (
+            <div className="flex flex-col gap-2">
+              <span className="text-control text-secondary">Address</span>
+              <p
+                className={classNames(
+                  "m-0 font-mono text-control",
+                  forwardError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success break-all text-balance",
+                )}
+              >
+                {forwardError ?? forwardResult}
+              </p>
+            </div>
+          )}
+        </div>
 
-      {/* Reverse lookup */}
-      <div className="mt-5 first:mt-0">
-        <h3 className="mb-2 text-base">Reverse lookup</h3>
-        <p className="text-sm text-secondary">address → primary name</p>
-        <label className="my-3 flex flex-col gap-1.5">
-          <span className="text-sm text-secondary">Ethereum address</span>
-          <input
-            type="text"
-            className="demo-input font-mono"
-            value={reverseAddress}
-            onChange={e => setReverseAddress(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && void lookupReverse()}
-            placeholder="0x..."
-          />
-        </label>
-        {session && reverseAddress !== session.accounts[0] && (
-          <button
-            type="button"
-            className="demo-btn mt-1.5"
-            onClick={() => setReverseAddress(session.accounts[0])}
-          >
-            Use wallet address
-          </button>
-        )}
-        <div className="flex flex-wrap justify-end gap-2">
-          <button
-            type="button"
-            className="demo-btn demo-btn-primary"
-            onClick={() => void lookupReverse()}
-            disabled={reversePending || !reverseAddress.trim()}
-          >
-            {reversePending ? "Resolving..." : "Resolve address"}
-          </button>
-        </div>
-        {(reverseResult || reverseError) && (
-          <div className="mt-3 rounded-md border border-primary bg-surfaceMuted px-4 py-3">
-            <div className="mb-1.5 text-xs tracking-[0.04em] uppercase text-secondary">Primary name</div>
-            <pre
-              className={classNames(
-                "m-0 overflow-x-auto font-mono text-[13px]",
-                reverseError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success",
-              )}
-            >
-              {reverseError ?? reverseResult}
-            </pre>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h3 className="m-0 text-sm font-semibold">Reverse lookup</h3>
+            <p className="m-0 text-control text-secondary">address → primary name</p>
           </div>
-        )}
+          <label className="flex flex-col gap-2">
+            <span className="text-control text-secondary">Ethereum address</span>
+            <input
+              type="text"
+              className="demo-input h-8 py-0 font-mono text-control"
+              value={reverseAddress}
+              onChange={event => setReverseAddress(event.target.value)}
+              onKeyDown={event => event.key === "Enter" && void lookupReverse()}
+              placeholder="0x..."
+            />
+          </label>
+          <div className="flex flex-wrap justify-end gap-2">
+            {session && reverseAddress !== session.accounts[0] && (
+              <button
+                type="button"
+                className="demo-btn"
+                onClick={() => setReverseAddress(session.accounts[0])}
+              >
+                Use wallet address
+              </button>
+            )}
+            <button
+              type="button"
+              className="demo-btn"
+              onClick={() => void lookupReverse()}
+              disabled={reversePending || !reverseAddress.trim()}
+            >
+              {reversePending ? "Resolving..." : "Resolve address"}
+            </button>
+          </div>
+          {(reverseResult || reverseError) && (
+            <div className="flex flex-col gap-2">
+              <span className="text-control text-secondary">Primary name</span>
+              <p
+                className={classNames(
+                  "m-0 font-mono text-control",
+                  reverseError ? "text-destructive whitespace-pre-wrap wrap-break-word" : "text-success break-all",
+                )}
+              >
+                {reverseError ?? reverseResult}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </DemoShell>
   );

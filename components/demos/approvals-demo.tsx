@@ -154,39 +154,43 @@ export const ApprovalsDemo = () => {
 
   return (
     <DemoShell source="components/demos/approvals-demo.tsx">
-      <label className="my-3 flex flex-col gap-1.5">
-        <span className="text-sm text-secondary">Token contract</span>
-        <input
-          type="text"
-          className="demo-input font-mono"
-          value={token}
-          onChange={e => setToken(e.target.value)}
-          placeholder="0x..."
-        />
-      </label>
+      <div className="flex flex-col gap-3">
+        <label className="flex flex-col gap-2">
+          <span className="text-control text-secondary">Token contract</span>
+          <input
+            type="text"
+            className="demo-input h-8 py-0 font-mono text-control"
+            value={token}
+            onChange={event => setToken(event.target.value)}
+            placeholder="0x..."
+          />
+        </label>
 
-      <label className="my-3 flex flex-col gap-1.5">
-        <span className="text-sm text-secondary">Spender contract</span>
-        <input
-          type="text"
-          className="demo-input font-mono"
-          value={spender}
-          onChange={e => setSpender(e.target.value)}
-          placeholder="0x..."
-        />
-        <div className="mt-1.5 mb-3 flex flex-wrap gap-2">
-          {KNOWN_SPENDERS.map(s => (
-            <button
-              key={s.address}
-              type="button"
-              className="demo-btn px-2.5 py-1 text-[13px]"
-              onClick={() => setSpender(s.address)}
-            >
-              {s.label}
-            </button>
-          ))}
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-control text-secondary">Spender contract</span>
+            <input
+              type="text"
+              className="demo-input h-8 py-0 font-mono text-control"
+              value={spender}
+              onChange={event => setSpender(event.target.value)}
+              placeholder="0x..."
+            />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {KNOWN_SPENDERS.map(s => (
+              <button
+                key={s.address}
+                type="button"
+                className="demo-btn"
+                onClick={() => setSpender(s.address)}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </label>
+      </div>
 
       <WalletActionPanel
         inspector={

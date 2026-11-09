@@ -85,54 +85,55 @@ export const ChainQuickGrid = () => {
 
   return (
     <DemoShell source="components/demos/chains/chain-quick-grid.tsx">
-      {session && (
-        <p className="text-sm text-secondary">
-          Active chain:
-          {" "}
-          <code>{session.chainId}</code>
-        </p>
-      )}
-      <div className="my-3 grid gap-3 sm:grid-cols-2">
-        {DEMO_CHAINS.map((chain) => {
-          const isActive = active && chain.chainId.toLowerCase() === active;
+      <div className="flex flex-col gap-4">
+        {session && (
+          <p className="m-0 text-control text-secondary">
+            Active chain:
+            {" "}
+            <span className="font-mono text-control text-primary">{session.chainId}</span>
+          </p>
+        )}
+        <div className="flex flex-col gap-4">
+          {DEMO_CHAINS.map((chain) => {
+            const isActive = active && chain.chainId.toLowerCase() === active;
 
-          return (
-            <div
-              key={chain.chainId}
-              className={classNames(
-                "flex flex-col gap-1.5 rounded-md border p-3",
-                isActive ? "border-accent bg-accent/10" : "border-primary bg-surfaceMuted",
-              )}
-            >
-              <span>{chain.name}</span>
-              <code className="font-mono text-[13px]">{chain.chainId}</code>
-              <div className="my-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className="demo-btn demo-btn-primary"
-                  disabled={pending || isActive}
-                  onClick={() => void switchChain(chain.chainId)}
-                >
-                  {isActive ? "Active" : "Switch"}
-                </button>
-                <button
-                  type="button"
-                  className="demo-btn"
-                  disabled={pending}
-                  onClick={() => void addChain(chain.chainId)}
-                >
-                  Add chain
-                </button>
+            return (
+              <div
+                key={chain.chainId}
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2"
+              >
+                <div className="flex min-w-0 flex-col">
+                  <span className={classNames("text-sm", isActive ? "font-semibold" : "font-medium")}>{chain.name}</span>
+                  <span className="font-mono text-control text-secondary">{chain.chainId}</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="demo-btn"
+                    disabled={pending || isActive}
+                    onClick={() => void switchChain(chain.chainId)}
+                  >
+                    {isActive ? "Active" : "Switch"}
+                  </button>
+                  <button
+                    type="button"
+                    className="demo-btn"
+                    disabled={pending}
+                    onClick={() => void addChain(chain.chainId)}
+                  >
+                    Add chain
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+        {error && (
+          <p className="m-0 text-sm whitespace-pre-wrap text-destructive wrap-break-word" role="alert">
+            {error}
+          </p>
+        )}
       </div>
-      {error && (
-        <p className="mb-4 rounded-md bg-destructive-tint px-4 py-3 text-sm text-primary" role="alert">
-          {error}
-        </p>
-      )}
     </DemoShell>
   );
 };

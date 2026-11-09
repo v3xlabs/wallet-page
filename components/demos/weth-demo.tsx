@@ -208,13 +208,13 @@ export const WethDemo = () => {
         pending={pending}
       />
 
-      <label className="my-3 flex flex-col gap-1.5">
-        <span className="text-sm text-secondary">Amount (ETH / WETH)</span>
+      <label className="flex flex-col gap-2">
+        <span className="text-control text-secondary">Amount (ETH / WETH)</span>
         <input
           type="text"
-          className="demo-input font-mono"
+          className="demo-input h-8 py-0 font-mono text-control"
           value={amount}
-          onChange={e => setAmount(e.target.value)}
+          onChange={event => setAmount(event.target.value)}
         />
       </label>
 
@@ -238,7 +238,6 @@ export const WethDemo = () => {
         actions={[{
           label: "Wrap ETH → WETH",
           onClick: wrap,
-          primary: true,
           disabled: !wethAddress || !parsedWei,
         }]}
       />

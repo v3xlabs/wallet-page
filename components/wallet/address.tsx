@@ -10,7 +10,7 @@ type AddressProperties = {
 
 /** Shared inline address display -- use this instead of wrapping addresses in `<code>`. */
 export const Address = ({ address, full = false }: AddressProperties) => (
-  <span className={classNames("font-mono text-[0.85em] text-primary", full ? "break-all" : "whitespace-nowrap")} title={address}>
+  <span className={classNames("font-mono text-control text-primary", full ? "break-all text-balance" : "whitespace-nowrap")} title={address}>
     {full ? address : truncateAddress(address)}
   </span>
 );

@@ -16,7 +16,7 @@ export const EthChainIdDemo = () => {
       source="components/demos/chains/eth-chain-id-demo.tsx"
       title="eth_chainId"
       inspector={{
-        user: <p>Read the wallet&apos;s active chain (hex).</p>,
+        user: <p className="m-0">Read the wallet&apos;s active chain (hex).</p>,
         request: { method: "eth_chainId", params: [] },
       }}
       response={response}

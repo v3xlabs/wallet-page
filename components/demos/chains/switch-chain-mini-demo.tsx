@@ -25,13 +25,13 @@ export const SwitchChainMiniDemo = () => {
       actionLabel="Switch chain"
       inspector={{
         user: (
-          <p>
+          <p className="m-0">
             Switch to
             {" "}
             <strong>{chain?.name ?? "network"}</strong>
             {" "}
             (
-            <code>{chainId}</code>
+            <span className="font-mono text-control">{chainId}</span>
             ).
           </p>
         ),

@@ -38,7 +38,7 @@ export const AddChainMiniDemo = () => {
         meta && addParameters
           ? {
               user: (
-                <p>
+                <p className="m-0">
                   Register
                   {" "}
                   <strong>{meta.name}</strong>

@@ -45,12 +45,12 @@ export const EthSignDemo = () => {
       <WalletActionPanel
         inspector={{
           user: (
-            <>
-              <p className="mb-2 text-sm leading-snug text-warning">
+            <div className="flex flex-col gap-2">
+              <p className="m-0 text-warning">
                 Not human-readable - wallets should warn before signing a raw hash.
               </p>
-              <code className="block font-mono text-xs break-all whitespace-pre-wrap">{ZERO_HASH}</code>
-            </>
+              <code className="block p-0 font-mono text-control break-all whitespace-pre-wrap">{ZERO_HASH}</code>
+            </div>
           ),
           request: {
             method: "eth_sign",

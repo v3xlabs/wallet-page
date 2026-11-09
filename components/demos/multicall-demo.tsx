@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useMemo, useState } from "react";
 import {
   type Address as EvmAddress,
@@ -144,32 +145,36 @@ export const MulticallDemo = () => {
 
   return (
     <DemoShell source="components/demos/multicall-demo.tsx">
-      <p className="text-sm text-secondary">
-        Multicall3:
-        {" "}
-        <Address address={MULTICALL3_ADDRESS} />
-      </p>
-      <p className="mt-1.5 text-sm text-secondary">
-        Batching
-        {" "}
-        <strong>
-          {calls.length}
+      <div className="flex flex-col gap-1 text-sm text-secondary">
+        <p className="m-0">
+          Multicall3:
           {" "}
-          call
-          {calls.length === 1 ? "" : "s"}
-        </strong>
-        {" "}
-        into one
-        {" "}
-        <code className="whitespace-nowrap">eth_call</code>
-        {calls.map(c => (
-          <span key={c.label}>
+          <Address address={MULTICALL3_ADDRESS} />
+        </p>
+        <p className="m-0">
+          Batching
+          {" "}
+          <strong>
+            {calls.length}
             {" "}
-            -
-            <code className="whitespace-nowrap">{c.label}</code>
-          </span>
-        ))}
-      </p>
+            call
+            {calls.length === 1 ? "" : "s"}
+          </strong>
+          {" "}
+          into one
+          {" "}
+          <code className="whitespace-nowrap">eth_call</code>
+          {calls.map(c => (
+            <span key={c.label}>
+              {" "}
+              <span className="whitespace-nowrap">
+                -
+                <code>{c.label}</code>
+              </span>
+            </span>
+          ))}
+        </p>
+      </div>
 
       <WalletActionPanel
         inspector={
@@ -177,19 +182,19 @@ export const MulticallDemo = () => {
             ? {
                 user: preview
                   ? (
-                      <ul className="m-0 list-none p-0">
+                      <ul className="m-0 flex list-none flex-col gap-2 p-0">
                         {preview.map(r => (
-                          <li key={r.label} className="mt-1.5 flex items-baseline gap-3">
-                            <span className="min-w-32 text-[13px] text-secondary">{r.label}</span>
-                            <code className={r.success ? "" : "text-destructive"}>
+                          <li key={r.label} className="flex items-baseline gap-3">
+                            <span className="min-w-32 shrink-0 text-control text-secondary">{r.label}</span>
+                            <span className={classNames("min-w-0 font-mono text-control break-all", r.success ? "text-primary" : "text-destructive")}>
                               {r.value}
-                            </code>
+                            </span>
                           </li>
                         ))}
                       </ul>
                     )
                   : (
-                      <p className="text-sm text-secondary">Run the batch to see decoded balances here.</p>
+                      <p className="m-0 text-sm text-secondary">Run the batch to see decoded balances here.</p>
                     ),
                 request: { method: "eth_call", params: [requestCall, "latest"] },
               }

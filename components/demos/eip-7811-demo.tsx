@@ -91,13 +91,13 @@ export const Eip7811Demo = () => {
       <WalletActionPanel
         inspector={{
           user: (
-            <>
-              {error && <pre className="mt-3 font-mono text-[13px] text-destructive whitespace-pre-wrap wrap-break-word">{error}</pre>}
+            <div className="flex flex-col gap-4">
+              {error && <pre className="demo-scroll-x m-0 font-mono text-control text-destructive whitespace-pre">{error}</pre>}
               <WalletAssetSearch
                 assets={assets}
                 loading={pending && assets.length === 0}
               />
-            </>
+            </div>
           ),
           request: request
             ? { method: "wallet_getAssets", params: [request] }
