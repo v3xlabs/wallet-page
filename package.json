@@ -16,10 +16,10 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@openlv/connector": "0.2.2",
-    "@openlv/core": "0.3.0",
-    "@openlv/modal": "0.2.2",
-    "@openlv/provider": "0.3.1",
+    "@openlv/connector": "0.2.4",
+    "@openlv/core": "0.3.1",
+    "@openlv/modal": "0.2.4",
+    "@openlv/provider": "0.3.4",
     "blo": "^2.0.0",
     "classnames": "^2.5.1",
     "qr": "^0.6.0",
