@@ -110,6 +110,10 @@ openlv-modal[style*="display: block"] {
   animation: demo-dialog-in 180ms ease-out;
 }
 
+.demo-menu {
+  animation: demo-dialog-in 120ms ease-out;
+}
+
 .demo-dialog[open]::backdrop {
   animation: demo-fade-in 180ms ease-out;
 }
@@ -131,6 +135,7 @@ openlv-modal[style*="display: block"] {
   .demo-frame *,
   .demo-dialog,
   .demo-dialog *,
+  .demo-menu,
   .demo-dialog::backdrop {
     transition-duration: 0s !important;
     animation: none !important;
