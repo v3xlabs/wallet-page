@@ -37,26 +37,102 @@ openlv-modal[style*="display: block"] {
   pointer-events: auto;
 }
 
+@theme {
+  --text-control: 0.8125rem;
+  --text-control--line-height: 1.25rem;
+  --shadow-overlay:
+    0 4px 8px -2px oklch(0.2 0.02 280 / 10%),
+    0 16px 40px -8px oklch(0.2 0.02 280 / 26%);
+}
+
 /*
- * Shared form controls. Kept as classes (rather than inline utilities)
- * because they repeat across every demo; bodies are pure Tailwind via
- * @apply. Compose at call sites: `demo-input font-mono`, `demo-btn
- * demo-btn-primary`.
+ * Demo frames follow Vocs' titled code block: one bordered box, a 40px bar
+ * on the surface colour, and a body on the code-block colour.
  */
 @layer components {
-  .demo-btn {
-    @apply cursor-pointer rounded-lg border border-primary bg-surfaceMuted px-3 py-1.5 text-[13px] font-medium text-primary transition-colors enabled:hover:bg-surfaceTint disabled:cursor-not-allowed disabled:opacity-50;
+  .demo-frame {
+    @apply my-6 flex flex-col overflow-hidden rounded-lg border border-primary bg-code-block;
   }
 
-  .demo-btn-primary {
-    @apply border-accent bg-accent/20 enabled:hover:bg-accent/30;
+  .demo-bar {
+    @apply flex min-h-10 items-center gap-2 bg-surface px-2 py-1;
+  }
+
+  .demo-tab {
+    @apply flex h-10 shrink-0 cursor-pointer items-center border-y-[1.5px] border-transparent text-control font-medium tracking-tight text-secondary transition-colors duration-150 hover:text-heading aria-selected:border-b-accent aria-selected:text-heading;
+  }
+
+  .demo-btn {
+    @apply relative inline-flex h-8 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-primary bg-surface px-3 text-control font-medium whitespace-nowrap text-heading transition-[background-color,border-color,transform] duration-150 ease-out after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] enabled:hover:bg-surfaceTint enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:text-muted;
+  }
+
+  .demo-btn-primary:enabled {
+    @apply border-transparent bg-accent text-white hover:bg-[color-mix(in_oklab,var(--vocs-color-accent),black_10%)];
+    box-shadow:
+      0 0 0 0.5px oklch(0.2 0.05 280 / 30%),
+      inset 0 1px 0 rgb(255 255 255 / 12%),
+      0 1px 2px oklch(0.3 0.05 280 / 14%);
+  }
+
+  .demo-icon-btn {
+    @apply relative inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-primary bg-surface text-secondary transition-[background-color,color,transform] duration-150 ease-out after:absolute after:-inset-1.5 after:content-[''] hover:bg-surfaceTint hover:text-heading active:scale-[0.96];
   }
 
   .demo-input {
-    @apply w-full rounded-lg border border-primary bg-surface px-3 py-2 text-sm text-primary outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accenta3 disabled:cursor-not-allowed disabled:opacity-55;
+    @apply w-full rounded-md border border-primary bg-surface px-3 py-2 text-sm text-primary outline-none transition-colors placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accenta3 disabled:cursor-not-allowed disabled:opacity-55;
   }
 
   .demo-select {
-    @apply w-full cursor-pointer rounded-lg border border-primary bg-surface px-3 py-2 text-sm text-primary outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accenta3 disabled:cursor-not-allowed disabled:opacity-55;
+    @apply w-full cursor-pointer rounded-md border border-primary bg-surface px-3 py-2 text-sm text-primary outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accenta3 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  :is(.demo-btn, .demo-icon-btn, .demo-tab):focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  /*
+   * The covers scroll with the content and the shadows stay put, so a shadow
+   * only shows on the side that has more content to scroll to.
+   */
+  .demo-scroll-x {
+    @apply overflow-x-auto;
+    --cover: var(--vocs-background-color-code-block);
+    --edge: color-mix(in oklab, var(--vocs-text-color-primary) 30%, transparent);
+    background:
+      linear-gradient(to right, var(--cover) 40%, transparent) left / 2.5rem 100% no-repeat local,
+      linear-gradient(to left, var(--cover) 40%, transparent) right / 2.5rem 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, var(--edge), transparent) left / 1rem 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, var(--edge), transparent) right / 1rem 100% no-repeat scroll;
+  }
+}
+
+.demo-dialog[open] {
+  animation: demo-dialog-in 180ms ease-out;
+}
+
+.demo-dialog[open]::backdrop {
+  animation: demo-fade-in 180ms ease-out;
+}
+
+@keyframes demo-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes demo-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-frame *,
+  .demo-dialog,
+  .demo-dialog *,
+  .demo-dialog::backdrop {
+    transition-duration: 0s !important;
+    animation: none !important;
   }
 }

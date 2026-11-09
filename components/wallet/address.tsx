@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import { truncateAddress } from "../../lib/display";
 
 type AddressProperties = {
@@ -8,7 +10,7 @@ type AddressProperties = {
 
 /** Shared inline address display -- use this instead of wrapping addresses in `<code>`. */
 export const Address = ({ address, full = false }: AddressProperties) => (
-  <span className="font-mono text-[0.85em] break-all text-primary" title={address}>
+  <span className={classNames("font-mono text-[0.85em] text-primary", full ? "break-all" : "whitespace-nowrap")} title={address}>
     {full ? address : truncateAddress(address)}
   </span>
 );

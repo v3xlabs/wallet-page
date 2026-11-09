@@ -29,7 +29,7 @@ export type ShellControl
   };
 
 const TabsControl = ({ control, name }: { control: ShellControl & { type: "tabs"; }; name: string; }) => (
-  <div className="flex flex-wrap items-center gap-1" role="tablist" aria-label={name}>
+  <div className="flex flex-wrap items-center gap-1 max-md:max-w-full max-md:flex-nowrap max-md:overflow-x-auto" role="tablist" aria-label={name}>
     {control.options.map(option => (
       <button
         key={option.value}
@@ -38,10 +38,10 @@ const TabsControl = ({ control, name }: { control: ShellControl & { type: "tabs"
         aria-selected={option.value === control.value}
         onClick={() => control.onChange(option.value)}
         className={classNames(
-          "cursor-pointer rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
+          "flex h-8 shrink-0 cursor-pointer items-center rounded-md px-2.5 text-control font-medium whitespace-nowrap transition-colors duration-150 max-md:px-2",
           option.value === control.value
-            ? "bg-accenta3 text-accent"
-            : "text-secondary hover:bg-surfaceMuted hover:text-primary",
+            ? "bg-accenta2 text-accent"
+            : "text-secondary hover:bg-surfaceTint hover:text-heading",
         )}
       >
         {option.label}
@@ -98,35 +98,33 @@ export const DemoShell = ({
   const selects = entries.filter(entry => entry[1].type === "select");
 
   return (
-    <div className="relative my-6 overflow-hidden rounded-lg border border-primary">
-      {source && (
-        <a
-          className="absolute top-3 right-3 z-10 inline-flex items-center rounded-full border border-primary bg-surface p-[0.35rem] font-mono text-xs leading-none text-secondary no-underline hover:border-(--vocs-text-color-secondary) hover:bg-surfaceMuted hover:text-primary"
-          href={sourceUrl(source)}
-          target="_blank"
-          rel="noreferrer"
-          title="View demo source on GitHub"
-          aria-label="View demo source on GitHub"
-        >
-          <FiCode />
-        </a>
-      )}
-      <div className="bg-code-block px-5 py-4">
+    <div className="demo-frame relative">
+      <div className="px-5 py-4 max-md:px-4">
         {children}
       </div>
-      {(entries.length > 0 || i18n) && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-primary bg-surface px-4 py-2">
+      {(entries.length > 0 || i18n || source) && (
+        <div className="demo-bar flex-wrap gap-x-3 border-t border-primary pl-3">
           {tabs.map(([name, control]) => (
             control.type === "tabs" && <TabsControl key={name} name={name} control={control} />
           ))}
-          {(selects.length > 0 || i18n) && (
-            <div className="ml-auto flex flex-wrap items-center gap-3">
-              {selects.map(([name, control]) => (
-                control.type === "select" && <SelectControl key={name} control={control} />
-              ))}
-              {i18n && <I18nControls />}
-            </div>
-          )}
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            {selects.map(([name, control]) => (
+              control.type === "select" && <SelectControl key={name} control={control} />
+            ))}
+            {i18n && <I18nControls />}
+            {source && (
+              <a
+                className="demo-icon-btn no-underline"
+                href={sourceUrl(source)}
+                target="_blank"
+                rel="noreferrer"
+                title="View demo source on GitHub"
+                aria-label="View demo source on GitHub"
+              >
+                <FiCode aria-hidden className="size-4" />
+              </a>
+            )}
+          </div>
         </div>
       )}
     </div>

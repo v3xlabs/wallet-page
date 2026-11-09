@@ -50,13 +50,13 @@ const MiniDemoContent = ({
   const merged = mergeInspector(inspector, response, error);
 
   return (
-    <>
-      <h4 className="mb-1 text-sm font-semibold">{title}</h4>
+    <div className="flex flex-col gap-3">
+      <h4 className="m-0 text-sm font-semibold">{title}</h4>
       {description && (
-        <div className="mt-2 text-sm text-secondary">{description}</div>
+        <div className="text-sm text-secondary">{description}</div>
       )}
       {merged && <DemoInspector {...merged} />}
-      <div className="mt-2 flex flex-wrap justify-end gap-2">
+      <div className="flex flex-wrap justify-end gap-2">
         <button
           type="button"
           className="demo-btn demo-btn-primary"
@@ -66,13 +66,13 @@ const MiniDemoContent = ({
           {actionLabel}
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
 /** Compact RPC demo: Preview / Request / Response tabs + primary action. */
 export const MiniDemo = ({ source, ...properties }: MiniDemoProperties) => (
-  <DemoFrame variant="mini" source={source}>
+  <DemoFrame source={source}>
     <MiniDemoContent {...properties} />
   </DemoFrame>
 );

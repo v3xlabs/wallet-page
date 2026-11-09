@@ -7,35 +7,16 @@ import { useWallet } from "./WalletProvider";
 
 type DemoFrameProperties = {
   children: ReactNode;
-  /** `inline` -- several demos on one MDX page; `mini` -- compact RPC block (chains). */
-  variant?: "panel" | "inline" | "mini";
   /** Repo-relative path to the demo's source file, e.g. `components/demos/erc-20-demo.tsx`. */
   source?: string;
 };
 
-export const DemoFrame = ({ children, variant = "panel", source }: DemoFrameProperties) => {
-  const rootClass
-    = variant === "mini"
-      ? "my-4 overflow-hidden rounded-md border border-primary bg-code-block"
-      : (variant === "inline"
-          ? "my-4 overflow-hidden rounded-lg border border-primary"
-          : "my-6 overflow-hidden rounded-lg border border-primary");
-
-  return (
-    <div className={rootClass}>
-      <div
-        className={
-          variant === "mini"
-            ? "relative px-4 pt-9 pb-10"
-            : "relative bg-code-block px-5 pt-10 pb-4"
-        }
-      >
-        <WalletDemoChrome source={source} />
-        {children}
-      </div>
-    </div>
-  );
-};
+export const DemoFrame = ({ children, source }: DemoFrameProperties) => (
+  <div className="demo-frame">
+    <WalletDemoChrome source={source} />
+    <div className="p-4">{children}</div>
+  </div>
+);
 
 /** Prefer `useWallet().requireSession` -- alias for demo action handlers. */
 export const useDemoFrame = () => {

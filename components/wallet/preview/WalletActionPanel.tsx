@@ -35,7 +35,7 @@ export const WalletActionPanel = ({
   const merged = mergeInspector(inspector, response, error);
 
   return (
-    <div className="my-4 flex flex-col gap-2.5">
+    <div className="my-4 flex flex-col gap-3 first:mt-0 last:mb-0">
       {merged && <DemoInspector {...merged} />}
       <div className="flex flex-wrap justify-end gap-2">
         {actions.map(action => (

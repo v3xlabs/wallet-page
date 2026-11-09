@@ -44,6 +44,14 @@ export const DemoInspector = ({
   }, [user, request, response, hash]);
 
   const [active, setActive] = useState<TabId>(() => tabs[0]?.id ?? "request");
+  const [shownResponse, setShownResponse] = useState(response);
+
+  // A new response is the result of the reader's click, so it takes focus.
+  if (response !== shownResponse) {
+    setShownResponse(response);
+
+    if (response) setActive("response");
+  }
 
   // `active` is the user's explicit choice; fall back to the first available tab
   // whenever that choice is no longer valid (tabs are derived from props).
@@ -52,8 +60,8 @@ export const DemoInspector = ({
   if (tabs.length === 0) return null;
 
   return (
-    <div className="overflow-hidden rounded-md border border-primary bg-surfaceMuted">
-      <div className="flex border-b border-primary bg-code-block" role="tablist" aria-label="Demo views">
+    <div className="flex flex-col">
+      <div className="flex gap-5 overflow-x-auto overflow-y-hidden border-b border-primary" role="tablist" aria-label="Demo views">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -62,12 +70,7 @@ export const DemoInspector = ({
             id={`${baseId}-${tab.id}`}
             aria-selected={current === tab.id}
             aria-controls={`${baseId}-panel-${tab.id}`}
-            className={classNames(
-              "cursor-pointer px-3.5 py-2 text-[13px] font-medium",
-              current === tab.id
-                ? "text-primary"
-                : "text-secondary hover:text-primary",
-            )}
+            className="demo-tab"
             onClick={() => setActive(tab.id)}
           >
             {tab.label}
@@ -79,7 +82,7 @@ export const DemoInspector = ({
           id={`${baseId}-panel-user`}
           role="tabpanel"
           aria-labelledby={`${baseId}-user`}
-          className="min-h-14 px-3.5 py-3 text-sm leading-[1.45]"
+          className="pt-3 text-sm leading-5 text-primary"
         >
           {user}
         </div>
@@ -89,9 +92,9 @@ export const DemoInspector = ({
           id={`${baseId}-panel-request`}
           role="tabpanel"
           aria-labelledby={`${baseId}-request`}
-          className="min-h-14 px-3.5 py-3"
+          className="pt-3"
         >
-          <pre className="m-0 font-mono text-xs leading-[1.45] whitespace-pre-wrap wrap-break-word">{formatRpcCall(request)}</pre>
+          <pre tabIndex={0} className="demo-scroll-x m-0 pb-1 font-mono text-control whitespace-pre">{formatRpcCall(request)}</pre>
         </div>
       )}
       {current === "response" && response && (
@@ -99,11 +102,12 @@ export const DemoInspector = ({
           id={`${baseId}-panel-response`}
           role="tabpanel"
           aria-labelledby={`${baseId}-response`}
-          className="min-h-14"
         >
           <pre
+            tabIndex={0}
             className={classNames(
-              "m-0 max-h-72 overflow-auto px-3.5 py-3 font-mono text-xs leading-[1.45] whitespace-pre",
+              "m-0 max-h-72 overflow-y-auto pt-3 pb-1 font-mono text-control",
+              response.includes("\n") ? "demo-scroll-x whitespace-pre" : "break-all whitespace-pre-wrap",
               { "text-destructive": responseError },
             )}
           >
@@ -116,10 +120,10 @@ export const DemoInspector = ({
           id={`${baseId}-panel-hash`}
           role="tabpanel"
           aria-labelledby={`${baseId}-hash`}
-          className="min-h-14 px-3.5 py-3"
+          className="flex flex-col gap-2 pt-3"
         >
-          {hashNote && <p className="mb-2 text-[13px] text-secondary">{hashNote}</p>}
-          <code className="block font-mono text-xs break-all whitespace-pre-wrap">{hash}</code>
+          {hashNote && <p className="m-0 text-control text-secondary">{hashNote}</p>}
+          <code className="block font-mono text-control break-all whitespace-pre-wrap">{hash}</code>
         </div>
       )}
     </div>

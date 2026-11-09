@@ -120,7 +120,7 @@ const CompactSelect: FC<{
         </option>
       ))}
     </select>
-    <span className="pointer-events-none flex items-center gap-0.5 rounded-md px-1.5 py-1 text-xs text-secondary transition-colors peer-hover:bg-surfaceMuted peer-hover:text-primary peer-focus-visible:bg-surfaceMuted peer-focus-visible:text-primary peer-focus-visible:ring-2 peer-focus-visible:ring-accenta3 peer-active:bg-surfaceTint">
+    <span className="pointer-events-none flex h-8 items-center gap-1 rounded-md px-2 text-sm text-secondary transition-colors peer-hover:bg-surfaceTint peer-hover:text-heading peer-focus-visible:bg-surfaceTint peer-focus-visible:text-heading peer-focus-visible:ring-2 peer-focus-visible:ring-accenta3 peer-active:bg-surfaceTint">
       {display}
       <svg aria-hidden viewBox="0 0 16 16" fill="none" className="size-3">
         <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

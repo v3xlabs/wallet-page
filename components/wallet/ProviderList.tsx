@@ -16,23 +16,23 @@ export const ProviderList = ({
   emptyMessage = "No wallets announced yet. Install an extension and try again.",
 }: ProviderListProperties) => {
   if (providers.length === 0) {
-    return <p className="text-sm text-secondary">{emptyMessage}</p>;
+    return <p className="m-0 px-2 py-3 text-control text-secondary">{emptyMessage}</p>;
   }
 
   return (
-    <ul className="mt-4 flex list-none flex-col gap-2 p-0">
+    <ul className="m-0 flex list-none flex-col p-0">
       {providers.map(detail => (
-        <li key={detail.info.uuid}>
+        <li key={detail.info.uuid} className="m-0">
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-3 rounded-md border border-primary bg-surfaceMuted px-3.5 py-2.5 text-left text-primary enabled:hover:bg-code-highlighted"
+            className="flex h-16 w-full cursor-pointer items-center gap-3 rounded-lg px-2 text-left transition-[background-color,transform] duration-150 ease-out enabled:hover:bg-surfaceTint enabled:active:scale-[0.99] disabled:cursor-wait disabled:opacity-60"
             disabled={connecting}
             onClick={() => onSelect(detail)}
           >
-            <img src={detail.info.icon} alt="" width={28} height={28} />
-            <span className="flex flex-col gap-0.5">
-              <strong>{detail.info.name}</strong>
-              <span className="text-sm text-secondary">{detail.info.rdns}</span>
+            <img src={detail.info.icon} alt="" width={36} height={36} className="size-9 shrink-0 rounded-lg" />
+            <span className="flex min-w-0 flex-col">
+              <span className="truncate text-base font-medium text-heading">{detail.info.name}</span>
+              <span className="truncate text-control text-secondary">{detail.info.rdns}</span>
             </span>
           </button>
         </li>

@@ -161,12 +161,12 @@ export const MulticallDemo = () => {
         {" "}
         into one
         {" "}
-        <code>eth_call</code>
+        <code className="whitespace-nowrap">eth_call</code>
         {calls.map(c => (
           <span key={c.label}>
             {" "}
             -
-            <code>{c.label}</code>
+            <code className="whitespace-nowrap">{c.label}</code>
           </span>
         ))}
       </p>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useWallet } from "./WalletProvider";
+import { FiX } from "react-icons/fi";
 
-const trimAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+import { useWallet } from "./WalletProvider";
 
 export const WalletBadge = () => {
   const { session, disconnect } = useWallet();
@@ -10,29 +10,30 @@ export const WalletBadge = () => {
   if (!session) return null;
 
   return (
-    <div className="flex max-w-[min(100%,22rem)] items-center gap-1.5 rounded-full border border-primary bg-surfaceMuted py-1 pr-1.5 pl-2 text-xs">
+    <div className="flex min-w-0 items-center gap-2 pl-2 text-control">
       {session.icon && (
         <img
           src={session.icon}
           alt=""
           className="shrink-0 rounded-sm"
-          width={18}
-          height={18}
+          width={16}
+          height={16}
         />
       )}
-      <span className="truncate font-semibold" title={session.rdns}>
+      <span className="truncate font-medium text-heading" title={session.rdns}>
         {session.label}
       </span>
-      <span className="font-mono whitespace-nowrap text-secondary" title={session.accounts[0]}>
-        {trimAddress(session.accounts[0])}
+      <span className="font-mono text-xs whitespace-nowrap text-secondary" title={session.accounts[0]}>
+        {`${session.accounts[0].slice(0, 6)}...${session.accounts[0].slice(-4)}`}
       </span>
       <button
         type="button"
-        className="ml-0.5 cursor-pointer px-1 text-[1.1rem] leading-none text-secondary hover:text-primary"
+        className="demo-icon-btn"
         onClick={() => disconnect()}
         aria-label="Disconnect wallet"
+        title="Disconnect wallet"
       >
-        x
+        <FiX aria-hidden className="size-4" />
       </button>
     </div>
   );
