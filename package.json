@@ -26,7 +26,7 @@
     "react": "~19.2.8",
     "react-dom": "~19.2.8",
     "react-icons": "^5.7.0",
-    "react-server-dom-webpack": "~19.2.8",
+    "react-server-dom-webpack": "~19.2.9",
     "viem": "^2.56.9",
     "vocs": "2.0.4",
     "waku": "1.0.0-beta.1"
